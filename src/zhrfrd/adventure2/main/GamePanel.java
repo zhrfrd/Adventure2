@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.entities.Player;
 import zhrfrd.adventure2.objects.SuperObject;
 import zhrfrd.adventure2.tiles.TileManager;
@@ -38,6 +39,7 @@ public class GamePanel extends JPanel implements Runnable {
 	// Entities and objects
 	public Player player = new Player(this, keyHandler);
 	public SuperObject obj[] = new SuperObject[10];
+	public Entity npc[] = new Entity[10];
 	// Game state
 	public int gameState;
 	public final int playState = 1;
@@ -56,6 +58,7 @@ public class GamePanel extends JPanel implements Runnable {
 	 */
 	public void setupGame() {
 		assetSetter.setObject();
+		assetSetter.setNPC();
 		playSoundTrack(0);   // Play sound-track
 		stopSoundTrack();
 		gameState = playState;
@@ -73,8 +76,14 @@ public class GamePanel extends JPanel implements Runnable {
 	 * Update information such as character position
 	 */
 	public void update() {
-		if (gameState == playState)
+		if (gameState == playState) {
+			// Player
 			player.update();
+			//NPC
+			for (int i = 0; i < npc.length; i ++)
+				if (npc[i] != null)
+					npc[i].update();
+		}
 	}
 	
 	/*
@@ -123,6 +132,11 @@ public class GamePanel extends JPanel implements Runnable {
 		for (int i = 0; i < obj.length; i ++)
 			if (obj[i] != null)
 				obj[i].draw(g2, this);
+		
+		// Draw npc
+		for (int i = 0; i < npc.length; i ++)
+			if (npc[i] != null)
+				npc[i].draw(g2);
 		
 		// Draw player
 		player.draw(g2);

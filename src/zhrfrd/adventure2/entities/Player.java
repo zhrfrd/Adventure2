@@ -12,20 +12,18 @@ import zhrfrd.adventure2.main.KeyHandler;
 import zhrfrd.adventure2.main.UtilityTool;
 
 public class Player extends Entity {
-	GamePanel gp;
 	KeyHandler keyHandler;
 	public final int SCREEN_X, SCREEN_Y;   // Position of the player of the screen
-//	public int keyCount = 0;
 	boolean moving = false;
 	int pixelCounter = 0;
 	
 	public Player(GamePanel gp, KeyHandler keyHandler) {
-		this.gp = gp;
+		super(gp);
 		this.keyHandler = keyHandler;
 		SCREEN_X = gp.SCREEN_WIDTH / 2 - (gp.TILE_SIZE / 2);    // Player in the middle of the screen
 		SCREEN_Y = gp.SCREEN_HEIGHT / 2 - (gp.TILE_SIZE / 2);   //
 		
-		solidArea = new Rectangle(1, 1, 46, 46);   // Rectangle solid area of the player
+		solidArea = new Rectangle(8, 16, 32, 32);   // Rectangle solid area of the player
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 		setDefaultValues();
@@ -46,31 +44,14 @@ public class Player extends Entity {
 	 * Get the sprites of the player
 	 */
 	public void getPlayerImage() {
-		up1 = setup("player_up_1");
-		up2 = setup("player_up_2");
-		down1 = setup("player_down_1");
-		down2 = setup("player_down_2");
-		left1 = setup("player_left_1");
-		left2 = setup("player_left_2");
-		right1 = setup("player_right_1");
-		right2 = setup("player_right_2");
-	}
-	
-	/*
-	 * Handle instantiation, import of images and scaling
-	 */
-	public BufferedImage setup(String imageName) {
-		UtilityTool utilityTool = new UtilityTool();
-		BufferedImage image = null;
-		
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/" + imageName + ".png"));
-			image = utilityTool.scaleImage(image, gp.TILE_SIZE, gp.TILE_SIZE);
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		
-		return image;
+		up1 = setup("/player/player_up_1");
+		up2 = setup("/player/player_up_2");
+		down1 = setup("/player/player_down_1");
+		down2 = setup("/player/player_down_2");
+		left1 = setup("/player/player_left_1");
+		left2 = setup("/player/player_left_2");
+		right1 = setup("/player/player_right_1");
+		right2 = setup("/player/player_right_2");
 	}
 	
 	/*
@@ -100,6 +81,10 @@ public class Player extends Entity {
 				int objIndex = gp.collisionChecker.checkObject(this, true);   // Check if player collided with an object and save the object index
 				
 				pickUpObject(objIndex);	
+				
+				// Check NPC collision
+				int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
+				interactNPC(npcIndex);
 			}
 			
 			// When the player stops moving, reset the sprite to the default one
@@ -153,6 +138,16 @@ public class Player extends Entity {
 		// If the player collided with an existing object, pick it up
 		if (index != 999) {
 			
+		}
+	}
+	
+	/*
+	 * Handle interaction between player and NPC
+	 */
+	public void interactNPC(int index) {
+		// If the player collided with an existing npc, do interaction
+		if (index != 999) {
+			System.out.println("NPC hit");
 		}
 	}
 	
