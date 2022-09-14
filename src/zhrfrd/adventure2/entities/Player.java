@@ -1,21 +1,18 @@
 package zhrfrd.adventure2.entities;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import zhrfrd.adventure2.main.GamePanel;
 import zhrfrd.adventure2.main.KeyHandler;
-import zhrfrd.adventure2.main.UtilityTool;
 
 public class Player extends Entity {
 	KeyHandler keyHandler;
 	public final int SCREEN_X, SCREEN_Y;   // Position of the player of the screen
-	boolean moving = false;
-	int pixelCounter = 0;
+//	boolean moving = false;
+//	int pixelCounter = 0;
 	
 	public Player(GamePanel gp, KeyHandler keyHandler) {
 		super(gp);
@@ -58,41 +55,30 @@ public class Player extends Entity {
 	 * Update player information such as position
 	 */
 	public void update() {
-		// Tile based movement. The player doesn't stop until it reaches the end of the tile
-		if (!moving) {
-			// Get keyboard strokes and update player position
-			if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
-				if (keyHandler.upPressed)
-					direction = "up";
-				
-				if (keyHandler.downPressed)
-					direction = "down";
-				
-				if (keyHandler.leftPressed)
-					direction = "left";
-				
-				if (keyHandler.rightPressed)
-					direction = "right";
-				
-				moving = true;
-				collisionOn = false;
-				gp.collisionChecker.checkTile(this);   // Check the tile collision
-				
-				int objIndex = gp.collisionChecker.checkObject(this, true);   // Check if player collided with an object and save the object index
-				
-				pickUpObject(objIndex);	
-				
-				// Check NPC collision
-				int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
-				interactNPC(npcIndex);
-			}
+		// Get keyboard strokes and update player position
+		if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+			if (keyHandler.upPressed)
+				direction = "up";
 			
-			// When the player stops moving, reset the sprite to the default one
-			else
-				spriteNumber = 1;
-		}
-		
-		else {
+			if (keyHandler.downPressed)
+				direction = "down";
+			
+			if (keyHandler.leftPressed)
+				direction = "left";
+			
+			if (keyHandler.rightPressed)
+				direction = "right";
+			
+			collisionOn = false;
+			gp.collisionChecker.checkTile(this);   // Check the tile collision
+			
+			int objIndex = gp.collisionChecker.checkObject(this, true);   // Check if player collided with an object and save the object index
+			
+			pickUpObject(objIndex);	
+			
+			int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);   // Check NPC collision
+			interactNPC(npcIndex);
+			
 			// Move the player only in case there is no collision detected
 			if (collisionOn == false) {
 				if (direction == "up")
@@ -115,20 +101,15 @@ public class Player extends Entity {
 				if (spriteNumber == 1)
 					spriteNumber = 2;
 				
-				else
+				else if (spriteNumber == 2)
 					spriteNumber = 1;
 				
 				spriteCounter = 0;
 			}
-			
-			pixelCounter += speed;
-			
-			// Stop player movement only when it reaches the end of the tile
-			if (pixelCounter == 48) {
-				moving = false;
-				pixelCounter = 0;
-			}
 		}
+		
+		else
+			spriteNumber = 1;
 	}
 	
 	/*
@@ -190,5 +171,7 @@ public class Player extends Entity {
 		}
 		
 		g2.drawImage(image, SCREEN_X, SCREEN_Y, null);
+		g2.setColor(Color.red);
+		g2.drawRect(SCREEN_X + solidArea.x, SCREEN_Y + solidArea.y, solidArea.width, solidArea.height);
 	}
 }

@@ -200,7 +200,7 @@ public class CollisionChecker {
 	 * Handle collision from npc to player
 	 */
 	public void checkPlayer(Entity entity) {
-		entity.solidArea.x = entity.worldX + entity.solidArea.x;   // Get player's solid area position 
+		entity.solidArea.x = entity.worldX + entity.solidArea.x;   // Get entity's solid area position 
 		entity.solidArea.y = entity.worldY + entity.solidArea.y;   //
 		gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;   // Get player's solid area position
 		gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;   //

@@ -1,5 +1,6 @@
 package zhrfrd.adventure2.entities;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -78,11 +79,11 @@ public class Entity {
 	 * Draw the entity in the game panel
 	 */
 	public void draw(Graphics2D g2) {
-		int screenX = worldX - gp.player.worldX + gp.player.SCREEN_X;   // Object position on the screen
+		int screenX = worldX - gp.player.worldX + gp.player.SCREEN_X;   // Entity position on the screen
 		int screenY = worldY - gp.player.worldY + gp.player.SCREEN_Y;   //
 		BufferedImage image = null;
 		
-		// Render only the objects visible on the screen plus one extra tile in order to not show black edges when moving
+		// Render only the entities visible on the screen plus one extra tile in order to not show black edges when moving
 		if (worldX + gp.TILE_SIZE > gp.player.worldX - gp.player.SCREEN_X && 
 				worldX - gp.TILE_SIZE < gp.player.worldX + gp.player.SCREEN_X && 
 				worldY + gp.TILE_SIZE > gp.player.worldY - gp.player.SCREEN_Y && 
@@ -121,6 +122,8 @@ public class Entity {
 			}
 			
 			g2.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
+			g2.setColor(Color.red);
+			g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 		}
 		
 	}
