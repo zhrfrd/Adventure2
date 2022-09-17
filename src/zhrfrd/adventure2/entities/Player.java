@@ -125,8 +125,14 @@ public class Player extends Entity {
 	public void interactNPC(int index) {
 		// If the player collided with an existing npc, do interaction
 		if (index != 999) {
-			System.out.println("NPC hit");
+			
+			if (gp.keyHandler.enterPressed) {
+				gp.gameState = gp.dialogState;
+				gp.npc[index].speak();
+			}
 		}
+		
+		gp.keyHandler.enterPressed = false;
 	}
 	
 	/*

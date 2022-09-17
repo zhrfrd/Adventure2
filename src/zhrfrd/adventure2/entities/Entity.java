@@ -23,16 +23,47 @@ public class Entity {
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
 	public int actionLockCounter = 0;   // Interval for the npc movement
+	String dialogs[] = new String[20];
+	int dialogIndex = 0;
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 	}
 	
 	/*
-	 * Set character behaviour such as movements
+	 * Set entity behaviour such as movements
 	 */
-	public void setAction() {
+	public void setAction() {}
+	
+	/*
+	 * Make the entity speak
+	 */
+	public void speak() {
+		// Reset the dialog to the beginning when the old man completes all his lines
+		if (dialogs[dialogIndex] == null)
+			dialogIndex = 0;
 		
+		gp.ui.currentDialog = dialogs[dialogIndex];
+		dialogIndex ++;   // Change line each time the player interacts with the old man
+		
+		// When the player talks to the old man, change the old man direction towards the player
+		switch (gp.player.direction) {
+		case "up":
+			direction = "down";
+			break;
+			
+		case "down":
+			direction = "up";
+			break;
+			
+		case "left":
+			direction = "right";
+			break;
+			
+		case "right":
+			direction = "left";
+			break;
+		}
 	}
 	
 	/*

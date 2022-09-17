@@ -12,6 +12,7 @@ public class OldMan extends Entity {
 		direction = "down";
 		speed = 1;
 		getImage();
+		setDialog();
 	}
 	
 	/*
@@ -26,6 +27,17 @@ public class OldMan extends Entity {
 		left2 = setup("/npc/oldman_left_2");
 		right1 = setup("/npc/oldman_right_1");
 		right2 = setup("/npc/oldman_right_2");
+	}
+	
+	/*
+	 * Set the old man dialogs text
+	 */
+	public void setDialog() {
+		dialogs[0] = "Hello, mate!";
+		dialogs[1] = "So, you've come to this valley \nto find the hidden treasure eh??"; 
+		dialogs[2] = "Maialone xP";
+		dialogs[3] = "I'm too old to take an \nadventure with you, BUT!!!";
+		dialogs[4] = "Oh, I forgot what I was going to say..."; 
 	}
 	
 	/*
@@ -54,5 +66,13 @@ public class OldMan extends Entity {
 			
 			actionLockCounter = 0;
 		}
+	}
+	
+	/*
+	 * Make the old man speak
+	 */
+	@Override
+	public void speak() {
+		super.speak();
 	}
 }
