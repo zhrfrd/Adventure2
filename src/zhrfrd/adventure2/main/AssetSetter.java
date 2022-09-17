@@ -17,7 +17,7 @@ public class AssetSetter {
 	}
 	
 	/*
-	 * set all the npcs of the game
+	 * Set all the npcs of the game
 	 */
 	public void setNPC() {
 		gp.npc[0] = new OldMan(gp);

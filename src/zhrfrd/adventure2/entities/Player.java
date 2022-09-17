@@ -11,8 +11,6 @@ import zhrfrd.adventure2.main.KeyHandler;
 public class Player extends Entity {
 	KeyHandler keyHandler;
 	public final int SCREEN_X, SCREEN_Y;   // Position of the player of the screen
-//	boolean moving = false;
-//	int pixelCounter = 0;
 	
 	public Player(GamePanel gp, KeyHandler keyHandler) {
 		super(gp);
@@ -73,7 +71,6 @@ public class Player extends Entity {
 			gp.collisionChecker.checkTile(this);   // Check the tile collision
 			
 			int objIndex = gp.collisionChecker.checkObject(this, true);   // Check if player collided with an object and save the object index
-			
 			pickUpObject(objIndex);	
 			
 			int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);   // Check NPC collision

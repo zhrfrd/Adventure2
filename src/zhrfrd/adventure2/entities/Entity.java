@@ -19,7 +19,7 @@ public class Entity {
 	public String direction;
 	public int spriteCounter = 0;
 	public int spriteNumber = 1;
-	public Rectangle solidArea = new Rectangle(0, 0, 46,46);   // Default solid area for the collision detection
+	public Rectangle solidArea = new Rectangle(0, 0, 48,48);   // Default solid area for the collision detection
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
 	public int actionLockCounter = 0;   // Interval for the npc movement
@@ -79,9 +79,9 @@ public class Entity {
 	 * Draw the entity in the game panel
 	 */
 	public void draw(Graphics2D g2) {
+		BufferedImage image = null;
 		int screenX = worldX - gp.player.worldX + gp.player.SCREEN_X;   // Entity position on the screen
 		int screenY = worldY - gp.player.worldY + gp.player.SCREEN_Y;   //
-		BufferedImage image = null;
 		
 		// Render only the entities visible on the screen plus one extra tile in order to not show black edges when moving
 		if (worldX + gp.TILE_SIZE > gp.player.worldX - gp.player.SCREEN_X && 

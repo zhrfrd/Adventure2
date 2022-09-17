@@ -133,7 +133,7 @@ public class GamePanel extends JPanel implements Runnable {
 			if (obj[i] != null)
 				obj[i].draw(g2, this);
 		
-		// Draw npc
+		// Draw npcs
 		for (int i = 0; i < npc.length; i ++)
 			if (npc[i] != null)
 				npc[i].draw(g2);

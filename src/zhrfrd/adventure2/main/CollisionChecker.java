@@ -118,7 +118,7 @@ public class CollisionChecker {
 				}
 				
 				if (entity.direction == "right") {
-					entity.solidArea.x -= entity.speed;
+					entity.solidArea.x += entity.speed;
 					
 					if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
 						if (gp.obj[i].solid)
@@ -178,7 +178,7 @@ public class CollisionChecker {
 				}
 				
 				if (entity.direction == "right") {
-					entity.solidArea.x -= entity.speed;
+					entity.solidArea.x += entity.speed;
 					
 					if (entity.solidArea.intersects(target[i].solidArea)) {
 						entity.collisionOn = true;
