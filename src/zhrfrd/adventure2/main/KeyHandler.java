@@ -11,7 +11,7 @@ public class KeyHandler implements KeyListener {
 	public KeyHandler(GamePanel gp) {
 		this.gp = gp;
 	}
-
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
@@ -47,7 +47,7 @@ public class KeyHandler implements KeyListener {
 		}
 		
 		// Pause state
-		if (gp.gameState == gp.pauseState)
+		else if (gp.gameState == gp.pauseState)
 			if (code == KeyEvent.VK_P)
 				gp.gameState = gp.playState;
 		

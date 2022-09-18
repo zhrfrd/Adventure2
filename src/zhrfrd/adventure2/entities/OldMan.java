@@ -34,9 +34,9 @@ public class OldMan extends Entity {
 	 */
 	public void setDialog() {
 		dialogs[0] = "Hello, mate!";
-		dialogs[1] = "So, you've come to this valley \nto find the hidden treasure eh??"; 
+		dialogs[1] = "So, you've come to this valley to find the \nhidden treasure eh??"; 
 		dialogs[2] = "Maialone xP";
-		dialogs[3] = "I'm too old to take an \nadventure with you, BUT!!!";
+		dialogs[3] = "I'm too old to take an adventure with you, \nBUT!!!";
 		dialogs[4] = "Oh, I forgot what I was going to say..."; 
 	}
 	

@@ -3,15 +3,19 @@ package zhrfrd.adventure2.main;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class UI {
 	GamePanel gp;
 	Graphics2D g2;
-	final Font ARIAL_PLAIN_20;   // Debug message
-	final Font ARIAL_PLAIN_30;   // Pop-up notification
-	final Font ARIAL_PLAIN_40;   // Objects number
-	final Font ARIAL_BOLD_80;   // Congratulation message
+	Font retganon;
+	final Font RETGANON_PLAIN_20;   // Debug message
+	final Font RETGANON_PLAIN_30;   // Pop-up notification
+	final Font RETGANON_PLAIN_40;   // Objects number
+	final Font RETGANON_BOLD_80;   // Congratulation message
 	public boolean messageOn = false;
 	public String message = "";
 	public boolean gameFinished = false;
@@ -20,10 +24,22 @@ public class UI {
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
-		ARIAL_PLAIN_20 = new Font("Arial", Font.PLAIN, 20);
-		ARIAL_PLAIN_30 = new Font("Arial", Font.PLAIN, 30);
-		ARIAL_PLAIN_40 = new Font("Arial", Font.PLAIN, 40);
-		ARIAL_BOLD_80 = new Font("Arial", Font.BOLD, 80);
+		
+		try {
+			InputStream inputStream = getClass().getResourceAsStream("/font/retganon.ttf");
+			retganon = Font.createFont(Font.TRUETYPE_FONT, inputStream);
+		} catch (FontFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		RETGANON_PLAIN_20 = retganon.deriveFont(Font.PLAIN, 20);
+		RETGANON_PLAIN_30 = retganon.deriveFont(Font.PLAIN, 30);
+		RETGANON_PLAIN_40 = retganon.deriveFont(Font.PLAIN, 40);
+		RETGANON_BOLD_80 = retganon.deriveFont(Font.BOLD, 80);
 	}
 	
 	/*
@@ -40,7 +56,7 @@ public class UI {
 	public void draw(Graphics2D g2) {
 		this.g2 = g2;
 		
-		g2.setFont(ARIAL_PLAIN_40);
+		g2.setFont(retganon);
 		g2.setColor(Color.white);
 		
 		// Play state
@@ -64,7 +80,7 @@ public class UI {
 	 */
 	public void drawPauseScreen() {
 		String text = "PAUSED";
-		g2.setFont(ARIAL_BOLD_80);
+		g2.setFont(RETGANON_BOLD_80);
 		int x = getXforCenteredText(text);
 		int y = gp.SCREEN_HEIGHT / 2;
 		
@@ -84,7 +100,8 @@ public class UI {
 		drawSubWindow(x, y, width, height);
 		
 		// Text
-		g2.setFont(ARIAL_PLAIN_30);
+//		g2.setFont(RETGANON_PLAIN_30);
+		g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32f));
 		x += gp.TILE_SIZE;
 		y += gp.TILE_SIZE;
 		
@@ -119,7 +136,7 @@ public class UI {
 	 * Display debug message with useful information
 	 */
 	public void showDrawTime(Graphics2D g2, long drawTime) {
-		g2.setFont(ARIAL_PLAIN_20);
+		g2.setFont(RETGANON_PLAIN_20);
 		g2.setColor(Color.white);
 		g2.drawString("Draw time:  " + drawTime + "ns", 10, 500);
 	}
