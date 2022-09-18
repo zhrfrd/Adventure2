@@ -16,6 +16,40 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		
+		// Title state
+		if (gp.gameState == gp.titleState) {
+			// Move cursor through the menu when pressing the keys W and S
+			if (code == KeyEvent.VK_W) {
+				gp.ui.commandNumber --;
+				
+				if (gp.ui.commandNumber < 0)
+					gp.ui.commandNumber = 2;
+			}
+				
+			if (code == KeyEvent.VK_S) {
+				gp.ui.commandNumber ++;
+				
+				if (gp.ui.commandNumber > 2)
+					gp.ui.commandNumber = 0;
+			}
+			
+			// Select from menu
+			if (code == KeyEvent.VK_ENTER) {
+				if (gp.ui.commandNumber == 0) {
+					gp.gameState = gp.playState;
+					gp.playSoundTrack(0);
+				}
+				
+				if (gp.ui.commandNumber == 1) {
+					// Load game
+				}
+					
+				if (gp.ui.commandNumber == 2) {
+					System.exit(0);
+				}
+			}
+		}
+		
 		// Play state
 		if (gp.gameState == gp.playState) {
 			if (code == KeyEvent.VK_W)

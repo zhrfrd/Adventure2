@@ -21,6 +21,7 @@ public class UI {
 	public boolean gameFinished = false;
 	int notificationCounter = 0;
 	public String currentDialog = "";
+	public int commandNumber = 0;
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
@@ -59,6 +60,11 @@ public class UI {
 		g2.setFont(retganon);
 		g2.setColor(Color.white);
 		
+		// Title state
+		if (gp.gameState == gp.titleState) {
+			drawTitleScreen();
+		}
+		
 		// Play state
 		if (gp.gameState == gp.playState) {
 			// TODO
@@ -75,6 +81,64 @@ public class UI {
 		}
 	}
 	
+	/*
+	 * Draw the menu of the title screen
+	 */
+	public void drawTitleScreen () {
+		// Title
+		g2.setFont(RETGANON_BOLD_80);
+		String text = "Adventure 2";
+		int x = getXforCenteredText(text);
+		int y = gp.TILE_SIZE * 3;
+		
+		// Shadow Color
+		g2.setColor(Color.gray);
+		g2.drawString(text, x + 5, y + 5);
+		
+		// Main text color
+		g2.setColor(Color.white);
+		g2.drawString(text, x, y);
+		
+		// Player image
+		x = (gp.SCREEN_WIDTH / 2) - (gp.TILE_SIZE * 2) / 2;
+		y += gp.TILE_SIZE * 2;
+		
+		g2.drawImage(gp.player.down1, x, y, gp.TILE_SIZE * 2, gp.TILE_SIZE * 2, null);
+		
+		// Menu
+		g2.setFont(RETGANON_PLAIN_40);
+		
+		text = "NEW GAME";
+		x = getXforCenteredText(text);
+		y += gp.TILE_SIZE * 3.5;
+		
+		g2.drawString(text, x, y);
+		
+		if (commandNumber == 0) {
+			g2.drawString(">", x - gp.TILE_SIZE, y);   // Draw cursor
+		}
+		
+		text = "LOAD GAME";
+		x = getXforCenteredText(text);
+		y += gp.TILE_SIZE;
+		
+		g2.drawString(text, x, y);
+		
+		if (commandNumber == 1) {
+			g2.drawString(">", x - gp.TILE_SIZE, y);
+		}
+		
+		text = "QUIT";
+		x = getXforCenteredText(text);
+		y += gp.TILE_SIZE;
+		
+		g2.drawString(text, x, y);
+		
+		if (commandNumber == 2) {
+			g2.drawString(">", x - gp.TILE_SIZE, y);
+		}
+	}
+
 	/*
 	 * Handle the drawing of the screen when the game is paused such as PAUSE text
 	 */
