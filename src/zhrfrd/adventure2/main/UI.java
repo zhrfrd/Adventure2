@@ -5,13 +5,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+
+import zhrfrd.adventure2.objects.Heart;
+import zhrfrd.adventure2.objects.SuperObject;
 
 public class UI {
 	GamePanel gp;
 	Graphics2D g2;
 	Font retganon;
+	BufferedImage heart_full, heart_half, heart_blank;
 	final Font RETGANON_PLAIN_20;   // Debug message
 	final Font RETGANON_PLAIN_30;   // Pop-up notification
 	final Font RETGANON_PLAIN_40;   // Objects number
@@ -41,6 +46,12 @@ public class UI {
 		RETGANON_PLAIN_30 = retganon.deriveFont(Font.PLAIN, 30);
 		RETGANON_PLAIN_40 = retganon.deriveFont(Font.PLAIN, 40);
 		RETGANON_BOLD_80 = retganon.deriveFont(Font.BOLD, 80);
+		
+		// Hearts
+		SuperObject heart = new Heart(gp);
+		heart_full = heart.image;
+		heart_half = heart.image2;
+		heart_blank = heart.image3;
 	}
 	
 	/*
@@ -67,17 +78,54 @@ public class UI {
 		
 		// Play state
 		if (gp.gameState == gp.playState) {
-			// TODO
+			drawPlayerLife();
 		}
 		
 		// Pause state
 		if (gp.gameState == gp.pauseState) {
+			drawPlayerLife();
 			drawPauseScreen();
 		}
 		
 		// Dialog state
 		if (gp.gameState == gp.dialogState) {
+			drawPlayerLife();
 			drawDialogScreen();
+		}
+	}
+	
+	/*
+	 * Draw the player life on the screen
+	 */
+	public void drawPlayerLife() {
+		int x = gp.TILE_SIZE / 2;
+		int y = gp.TILE_SIZE / 2;
+		int i = 0;
+		
+		// Add blank hearts by default for every 2 lives
+		while (i < gp.player.maxLife / 2) {
+			g2.drawImage(heart_blank, x, y, null);
+			x += gp.TILE_SIZE;
+			
+			i ++;
+		}
+		
+		x = gp.TILE_SIZE / 2;
+		y = gp.TILE_SIZE / 2;
+		i = 0;
+		
+		// Each heart is 2 lives
+		while (i < gp.player.life) {
+			g2.drawImage(heart_half, x, y, null);
+			
+			i ++;
+			
+			if (i < gp.player.life) 
+				g2.drawImage(heart_full, x, y, null);
+			
+			i ++;
+			
+			x += gp.TILE_SIZE;
 		}
 	}
 	

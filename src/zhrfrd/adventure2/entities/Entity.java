@@ -25,6 +25,8 @@ public class Entity {
 	public int actionLockCounter = 0;   // Interval for the npc movement
 	String dialogs[] = new String[20];
 	int dialogIndex = 0;
+	// Player status
+	public int maxLife, life;
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;

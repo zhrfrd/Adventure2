@@ -33,6 +33,9 @@ public class Player extends Entity {
 		worldY = gp.TILE_SIZE * 21;   //
 		speed = 4;
 		direction = "down";   // Default direction
+		
+		maxLife = 6;   // 3 hearts (one life is equal to half heart)
+		life = maxLife;
 	}
 	
 	/*

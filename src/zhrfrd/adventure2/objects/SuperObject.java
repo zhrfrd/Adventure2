@@ -8,7 +8,7 @@ import zhrfrd.adventure2.main.GamePanel;
 import zhrfrd.adventure2.main.UtilityTool;
 
 public class SuperObject {
-	public BufferedImage image;
+	public BufferedImage image, image2, image3;
 	public String name;
 	public boolean solid = false;
 	public int worldX, worldY;
