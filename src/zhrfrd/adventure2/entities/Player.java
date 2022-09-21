@@ -70,14 +70,22 @@ public class Player extends Entity {
 			if (keyHandler.rightPressed)
 				direction = "right";
 			
+			// Check the tile collision
 			collisionOn = false;
-			gp.collisionChecker.checkTile(this);   // Check the tile collision
+			gp.collisionChecker.checkTile(this);
 			
-			int objIndex = gp.collisionChecker.checkObject(this, true);   // Check if player collided with an object and save the object index
+			// Check if player collided with an object and save the object index
+			int objIndex = gp.collisionChecker.checkObject(this, true);
 			pickUpObject(objIndex);	
 			
-			int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);   // Check NPC collision
+			// Check NPC collision
+			int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
 			interactNPC(npcIndex);
+			
+			// Check event
+			gp.eventHandler.checkEvent();
+			
+			gp.keyHandler.enterPressed = false;
 			
 			// Move the player only in case there is no collision detected
 			if (collisionOn == false) {
@@ -134,8 +142,6 @@ public class Player extends Entity {
 				gp.npc[index].speak();
 			}
 		}
-		
-		gp.keyHandler.enterPressed = false;
 	}
 	
 	/*
