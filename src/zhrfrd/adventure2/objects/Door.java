@@ -1,25 +1,21 @@
 package zhrfrd.adventure2.objects;
 
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
+import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.main.GamePanel;
 
-public class Door extends SuperObject {
-	GamePanel gp;
-	
+public class Door extends Entity {
 	public Door(GamePanel gp) {
-		this.gp = gp;
+		super(gp);
 		name = "Door";
-		
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/objects/door.png"));
-			utilityTool.scaleImage(image, gp.TILE_SIZE, gp.TILE_SIZE);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+		down1 = setup("/objects/door");
 		solid = true;
+		
+		solidArea.x = 0;
+		solidArea.y = 16;
+		solidArea.width = 48;
+		solidArea.height = 32;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
+		
 	}
 }

@@ -1,5 +1,6 @@
 package zhrfrd.adventure2.entities;
 
+import java.awt.Rectangle;
 import java.util.Random;
 
 import zhrfrd.adventure2.main.GamePanel;
@@ -9,6 +10,9 @@ public class OldMan extends Entity {
 	public OldMan(GamePanel gp) {
 		super(gp);
 		
+		solidArea = new Rectangle(8, 16, 32, 32);
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		direction = "down";
 		speed = 1;
 		getImage();

@@ -16,7 +16,7 @@ public class Entity {
 	public int worldX, worldY;   // Position of the entity in the world map
 	public int speed;
 	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-	public String direction;
+	public String direction = "down";
 	public int spriteCounter = 0;
 	public int spriteNumber = 1;
 	public Rectangle solidArea = new Rectangle(0, 0, 48,48);   // Default solid area for the collision detection
@@ -25,6 +25,9 @@ public class Entity {
 	public int actionLockCounter = 0;   // Interval for the npc movement
 	String dialogs[] = new String[20];
 	int dialogIndex = 0;
+	public BufferedImage image, image2, image3;
+	public String name;
+	public boolean solid = false;
 	// Player status
 	public int maxLife, life;
 	

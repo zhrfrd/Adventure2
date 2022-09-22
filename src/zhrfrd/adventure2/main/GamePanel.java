@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JPanel;
 
 import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.entities.Player;
-import zhrfrd.adventure2.objects.SuperObject;
 import zhrfrd.adventure2.tiles.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -39,8 +41,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public EventHandler eventHandler = new EventHandler(this);
 	// Entities and objects
 	public Player player = new Player(this, keyHandler);
-	public SuperObject obj[] = new SuperObject[10];
+	public Entity obj[] = new Entity[10];
 	public Entity npc[] = new Entity[10];
+	ArrayList<Entity> entityList = new ArrayList<>();
 	// Game state
 	public int gameState;
 	public final int titleState = 0;
@@ -138,18 +141,37 @@ public class GamePanel extends JPanel implements Runnable {
 			// Draw tiles
 			tileManager.draw(g2);
 			
-			// Draw objects
-			for (int i = 0; i < obj.length; i ++)
-				if (obj[i] != null)
-					obj[i].draw(g2, this);
+			// Add player to array list
+			entityList.add(player);
 			
-			// Draw npcs
+			// Add npcs to array list
 			for (int i = 0; i < npc.length; i ++)
 				if (npc[i] != null)
-					npc[i].draw(g2);
+					entityList.add(npc[i]);
 			
-			// Draw player
-			player.draw(g2);
+			// Add objects to array list
+			for (int i = 0; i < obj.length; i ++)
+				if (obj[i] != null)
+					entityList.add(obj[i]);
+			
+			// Sort the order to display the entities to avoid overlapping. (eg. if player comes from the top toward an npc, the npc should overlap the player so, it should be drawn after the player. otherwise the opposite)
+			Collections.sort(entityList, new Comparator<Entity>() {
+				// Compare the worldY of the two entities. If e1 < e1 return -1, if e1 == e2 return 0, if e1 > e2 return 1
+				@Override
+				public int compare (Entity e1, Entity e2) {
+					int result = Integer.compare(e1.worldY, e2.worldY);
+					
+					return result;
+				}
+			});
+			
+			// Draw entities after ordering them
+			for (int i = 0; i < entityList.size(); i ++)
+				entityList.get(i).draw(g2);
+			
+			// Empty the array list otherwise it will get bigger and bigger over time
+			for (int i = 0; i < entityList.size(); i ++)
+				entityList.remove(i);
 			
 			// Draw UI
 			ui.draw(g2);	

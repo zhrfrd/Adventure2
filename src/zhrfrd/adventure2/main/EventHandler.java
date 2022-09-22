@@ -1,7 +1,5 @@
 package zhrfrd.adventure2.main;
 
-import java.awt.Rectangle;
-
 public class EventHandler {
 	GamePanel gp;
 	EventRect eventRect[][];

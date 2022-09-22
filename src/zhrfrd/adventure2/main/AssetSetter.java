@@ -1,6 +1,7 @@
 package zhrfrd.adventure2.main;
 
 import zhrfrd.adventure2.entities.OldMan;
+import zhrfrd.adventure2.objects.Door;
 
 public class AssetSetter {
 	GamePanel gp;
@@ -13,7 +14,10 @@ public class AssetSetter {
 	 * Create and set position of the objects on the map
 	 */
 	public void setObject() {
-
+		gp.obj[0] = new Door(gp);
+		gp.obj[0].worldX = gp.TILE_SIZE * 24;
+		gp.obj[0].worldY = gp.TILE_SIZE * 21;
+		
 	}
 	
 	/*

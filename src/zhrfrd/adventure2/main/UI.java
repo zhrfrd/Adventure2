@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.objects.Heart;
-import zhrfrd.adventure2.objects.SuperObject;
 
 public class UI {
 	GamePanel gp;
@@ -48,7 +48,7 @@ public class UI {
 		RETGANON_BOLD_80 = retganon.deriveFont(Font.BOLD, 80);
 		
 		// Hearts
-		SuperObject heart = new Heart(gp);
+		Entity heart = new Heart(gp);
 		heart_full = heart.image;
 		heart_half = heart.image2;
 		heart_blank = heart.image3;

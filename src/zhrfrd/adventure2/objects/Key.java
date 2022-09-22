@@ -1,23 +1,12 @@
 package zhrfrd.adventure2.objects;
 
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
+import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.main.GamePanel;
 
-public class Key extends SuperObject {
-	GamePanel gp;
-	
+public class Key extends Entity {
 	public Key(GamePanel gp) {
-		this.gp = gp;
+		super(gp);
 		name = "Key";
-		
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/objects/key.png"));
-			utilityTool.scaleImage(image, gp.TILE_SIZE, gp.TILE_SIZE);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		down1 = setup("/objects/key");
 	}
 }
