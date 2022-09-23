@@ -1,5 +1,6 @@
 package zhrfrd.adventure2.entities;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -31,6 +32,8 @@ public class Player extends Entity {
 	public void setDefaultValues() {
 		worldX = gp.TILE_SIZE * 23;   // Player starting position on the map
 		worldY = gp.TILE_SIZE * 21;   //
+//		worldX = gp.TILE_SIZE * 10;   // Player starting position on the map
+//		worldY = gp.TILE_SIZE * 13;   //
 		speed = 4;
 		direction = "down";   // Default direction
 		
@@ -39,7 +42,7 @@ public class Player extends Entity {
 	}
 	
 	/*
-	 * Get the sprites of the player
+	 * Get the already scaled up sprites of the player
 	 */
 	public void getPlayerImage() {
 		up1 = setup("/player/player_up_1");
@@ -53,8 +56,45 @@ public class Player extends Entity {
 	}
 	
 	/*
+	 * Remove object from the map and add it to the player inventory
+	 */
+	public void pickUpObject(int index) {
+		// If the player collided with an existing object, pick it up
+		if (index != 999) {
+			
+		}
+	}
+	
+	/*
+	 * Handle interaction between player and NPC
+	 */
+	public void interactNPC(int index) {
+		// If the player collided with an existing npc, do interaction
+		if (index != 999) {
+			
+			if (gp.keyHandler.enterPressed) {
+				gp.gameState = gp.dialogState;
+				gp.npc[index].speak();
+			}
+		}
+	}
+	
+	/*
+	 * Handle player touching a monster
+	 */
+	public void contactMonster(int i) {
+		if (i != 999) {
+			if (!invincible) {
+				life --;
+				invincible = true;   // When the player receive damage from touchin a monster, he becomes temporary invincible to avoid losing all his life straight away
+			}
+		}
+	}
+	
+	/*
 	 * Update player information such as position
 	 */
+	@Override
 	public void update() {
 		// Get keyboard strokes and update player position
 		if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
@@ -81,6 +121,10 @@ public class Player extends Entity {
 			// Check NPC collision
 			int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
 			interactNPC(npcIndex);
+			
+			// Check monster collision
+			int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
+			contactMonster(monsterIndex);
 			
 			// Check event
 			gp.eventHandler.checkEvent();
@@ -118,28 +162,14 @@ public class Player extends Entity {
 		
 		else
 			spriteNumber = 1;
-	}
-	
-	/*
-	 * Remove object from the map and add it to the player inventory
-	 */
-	public void pickUpObject(int index) {
-		// If the player collided with an existing object, pick it up
-		if (index != 999) {
+		
+		// When the player hits a monster (and receive damage) he become invincible for a period of 1 seconds to avoid loosing all his life straight away
+		if (invincible) {
+			invincibleCounter ++;
 			
-		}
-	}
-	
-	/*
-	 * Handle interaction between player and NPC
-	 */
-	public void interactNPC(int index) {
-		// If the player collided with an existing npc, do interaction
-		if (index != 999) {
-			
-			if (gp.keyHandler.enterPressed) {
-				gp.gameState = gp.dialogState;
-				gp.npc[index].speak();
+			if (invincibleCounter > 60) {
+				invincible = false;
+				invincibleCounter = 0;
 			}
 		}
 	}
@@ -182,7 +212,17 @@ public class Player extends Entity {
 				image = right2;
 		}
 		
+		// When the player receives damage it he becomes slightly transparent for a moment to show a visual effect of the damage
+		if (invincible) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));   // Change the alpha level of the player sprite 
+		}
+		
 		g2.drawImage(image, SCREEN_X, SCREEN_Y, null);
+		
+		// Reset the transparency of the player sprite
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		
+		// Debug
 		g2.setColor(Color.red);
 		g2.drawRect(SCREEN_X + solidArea.x, SCREEN_Y + solidArea.y, solidArea.width, solidArea.height);
 	}

@@ -17,10 +17,10 @@ public class UI {
 	Graphics2D g2;
 	Font retganon;
 	BufferedImage heart_full, heart_half, heart_blank;
-	final Font RETGANON_PLAIN_20;   // Debug message
-	final Font RETGANON_PLAIN_30;   // Pop-up notification
-	final Font RETGANON_PLAIN_40;   // Objects number
-	final Font RETGANON_BOLD_80;   // Congratulation message
+	public final Font RETGANON_PLAIN_20;   // Debug message
+	public final Font RETGANON_PLAIN_30;   // Pop-up notification
+	public final Font RETGANON_PLAIN_40;   // Objects number
+	public final Font RETGANON_BOLD_80;   // Congratulation message
 	public boolean messageOn = false;
 	public String message = "";
 	public boolean gameFinished = false;

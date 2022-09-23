@@ -22,12 +22,15 @@ public class Entity {
 	public Rectangle solidArea = new Rectangle(0, 0, 48,48);   // Default solid area for the collision detection
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
+	public boolean invincible = false;
+	public int invincibleCounter = 0;
 	public int actionLockCounter = 0;   // Interval for the npc movement
 	String dialogs[] = new String[20];
 	int dialogIndex = 0;
 	public BufferedImage image, image2, image3;
 	public String name;
 	public boolean solid = false;
+	public int type;   // Type of entity (eg. player, npc, monster ...)
 	// Player status
 	public int maxLife, life;
 	
@@ -80,7 +83,16 @@ public class Entity {
 		collisionOn = false;
 		gp.collisionChecker.checkTile(this);
 		gp.collisionChecker.checkObject(this, false);
-		gp.collisionChecker.checkPlayer(this);
+		gp.collisionChecker.checkEntity(this, gp.npc);
+		gp.collisionChecker.checkEntity(this, gp.monster);
+		boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
+		
+		// When the entity moving is a slime and it touches the player, the player receives damage
+		if (this.type == 2 && contactPlayer)
+			if (!gp.player.invincible) {
+				gp.player.life --;
+				gp.player.invincible = true;
+			}
 		
 		// Move the entity only in case there is no collision detected
 		if (collisionOn == false) {

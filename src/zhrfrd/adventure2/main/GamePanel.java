@@ -41,8 +41,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public EventHandler eventHandler = new EventHandler(this);
 	// Entities and objects
 	public Player player = new Player(this, keyHandler);
-	public Entity obj[] = new Entity[10];
+	public Entity obj[] = new Entity[10];   // Total objects that can be displayed at the same time, not the number of objects existing
 	public Entity npc[] = new Entity[10];
+	public Entity monster[] = new Entity[20];
 	ArrayList<Entity> entityList = new ArrayList<>();
 	// Game state
 	public int gameState;
@@ -66,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void setupGame() {
 		assetSetter.setObject();
 		assetSetter.setNPC();
+		assetSetter.setMonster();
 //		playSoundTrack(0);   // Play sound-track
 		gameState = titleState;
 	}
@@ -89,6 +91,11 @@ public class GamePanel extends JPanel implements Runnable {
 			for (int i = 0; i < npc.length; i ++)
 				if (npc[i] != null)
 					npc[i].update();
+			
+			// Monsters
+			for (int i = 0; i < monster.length; i ++)
+				if (monster[i] != null)
+					monster[i].update();
 		}
 	}
 	
@@ -154,7 +161,12 @@ public class GamePanel extends JPanel implements Runnable {
 				if (obj[i] != null)
 					entityList.add(obj[i]);
 			
-			// Sort the order to display the entities to avoid overlapping. (eg. if player comes from the top toward an npc, the npc should overlap the player so, it should be drawn after the player. otherwise the opposite)
+			// Add monsters to array list
+			for (int i = 0; i < monster.length; i ++)
+				if (monster[i] != null)
+					entityList.add(monster[i]);
+			
+			// Sort the order to display the entities inside entityList to avoid overlapping. (eg. if player comes from the top toward an npc, the npc should overlap the player so, it should be drawn after the player. otherwise the opposite)
 			Collections.sort(entityList, new Comparator<Entity>() {
 				// Compare the worldY of the two entities. If e1 < e1 return -1, if e1 == e2 return 0, if e1 > e2 return 1
 				@Override

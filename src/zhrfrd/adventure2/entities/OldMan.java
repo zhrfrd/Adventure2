@@ -20,7 +20,7 @@ public class OldMan extends Entity {
 	}
 	
 	/*
-	 * Get the sprites of the old man
+	 * Get the already scaled up sprites of the old man
 	 */
 	public void getImage() {
 		up1 = setup("/npc/oldman_up_1");
