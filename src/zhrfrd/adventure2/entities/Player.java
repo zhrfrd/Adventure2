@@ -70,25 +70,22 @@ public class Player extends Entity {
 	 */
 	public void interactNPC(int index) {
 		// If the player collided with an existing npc, do interaction
-		if (index != 999) {
-			
+		if (index != 999)
 			if (gp.keyHandler.enterPressed) {
 				gp.gameState = gp.dialogState;
 				gp.npc[index].speak();
 			}
-		}
 	}
 	
 	/*
 	 * Handle player touching a monster
 	 */
 	public void contactMonster(int i) {
-		if (i != 999) {
+		if (i != 999)
 			if (!invincible) {
 				life --;
-				invincible = true;   // When the player receive damage from touchin a monster, he becomes temporary invincible to avoid losing all his life straight away
+				invincible = true;   // When the player receive damage from touching a monster, he becomes temporary invincible to avoid losing all his life straight away
 			}
-		}
 	}
 	
 	/*
@@ -96,8 +93,8 @@ public class Player extends Entity {
 	 */
 	@Override
 	public void update() {
-		// Get keyboard strokes and update player position
-		if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+		// Get keyboard strokes and update player position and allow interactions by only pressing the enter key
+		if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed || keyHandler.enterPressed) {
 			if (keyHandler.upPressed)
 				direction = "up";
 			
@@ -129,10 +126,8 @@ public class Player extends Entity {
 			// Check event
 			gp.eventHandler.checkEvent();
 			
-			gp.keyHandler.enterPressed = false;
-			
 			// Move the player only in case there is no collision detected
-			if (collisionOn == false) {
+			if (!collisionOn && !keyHandler.enterPressed) {
 				if (direction == "up")
 					worldY -= speed;
 				
@@ -145,6 +140,8 @@ public class Player extends Entity {
 				if (direction == "right")
 					worldX += speed;
 			}
+			
+			gp.keyHandler.enterPressed = false;
 			
 			spriteCounter ++;   // Increase spriteCounter every 0.01666 seconds
 			
@@ -213,9 +210,8 @@ public class Player extends Entity {
 		}
 		
 		// When the player receives damage it he becomes slightly transparent for a moment to show a visual effect of the damage
-		if (invincible) {
+		if (invincible)
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));   // Change the alpha level of the player sprite 
-		}
 		
 		g2.drawImage(image, SCREEN_X, SCREEN_Y, null);
 		
