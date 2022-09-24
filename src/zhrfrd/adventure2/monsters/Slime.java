@@ -6,8 +6,11 @@ import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.main.GamePanel;
 
 public class Slime extends Entity {
+	GamePanel gp;
+	
 	public Slime(GamePanel gp) {
 		super(gp);
+		this.gp = gp;
 		
 		type = 2;
 		name = "Slime";
@@ -28,14 +31,14 @@ public class Slime extends Entity {
 	 * Get the already scaled up sprites of the slime
 	 */
 	public void getImage() {
-		up1 = setup("/monsters/slime_1");
-		up2 = setup("/monsters/slime_2");
-		down1 = setup("/monsters/slime_1");
-		down2 = setup("/monsters/slime_2");
-		left1 = setup("/monsters/slime_1");
-		left2 = setup("/monsters/slime_2");
-		right1 = setup("/monsters/slime_1");
-		right2 = setup("/monsters/slime_2");
+		up1 = setup("/monsters/slime_1", gp.TILE_SIZE, gp.TILE_SIZE);
+		up2 = setup("/monsters/slime_2", gp.TILE_SIZE, gp.TILE_SIZE);
+		down1 = setup("/monsters/slime_1", gp.TILE_SIZE, gp.TILE_SIZE);
+		down2 = setup("/monsters/slime_2", gp.TILE_SIZE, gp.TILE_SIZE);
+		left1 = setup("/monsters/slime_1", gp.TILE_SIZE, gp.TILE_SIZE);
+		left2 = setup("/monsters/slime_2", gp.TILE_SIZE, gp.TILE_SIZE);
+		right1 = setup("/monsters/slime_1", gp.TILE_SIZE, gp.TILE_SIZE);
+		right2 = setup("/monsters/slime_2", gp.TILE_SIZE, gp.TILE_SIZE);
 	}
 	
 	/*

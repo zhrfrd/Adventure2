@@ -7,7 +7,7 @@ public class Door extends Entity {
 	public Door(GamePanel gp) {
 		super(gp);
 		name = "Door";
-		down1 = setup("/objects/door");
+		down1 = setup("/objects/door", gp.TILE_SIZE, gp.TILE_SIZE);
 		solid = true;
 		
 		solidArea.x = 0;
