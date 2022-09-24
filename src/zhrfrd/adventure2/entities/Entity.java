@@ -13,27 +13,31 @@ import zhrfrd.adventure2.main.UtilityTool;
 
 public class Entity {
 	GamePanel gp;
-	public int worldX, worldY;   // Position of the entity in the world map
+	
 	public int speed;
+	public BufferedImage image, image2, image3;
 	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
 	public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
-	public String direction = "down";
-	public int spriteCounter = 0;
-	public int spriteNumber = 1;
 	public Rectangle solidArea = new Rectangle(0, 0, 48,48);   // Default solid area for the collision detection
 	public int solidAreaDefaultX, solidAreaDefaultY;
+	public boolean solid = false;
+	String dialogs[] = new String[20];
+	// State
+	public int worldX, worldY;   // Position of the entity in the world map
+	public String direction = "down";
+	public int spriteNumber = 1;
+	int dialogIndex = 0;
 	public boolean collisionOn = false;
 	public boolean invincible = false;
+	boolean attacking = false;
+	// Counter
+	public int spriteCounter = 0;
 	public int invincibleCounter = 0;
 	public int actionLockCounter = 0;   // Interval for the npc movement
-	String dialogs[] = new String[20];
-	int dialogIndex = 0;
-	public BufferedImage image, image2, image3;
-	public String name;
-	public boolean solid = false;
-	public int type;   // Type of entity (eg. player, npc, monster ...)
-	// Player status
+	// Player
 	public int maxLife, life;
+	public String name;
+	public int type;   // Type of entity (eg. player, npc, monster ...)
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;

@@ -23,14 +23,14 @@ public class OldMan extends Entity {
 	 * Get the already scaled up sprites of the old man
 	 */
 	public void getImage() {
-		up1 = setup("/npc/oldman_up_1");
-		up2 = setup("/npc/oldman_up_2");
-		down1 = setup("/npc/oldman_down_1");
-		down2 = setup("/npc/oldman_down_2");
-		left1 = setup("/npc/oldman_left_1");
-		left2 = setup("/npc/oldman_left_2");
-		right1 = setup("/npc/oldman_right_1");
-		right2 = setup("/npc/oldman_right_2");
+		up1 = setup("/npc/oldman_up_1", gp.TILE_SIZE, gp.TILE_SIZE);
+		up2 = setup("/npc/oldman_up_2", gp.TILE_SIZE, gp.TILE_SIZE);
+		down1 = setup("/npc/oldman_down_1", gp.TILE_SIZE, gp.TILE_SIZE);
+		down2 = setup("/npc/oldman_down_2", gp.TILE_SIZE, gp.TILE_SIZE);
+		left1 = setup("/npc/oldman_left_1", gp.TILE_SIZE, gp.TILE_SIZE);
+		left2 = setup("/npc/oldman_left_2", gp.TILE_SIZE, gp.TILE_SIZE);
+		right1 = setup("/npc/oldman_right_1", gp.TILE_SIZE, gp.TILE_SIZE);
+		right2 = setup("/npc/oldman_right_2", gp.TILE_SIZE, gp.TILE_SIZE);
 	}
 	
 	/*

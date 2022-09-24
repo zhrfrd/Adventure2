@@ -24,6 +24,7 @@ public class Player extends Entity {
 		solidAreaDefaultY = solidArea.y;
 		setDefaultValues();
 		getPlayerImage();
+		getPlayerAttackImage();
 	}
 	
 	/*
@@ -59,14 +60,14 @@ public class Player extends Entity {
 	 * Get the already scaled up sprites of the attacking player
 	 */
 	public void getPlayerAttackImage() {
-		attackUp1 = setup("/player/player_attack_up_1/", gp.TILE_SIZE, gp.TILE_SIZE * 2);
-		attackUp2 = setup("/player/player_attack_up_2/", gp.TILE_SIZE, gp.TILE_SIZE * 2);
-		attackDown1 = setup("/player/player_attack_down_1/", gp.TILE_SIZE, gp.TILE_SIZE * 2);
-		attackDown2 = setup("/player/player_attack_down_2/", gp.TILE_SIZE, gp.TILE_SIZE * 2);
-		attackLeft1 = setup("/player/player_attack_left_1/", gp.TILE_SIZE * 2, gp.TILE_SIZE);
-		attackLeft2 = setup("/player/player_attack_left_2/", gp.TILE_SIZE * 2, gp.TILE_SIZE);
-		attackRight1 = setup("/player/player_attack_right_1/", gp.TILE_SIZE * 2, gp.TILE_SIZE);
-		attackRight2 = setup("/player/player_attack_right_2/", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+		attackUp1 = setup("/player/player_attack_up_1", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+		attackUp2 = setup("/player/player_attack_up_2", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+		attackDown1 = setup("/player/player_attack_down_1", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+		attackDown2 = setup("/player/player_attack_down_2", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+		attackLeft1 = setup("/player/player_attack_left_1", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+		attackLeft2 = setup("/player/player_attack_left_2", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+		attackRight1 = setup("/player/player_attack_right_1", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+		attackRight2 = setup("/player/player_attack_right_2", gp.TILE_SIZE * 2, gp.TILE_SIZE);
 	}
 	
 	/*
@@ -83,12 +84,17 @@ public class Player extends Entity {
 	 * Handle interaction between player and NPC
 	 */
 	public void interactNPC(int index) {
-		// If the player collided with an existing npc, do interaction
-		if (index != 999)
-			if (gp.keyHandler.enterPressed) {
+		if (gp.keyHandler.enterPressed) {
+			// If the player collided with an existing npc, do interaction
+			if (index != 999) {
 				gp.gameState = gp.dialogState;
 				gp.npc[index].speak();
 			}
+			
+			// If the player didn't collide with an npc but the enter key is press, attack
+			else
+				attacking = true;	
+		}
 	}
 	
 	/*
@@ -103,12 +109,35 @@ public class Player extends Entity {
 	}
 	
 	/*
+	 * Handle the player attacking behaviour and animation 
+	 */
+	public void attacking () {
+		spriteCounter ++;
+		
+		if (spriteCounter <= 5)
+			spriteNumber = 1;
+		
+		if (spriteCounter > 5 && spriteCounter<= 25)
+			spriteNumber = 2;
+		
+		if (spriteCounter > 25) {
+			spriteNumber = 1;
+			spriteCounter = 0;
+			attacking = false;
+		}
+	}
+	
+	/*
 	 * Update player information such as position
 	 */
 	@Override
 	public void update() {
+		if (attacking) {
+			attacking();
+		}
+		
 		// Get keyboard strokes and update player position and allow interactions by only pressing the enter key
-		if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed || keyHandler.enterPressed) {
+		else if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed || keyHandler.enterPressed) {
 			if (keyHandler.upPressed)
 				direction = "up";
 			
@@ -184,50 +213,70 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
+
 	/*
 	 * Re-draw player each update
 	 */
 	public void draw(Graphics2D g2) {
 		BufferedImage image = null;
+		int tempScreenX = SCREEN_X;   // Used to reset the image position on the screen when the player attacks leftward and upward
+		int tempScreenY = SCREEN_Y;   //
 		
 		if (direction == "up") {
-			if (spriteNumber == 1)
-				image = up1;
+			if (!attacking) {
+				if (spriteNumber == 1) image = up1;
+				if (spriteNumber == 2) image = up2;
+			}
 			
-			else
-				image = up2;
+			if (attacking) {
+				tempScreenY = SCREEN_Y - gp.TILE_SIZE;   // Adjust the player position on the screen to move the weapon upward and keep the player in the same position
+				if (spriteNumber == 1) image = attackUp1;
+				if (spriteNumber == 2) image = attackUp2;
+			}
 		}
 		
 		if (direction == "down") {
-			if (spriteNumber == 1)
-				image = down1;
+			if (!attacking) {
+				if (spriteNumber == 1) image = down1;
+				if (spriteNumber == 2) image = down2;
+			}
 			
-			else
-				image = down2;
+			if (attacking) {
+				if (spriteNumber == 1) image = attackDown1;
+				if (spriteNumber == 2) image = attackDown2;
+			}
 		}
 		
 		if (direction == "left") {
-			if (spriteNumber == 1)
-				image = left1;
+			if (!attacking) {
+				if (spriteNumber == 1) image = left1;
+				if (spriteNumber == 2) image = left2;
+			}
 			
-			else
-				image = left2;
+			if (attacking) {
+				tempScreenX = SCREEN_X - gp.TILE_SIZE;   // Adjust the player position on the screen to move the weapon leftward and keep the player in the same position
+				if (spriteNumber == 1) image = attackLeft1;
+				if (spriteNumber == 2) image = attackLeft2;
+			}
 		}
 		
 		if (direction == "right") {
-			if (spriteNumber == 1)
-				image = right1;
+			if (!attacking) {
+				if (spriteNumber == 1) image = right1;
+				if (spriteNumber == 2) image = right2;
+			}
 			
-			else
-				image = right2;
+			if (attacking) {
+				if (spriteNumber == 1) image = attackRight1;
+				if (spriteNumber == 2) image = attackRight2;
+			}
 		}
 		
 		// When the player receives damage it he becomes slightly transparent for a moment to show a visual effect of the damage
 		if (invincible)
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));   // Change the alpha level of the player sprite 
 		
-		g2.drawImage(image, SCREEN_X, SCREEN_Y, null);
+		g2.drawImage(image, tempScreenX, tempScreenY, null);
 		
 		// Reset the transparency of the player sprite
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
