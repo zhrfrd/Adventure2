@@ -22,6 +22,8 @@ public class Player extends Entity {
 		solidArea = new Rectangle(8, 16, 32, 32);   // Rectangle solid area of the player
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
+		attackArea.width = 36;
+		attackArea.height = 36;
 		setDefaultValues();
 		getPlayerImage();
 		getPlayerAttackImage();
@@ -109,17 +111,64 @@ public class Player extends Entity {
 	}
 	
 	/*
+	 * Handle damaging of monster after attacking
+	 */
+	public void damageMonster(int i) {
+		if (i != 999)
+			if (!gp.monster[i].invincible) {
+				gp.monster[i].life --;
+				gp.monster[i].invincible = true;
+				
+				// When the monster's life reaches 0 the monster is dead
+				if (gp.monster[i].life <= 0)
+					gp.monster[i] = null;
+			}
+	}
+	
+	/*
 	 * Handle the player attacking behaviour and animation 
 	 */
 	public void attacking () {
 		spriteCounter ++;
 		
+		// Attack animation
+		// Weapon in
 		if (spriteCounter <= 5)
 			spriteNumber = 1;
-		
-		if (spriteCounter > 5 && spriteCounter<= 25)
+		// Weapon out
+		if (spriteCounter > 5 && spriteCounter<= 25) {
 			spriteNumber = 2;
+			
+			// Store current player position and solid area. It will be used temporary for the attacking area and then swapped back to its origin
+			int currentWorldX = worldX;   // Store current player x and y position
+			int currentWorldY = worldY;   //
+			int currentSolidAreaWidth = solidArea.width;     // Store current solid area x and y position
+			int currentSolidAreaHeight = solidArea.height;   //
+			
+			// Temporary offset player x and y position by his attack area
+			switch (direction) {
+				case "up": worldY -= attackArea.height; break;
+				case "down": worldY += attackArea.height; break;
+				case "left": worldY -= attackArea.width; break;
+				case "right": worldY += attackArea.width; break;
+			}
+			
+			// Temporary change the player's solid area size to his weapon attacking area size 
+			solidArea.width = attackArea.width;
+			solidArea.height = attackArea.height;
+			
+			// Check monster collision with updated worldX worldY and solid area
+			int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
+			damageMonster(monsterIndex);
+			
+			// After checking collision, restore original player position and solid area size
+			worldX = currentWorldX;
+			worldY = currentWorldY;
+			solidArea.width = currentSolidAreaWidth;
+			solidArea.height = currentSolidAreaHeight;
+		}
 		
+		// Weapon in
 		if (spriteCounter > 25) {
 			spriteNumber = 1;
 			spriteCounter = 0;
@@ -274,7 +323,7 @@ public class Player extends Entity {
 		
 		// When the player receives damage it he becomes slightly transparent for a moment to show a visual effect of the damage
 		if (invincible)
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));   // Change the alpha level of the player sprite 
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));   // Change the alpha level of the player sprite 
 		
 		g2.drawImage(image, tempScreenX, tempScreenY, null);
 		

@@ -1,5 +1,6 @@
 package zhrfrd.adventure2.entities;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -19,6 +20,7 @@ public class Entity {
 	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
 	public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
 	public Rectangle solidArea = new Rectangle(0, 0, 48,48);   // Default solid area for the collision detection
+	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);   // Default attack area
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean solid = false;
 	String dialogs[] = new String[20];
@@ -126,6 +128,16 @@ public class Entity {
 			
 			spriteCounter = 0;
 		}
+		
+		// Add temporary invincibility to entity 
+		if (invincible) {
+			invincibleCounter ++;
+			
+			if (invincibleCounter > 40) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+		}
 	}
 	
 	/*
@@ -142,39 +154,35 @@ public class Entity {
 				worldY + gp.TILE_SIZE > gp.player.worldY - gp.player.SCREEN_Y && 
 				worldY - gp.TILE_SIZE < gp.player.worldY + gp.player.SCREEN_Y) {
 			
-			if (direction == "up") {
-				if (spriteNumber == 1)
-					image = up1;
-				
-				else
-					image = up2;
+			switch (direction) {
+				case "up":
+					if (spriteNumber == 1) image = up1;
+					if (spriteNumber == 2) image = up2;
+					break;
+				case "down":
+					if (spriteNumber == 1) image = down1;
+					if (spriteNumber == 2) image = down2; 
+					break;
+				case "left":
+					if (spriteNumber == 1) image = left1;
+					if (spriteNumber == 2) image = left2;
+					break;
+				case "right":
+					if (spriteNumber == 1) image = right1;
+					if (spriteNumber == 2) image = right2;
+					break;
 			}
 			
-			if (direction == "down") {
-				if (spriteNumber == 1)
-					image = down1;
-				
-				else
-					image = down2;
-			}
+			// When the entity receives damage it he becomes slightly transparent for a moment to show a visual effect of the damage
+			if (invincible)
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));   // Change the alpha level of the entity sprite 
 			
-			if (direction == "left") {
-				if (spriteNumber == 1)
-					image = left1;
-				
-				else
-					image = left2;
-			}
-			
-			if (direction == "right") {
-				if (spriteNumber == 1)
-					image = right1;
-				
-				else
-					image = right2;
-			}
 			
 			g2.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
+			
+			// Reset the transparency of the entity sprite
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+			
 			g2.setColor(Color.red);
 			g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 		}
