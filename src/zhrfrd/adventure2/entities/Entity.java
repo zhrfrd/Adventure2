@@ -34,11 +34,13 @@ public class Entity {
 	boolean attacking = false;
 	public boolean alive = true;
 	public boolean dying = false;
+	boolean hpBarOn = false;
 	// Counter
 	public int spriteCounter = 0;
 	public int invincibleCounter = 0;
 	public int actionLockCounter = 0;   // Interval for the npc movement
 	public int dyingCounter = 0;
+	int hpBarCounter = 0;
 	// Player
 	public int maxLife, life;
 	public String name;
@@ -100,6 +102,7 @@ public class Entity {
 		// When the entity moving is a slime and it touches the player, the player receives damage
 		if (this.type == 2 && contactPlayer)
 			if (!gp.player.invincible) {
+				gp.playSoundEffect(6);
 				gp.player.life --;
 				gp.player.invincible = true;
 			}
@@ -176,10 +179,32 @@ public class Entity {
 					break;
 			}
 			
-			// When the entity receives damage it he becomes slightly transparent for a moment to show a visual effect of the damage
-			if (invincible)
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));   // Change the alpha level of the entity sprite 
+			// Monster HP bar
+			if (type == 2 && hpBarOn) {
+				// Scale the health bar in order to contain the monster life
+				double oneScale = (double)gp.TILE_SIZE / maxLife;
+				double hpBarValue = oneScale * life; 
+				
+				g2.setColor(new Color(35, 35, 35));
+				g2.fillRect(screenX - 1, screenY - 11, gp.TILE_SIZE + 2, 12);
+				g2.setColor(new Color(255, 0, 30));
+				g2.fillRect(screenX, screenY - 10, (int)hpBarValue, 10);
+				
+				hpBarCounter ++;
+				
+				// Hide health bar after 10 seconds
+				if (hpBarCounter == 600) {
+					hpBarCounter = 0;
+					hpBarOn = false;
+				}
+			}
 			
+			// When the entity receives damage it he becomes slightly transparent for a moment to show a visual effect of the damage
+			if (invincible) {
+				hpBarOn = true;   // Display health bar
+				hpBarCounter = 0;
+				changeAlpha(g2, 0.4f);   // Change the alpha level of the entity sprite 
+			}
 			// Start dying animation
 			if (dying)
 				dyingAnimation(g2);
@@ -188,7 +213,7 @@ public class Entity {
 			g2.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
 			
 			// Reset the transparency of the entity sprite
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+			changeAlpha(g2, 1f); 
 			
 			g2.setColor(Color.red);
 			g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);

@@ -95,8 +95,10 @@ public class Player extends Entity {
 			}
 			
 			// If the player didn't collide with an npc but the enter key is press, attack
-			else
-				attacking = true;	
+			else {
+//				gp.playSoundEffect(7);
+				attacking = true;
+			}
 		}
 	}
 	
@@ -106,6 +108,7 @@ public class Player extends Entity {
 	public void contactMonster(int i) {
 		if (i != 999)
 			if (!invincible) {
+				gp.playSoundEffect(6);
 				life --;
 				invincible = true;   // When the player receive damage from touching a monster, he becomes temporary invincible to avoid losing all his life straight away
 			}
@@ -117,6 +120,7 @@ public class Player extends Entity {
 	public void damageMonster(int i) {
 		if (i != 999)
 			if (!gp.monster[i].invincible) {
+				gp.playSoundEffect(5);
 				gp.monster[i].life --;
 				gp.monster[i].invincible = true;
 				
