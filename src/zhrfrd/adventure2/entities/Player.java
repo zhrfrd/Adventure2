@@ -1,6 +1,7 @@
 package zhrfrd.adventure2.entities;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -149,8 +150,8 @@ public class Player extends Entity {
 			switch (direction) {
 				case "up": worldY -= attackArea.height; break;
 				case "down": worldY += attackArea.height; break;
-				case "left": worldY -= attackArea.width; break;
-				case "right": worldY += attackArea.width; break;
+				case "left": worldX -= attackArea.width; break;
+				case "right": worldX += attackArea.width; break;
 			}
 			
 			// Temporary change the player's solid area size to his weapon attacking area size 
@@ -158,7 +159,7 @@ public class Player extends Entity {
 			solidArea.height = attackArea.height;
 			
 			// Check monster collision with updated worldX worldY and solid area
-			int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
+			int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);   // Check which monster got hit by the player
 			damageMonster(monsterIndex);
 			
 			// After checking collision, restore original player position and solid area size
@@ -320,6 +321,18 @@ public class Player extends Entity {
 				if (spriteNumber == 2) image = attackRight2;
 			}
 		}
+		
+		int ttempScreenX = SCREEN_X + solidArea.x;
+		int ttempScreenY = SCREEN_Y + solidArea.y;		
+		switch(direction) {
+		case "up": ttempScreenY = SCREEN_Y - attackArea.height; break;
+		case "down": ttempScreenY = SCREEN_Y + gp.TILE_SIZE; break; 
+		case "left": ttempScreenX = SCREEN_X - attackArea.width; break;
+		case "right": ttempScreenX = SCREEN_X + gp.TILE_SIZE; break;
+		}				
+		g2.setColor(Color.blue);
+        g2.setStroke(new BasicStroke(1));
+		g2.drawRect(ttempScreenX, ttempScreenY, attackArea.width, attackArea.height);
 		
 		// When the player receives damage it he becomes slightly transparent for a moment to show a visual effect of the damage
 		if (invincible)
