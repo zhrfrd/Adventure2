@@ -68,4 +68,13 @@ public class Slime extends Entity {
 			actionLockCounter = 0;
 		}
 	}
+	
+	/*
+	 * React when receiving damage
+	 */
+	@Override
+	public void damageReaction() {
+		actionLockCounter = 0;
+		direction = gp.player.direction;   // Move away from the player when receiving damage
+	}
 }

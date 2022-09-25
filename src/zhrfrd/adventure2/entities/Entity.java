@@ -56,6 +56,11 @@ public class Entity {
 	public void setAction() {}
 	
 	/*
+	 * React when receiving damage
+	 */
+	public void damageReaction() {}
+	
+	/*
 	 * Make the entity speak
 	 */
 	public void speak() {

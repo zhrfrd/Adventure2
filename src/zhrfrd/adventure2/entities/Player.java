@@ -123,6 +123,7 @@ public class Player extends Entity {
 				gp.playSoundEffect(5);
 				gp.monster[i].life --;
 				gp.monster[i].invincible = true;
+				gp.monster[i].damageReaction();
 				
 				// When the monster's life reaches 0 the monster is dead
 				if (gp.monster[i].life <= 0)
