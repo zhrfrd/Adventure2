@@ -32,10 +32,13 @@ public class Entity {
 	public boolean collisionOn = false;
 	public boolean invincible = false;
 	boolean attacking = false;
+	public boolean alive = true;
+	public boolean dying = false;
 	// Counter
 	public int spriteCounter = 0;
 	public int invincibleCounter = 0;
 	public int actionLockCounter = 0;   // Interval for the npc movement
+	public int dyingCounter = 0;
 	// Player
 	public int maxLife, life;
 	public String name;
@@ -177,6 +180,10 @@ public class Entity {
 			if (invincible)
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));   // Change the alpha level of the entity sprite 
 			
+			// Start dying animation
+			if (dying)
+				dyingAnimation(g2);
+			
 			
 			g2.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
 			
@@ -187,6 +194,34 @@ public class Entity {
 			g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 		}
 		
+	}
+	
+	/*
+	 * Animation when the entity is about to die by intermittently changing the alpha level of its sprite
+	 */
+	public void dyingAnimation(Graphics2D g2) {
+		dyingCounter ++;
+		int i = 5;
+		
+		if (dyingCounter <= i) changeAlpha(g2, 0f);
+		if (dyingCounter > i && dyingCounter <= i * 2) changeAlpha(g2, 1f);
+		if (dyingCounter > i * 2 && dyingCounter <= i * 3) changeAlpha(g2, 0f);
+		if (dyingCounter > i * 3 && dyingCounter <= i * 4) changeAlpha(g2, 1f);
+		if (dyingCounter > i * 4 && dyingCounter <= i * 5) changeAlpha(g2, 0f);
+		if (dyingCounter > i * 5 && dyingCounter <= i * 6) changeAlpha(g2, 1f);
+		if (dyingCounter > i * 6 && dyingCounter <= i * 7) changeAlpha(g2, 0f);
+		if (dyingCounter > i * 7 && dyingCounter <= i * 8) changeAlpha(g2, 1f);
+		if (dyingCounter > 40) {
+			dying = false;
+			alive = false;
+		}
+	}
+	
+	/*
+	 * Change transparency of a sprite
+	 */
+	public void changeAlpha(Graphics2D g2, float alphaValue) {
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
 	}
 	
 	/*

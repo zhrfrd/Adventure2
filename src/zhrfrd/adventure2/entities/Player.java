@@ -122,7 +122,7 @@ public class Player extends Entity {
 				
 				// When the monster's life reaches 0 the monster is dead
 				if (gp.monster[i].life <= 0)
-					gp.monster[i] = null;
+					gp.monster[i].dying = true;   // The monster is about to day. Start dying visual effect
 			}
 	}
 	
@@ -322,18 +322,6 @@ public class Player extends Entity {
 			}
 		}
 		
-		int ttempScreenX = SCREEN_X + solidArea.x;
-		int ttempScreenY = SCREEN_Y + solidArea.y;		
-		switch(direction) {
-		case "up": ttempScreenY = SCREEN_Y - attackArea.height; break;
-		case "down": ttempScreenY = SCREEN_Y + gp.TILE_SIZE; break; 
-		case "left": ttempScreenX = SCREEN_X - attackArea.width; break;
-		case "right": ttempScreenX = SCREEN_X + gp.TILE_SIZE; break;
-		}				
-		g2.setColor(Color.blue);
-        g2.setStroke(new BasicStroke(1));
-		g2.drawRect(ttempScreenX, ttempScreenY, attackArea.width, attackArea.height);
-		
 		// When the player receives damage it he becomes slightly transparent for a moment to show a visual effect of the damage
 		if (invincible)
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));   // Change the alpha level of the player sprite 
@@ -346,5 +334,18 @@ public class Player extends Entity {
 		// Debug
 		g2.setColor(Color.red);
 		g2.drawRect(SCREEN_X + solidArea.x, SCREEN_Y + solidArea.y, solidArea.width, solidArea.height);
+		// Attack solid area
+		int ttempScreenX = SCREEN_X + solidArea.x;
+		int ttempScreenY = SCREEN_Y + solidArea.y;		
+		switch(direction) {
+		case "up": ttempScreenY = SCREEN_Y - attackArea.height; break;
+		case "down": ttempScreenY = SCREEN_Y + gp.TILE_SIZE; break; 
+		case "left": ttempScreenX = SCREEN_X - attackArea.width; break;
+		case "right": ttempScreenX = SCREEN_X + gp.TILE_SIZE; break;
+		}				
+		g2.setColor(Color.blue);
+        g2.setStroke(new BasicStroke(1));
+		g2.drawRect(ttempScreenX, ttempScreenY, attackArea.width, attackArea.height);
+		
 	}
 }
