@@ -9,10 +9,13 @@ import java.awt.image.BufferedImage;
 
 import zhrfrd.adventure2.main.GamePanel;
 import zhrfrd.adventure2.main.KeyHandler;
+import zhrfrd.adventure2.objects.ShieldWood;
+import zhrfrd.adventure2.objects.SwordNormal;
 
 public class Player extends Entity {
 	KeyHandler keyHandler;
 	public final int SCREEN_X, SCREEN_Y;   // Position of the player of the screen
+	public boolean attackCancelled = false;
 	
 	public Player(GamePanel gp, KeyHandler keyHandler) {
 		super(gp);
@@ -41,8 +44,33 @@ public class Player extends Entity {
 		speed = 4;
 		direction = "down";   // Default direction
 		
+		// Stats
+		level = 1;
 		maxLife = 6;   // 3 hearts (one life is equal to half heart)
 		life = maxLife;
+		strength = 1;
+		dexterity = 1;
+		exp = 0;
+		nextLevelExp = 5;
+		coin = 0;
+		currentWeapon = new SwordNormal(gp);
+		currentShield = new ShieldWood(gp);
+		attack = getAttack();
+		defence = getDefence();
+	}
+	
+	/*
+	 * Get attack value of the player
+	 */
+	public int getAttack() {
+		return attack = strength * currentWeapon.attackValue;
+	}
+	
+	/*
+	 * Get defence value of the player
+	 */
+	public int getDefence() {
+		return defence = dexterity * currentShield.defenceValue;
 	}
 	
 	/*
@@ -90,14 +118,9 @@ public class Player extends Entity {
 		if (gp.keyHandler.enterPressed) {
 			// If the player collided with an existing npc, do interaction
 			if (index != 999) {
+				attackCancelled = true;
 				gp.gameState = gp.dialogState;
 				gp.npc[index].speak();
-			}
-			
-			// If the player didn't collide with an npc but the enter key is press, attack
-			else {
-//				gp.playSoundEffect(7);
-				attacking = true;
 			}
 		}
 	}
@@ -238,6 +261,15 @@ public class Player extends Entity {
 				if (direction == "right")
 					worldX += speed;
 			}
+			
+			if (gp.keyHandler.enterPressed && !attackCancelled)  {
+//				gp.playSoundEffect(7);
+				attacking = true;
+				spriteCounter = 0;
+			}
+			
+			attackCancelled = false;
+			gp.keyHandler.enterPressed = false;
 			
 			gp.keyHandler.enterPressed = false;
 			

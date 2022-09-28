@@ -41,10 +41,23 @@ public class Entity {
 	public int actionLockCounter = 0;   // Interval for the npc movement
 	public int dyingCounter = 0;
 	int hpBarCounter = 0;
-	// Player
-	public int maxLife, life;
+	// Character
 	public String name;
 	public int type;   // Type of entity (eg. player, npc, monster ...)
+	public int maxLife, life;
+	public int level;
+	public int strength;   // More strength = gives more damage
+	public int dexterity;   // More dexterity = receive less damage
+	public int attack;
+	public int defence;
+	public int exp;
+	public int nextLevelExp;   // Exp necessary to reach next level
+	public int coin;
+	public Entity currentWeapon;
+	public Entity currentShield;
+	// Item attributes
+	public int attackValue;
+	public int defenceValue;
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;

@@ -85,15 +85,17 @@ public class EventHandler {
 	 */
 	public void damagePit(int col, int row, int gameState) {
 		gp.gameState = gameState;
+		gp.playSoundEffect(6);
 		gp.ui.currentDialog = "You fall into a pit!";
 		gp.player.life --;
-//		eventRect[col][row].eventDone = true;
 		canTouchEvent = false;
 	}
 	
 	public void healingPool(int col, int row, int gameState) {
 		if (gp.keyHandler.enterPressed) {
 			gp.gameState = gameState;
+			gp.player.attackCancelled = true;
+			gp.playSoundEffect(2);
 			gp.ui.currentDialog = "This is a pond.\nDespite the amount of mosquitoes flying\naround and its nasty smell, I'm going to drink\nsome of this water and hope for my best!";
 			gp.player.life = gp.player.maxLife;
 		}
