@@ -33,13 +33,34 @@ public class AssetSetter {
 	 * Set all the monsters of the game
 	 */
 	public void setMonster() {
-		gp.monster[0] = new Slime(gp);
-		gp.monster[0].worldX = gp.TILE_SIZE * 23;
-		gp.monster[0].worldY = gp.TILE_SIZE * 36;
+		int i = 0;
+		gp.monster[i] = new Slime(gp);
+		gp.monster[i].worldX = gp.TILE_SIZE * 21;
+		gp.monster[i].worldY = gp.TILE_SIZE * 38;
 		
-		gp.monster[1] = new Slime(gp);
-		gp.monster[1].worldX = gp.TILE_SIZE * 23;
-		gp.monster[1].worldY = gp.TILE_SIZE * 37;
+		i ++;
+		
+		gp.monster[i] = new Slime(gp);
+		gp.monster[i].worldX = gp.TILE_SIZE * 23;
+		gp.monster[i].worldY = gp.TILE_SIZE * 42;
+		
+		i ++;
+		
+		gp.monster[i] = new Slime(gp);
+		gp.monster[i].worldX = gp.TILE_SIZE * 24;
+		gp.monster[i].worldY = gp.TILE_SIZE * 37;
+		
+		i ++;
+		
+		gp.monster[i] = new Slime(gp);
+		gp.monster[i].worldX = gp.TILE_SIZE * 34;
+		gp.monster[i].worldY = gp.TILE_SIZE * 42;
+		
+		i ++;
+		
+		gp.monster[i] = new Slime(gp);
+		gp.monster[i].worldX = gp.TILE_SIZE * 38;
+		gp.monster[i].worldY = gp.TILE_SIZE * 42;
 		
 //		gp.monster[0] = new Slime(gp);
 //		gp.monster[0].worldX = gp.TILE_SIZE * 11;

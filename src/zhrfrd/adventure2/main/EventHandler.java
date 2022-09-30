@@ -91,6 +91,9 @@ public class EventHandler {
 		canTouchEvent = false;
 	}
 	
+	/*
+	 * The healing pool regenerates the players life
+	 */
 	public void healingPool(int col, int row, int gameState) {
 		if (gp.keyHandler.enterPressed) {
 			gp.gameState = gameState;
@@ -98,6 +101,7 @@ public class EventHandler {
 			gp.playSoundEffect(2);
 			gp.ui.currentDialog = "This is a pond.\nDespite the amount of mosquitoes flying\naround and its nasty smell, I'm going to drink\nsome of this water and hope for my best!";
 			gp.player.life = gp.player.maxLife;
+			gp.assetSetter.setMonster();   // Respawn monsters when drinking the water
 		}
 	}
 }

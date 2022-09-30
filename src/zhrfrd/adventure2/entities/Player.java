@@ -70,7 +70,6 @@ public class Player extends Entity {
 	 * Get defence value of the player
 	 */
 	public int getDefence() {
-		System.out.println(dexterity * currentShield.defenceValue);
 		return defence = dexterity * currentShield.defenceValue;
 	}
 	
@@ -164,8 +163,31 @@ public class Player extends Entity {
 				if (gp.monster[i].life <= 0) {
 					gp.monster[i].dying = true;   // The monster is about to day. Start dying visual effect
 					gp.ui.addMessage("Killed " + gp.monster[i].name + "!");
+					gp.ui.addMessage("+ " + gp.monster[i].exp + " exp!");
+					exp += gp.monster[i].exp;
+					
+					checkLevelUp();
 				}
 			}
+	}
+	
+	/*
+	 * Check if the player exp is high enough to level up
+	 */
+	public void checkLevelUp() {
+		if (exp >= nextLevelExp) {
+			level ++;
+			nextLevelExp *= 2;   // Increase next level exp necessary
+			maxLife += 2;   // Increase max life 
+			strength ++;
+			dexterity ++;
+			attack = getAttack();     // Recalculate the player attack
+			defence = getDefence();   // and defence
+			
+			gp.playSoundEffect(8);
+			gp.gameState = gp.dialogState;
+			gp.ui.currentDialog = "You are level " + level + " now!\n" + "You feel stronger but nothing will stop\nyou from paying your taxes!";
+		}
 	}
 	
 	/*

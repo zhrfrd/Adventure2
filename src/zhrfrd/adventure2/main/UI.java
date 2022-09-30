@@ -379,14 +379,14 @@ public class UI {
 		
 		return x;
 	}
-	
+
 	/*
 	 * Get the exact x position of the text when it needs to be aligned to the right of the frame
 	 */
 	public int getXforAlignedToRightText(String text, int tailX) {
 		int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 		int x = tailX - length;
-		
+
 		return x;
 	}
 	

@@ -19,6 +19,7 @@ public class Slime extends Entity {
 		life = maxLife;
 		attack = 5;
 		defence = 0;
+		exp = 2;   // Experience the player gets when he kills the monster
 		solidArea.x = 3;
 		solidArea.y = 18;
 		solidArea.width = 42;
