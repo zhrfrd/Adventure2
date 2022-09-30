@@ -9,6 +9,6 @@ public class ShieldWood extends Entity {
 		
 		name = "Wood shield";
 		down1 = setup("/objects/shield_wood", gp.TILE_SIZE, gp.TILE_SIZE);
-		defence = 1;
+		defenceValue = 1;
 	}
 }

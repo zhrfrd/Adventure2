@@ -15,8 +15,10 @@ public class Slime extends Entity {
 		type = 2;
 		name = "Slime";
 		speed = 1;
-		maxLife = 20;
+		maxLife = 4;
 		life = maxLife;
+		attack = 5;
+		defence = 0;
 		solidArea.x = 3;
 		solidArea.y = 18;
 		solidArea.width = 42;
@@ -27,7 +29,7 @@ public class Slime extends Entity {
 		getImage();
 	}
 	
-	/*
+	/*   
 	 * Get the already scaled up sprites of the slime
 	 */
 	public void getImage() {

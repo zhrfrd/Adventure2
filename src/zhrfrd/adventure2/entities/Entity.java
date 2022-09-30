@@ -120,8 +120,13 @@ public class Entity {
 		// When the entity moving is a slime and it touches the player, the player receives damage
 		if (this.type == 2 && contactPlayer)
 			if (!gp.player.invincible) {
+				int damage = attack - gp.player.defence;
+				
+				if (damage < 0)
+					damage = 0;
+				
 				gp.playSoundEffect(6);
-				gp.player.life --;
+				gp.player.life -= damage;
 				gp.player.invincible = true;
 			}
 		

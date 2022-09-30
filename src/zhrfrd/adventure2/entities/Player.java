@@ -70,6 +70,7 @@ public class Player extends Entity {
 	 * Get defence value of the player
 	 */
 	public int getDefence() {
+		System.out.println(dexterity * currentShield.defenceValue);
 		return defence = dexterity * currentShield.defenceValue;
 	}
 	
@@ -131,8 +132,13 @@ public class Player extends Entity {
 	public void contactMonster(int i) {
 		if (i != 999)
 			if (!invincible) {
+				int damage = gp.monster[i].attack - defence;
+				
+				if (damage < 0)
+					damage = 0;
+				
 				gp.playSoundEffect(6);
-				life --;
+				life -= damage;
 				invincible = true;   // When the player receive damage from touching a monster, he becomes temporary invincible to avoid losing all his life straight away
 			}
 	}
@@ -143,14 +149,22 @@ public class Player extends Entity {
 	public void damageMonster(int i) {
 		if (i != 999)
 			if (!gp.monster[i].invincible) {
+				int damage = attack - gp.monster[i].defence;
+				
+				if (damage < 0)
+					damage = 0;
+				
 				gp.playSoundEffect(5);
-				gp.monster[i].life --;
+				gp.monster[i].life -= damage;
+				gp.ui.addMessage(damage + " damage!");
 				gp.monster[i].invincible = true;
 				gp.monster[i].damageReaction();
 				
 				// When the monster's life reaches 0 the monster is dead
-				if (gp.monster[i].life <= 0)
+				if (gp.monster[i].life <= 0) {
 					gp.monster[i].dying = true;   // The monster is about to day. Start dying visual effect
+					gp.ui.addMessage("Killed " + gp.monster[i].name + "!");
+				}
 			}
 	}
 	

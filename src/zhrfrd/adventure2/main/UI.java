@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.objects.Heart;
@@ -19,12 +20,13 @@ public class UI {
 	BufferedImage heart_full, heart_half, heart_blank;
 	public final Font RETGANON_PLAIN_20;   // Debug message
 	public final Font RETGANON_PLAIN_30;   // Pop-up notification
+	public final Font RETGANON_BOLD_30;
 	public final Font RETGANON_PLAIN_40;   // Objects number
 	public final Font RETGANON_BOLD_80;   // Congratulation message
 	public boolean messageOn = false;
-	public String message = "";
+	ArrayList<String> message = new ArrayList<>();
+	ArrayList<Integer> messageCounter = new ArrayList<>();
 	public boolean gameFinished = false;
-	int notificationCounter = 0;
 	public String currentDialog = "";
 	public int commandNumber = 0;
 	
@@ -44,6 +46,7 @@ public class UI {
 		
 		RETGANON_PLAIN_20 = retganon.deriveFont(Font.PLAIN, 20);
 		RETGANON_PLAIN_30 = retganon.deriveFont(Font.PLAIN, 30);
+		RETGANON_BOLD_30 = retganon.deriveFont(Font.BOLD, 30);
 		RETGANON_PLAIN_40 = retganon.deriveFont(Font.PLAIN, 40);
 		RETGANON_BOLD_80 = retganon.deriveFont(Font.BOLD, 80);
 		
@@ -57,9 +60,9 @@ public class UI {
 	/*
 	 * Show pop-up notification
 	 */
-	public void showMessage(String message) {
-		this.message = message;
-		messageOn = true;
+	public void addMessage(String text) {
+		message.add(text);
+		messageCounter.add(0); 
 	}
 	
 	/*
@@ -76,8 +79,10 @@ public class UI {
 			drawTitleScreen();
 		
 		// Play state
-		if (gp.gameState == gp.playState)
+		if (gp.gameState == gp.playState) {
 			drawPlayerLife();
+			drawMessage();
+		}
 		
 		// Pause state
 		if (gp.gameState == gp.pauseState) {
@@ -187,6 +192,34 @@ public class UI {
 		if (commandNumber == 2) {
 			g2.drawString(">", x - gp.TILE_SIZE, y);
 		}
+	}
+	
+	/*
+	 * Handle drawing of scrolling messages on screen while playing
+	 */
+	public void drawMessage() {
+		int messageX = gp.TILE_SIZE;
+		int messageY = gp.TILE_SIZE * 4;
+		
+		g2.setFont(RETGANON_BOLD_30);
+		
+		for (int i = 0; i < message.size(); i ++)
+			if (message.get(i) != null) {
+				g2.setColor(Color.black);
+				g2.drawString(message.get(i), messageX + 2, messageY + 2);   // Shadow
+				g2.setColor(Color.white);
+				g2.drawString(message.get(i), messageX, messageY);
+				
+				int counter = messageCounter.get(i) + 1;   // messageCounter ++
+				messageCounter.set(i, counter);   // Set the counter to the array list
+				messageY += 50;
+				
+				// Remove messages after 3 seconds
+				if (messageCounter.get(i) > 180) {
+					message.remove(i);
+					messageCounter.remove(i);
+				}
+			}
 	}
 
 	/*
