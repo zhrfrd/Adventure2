@@ -142,7 +142,7 @@ public class GamePanel extends JPanel implements Runnable {
 		// Debug performance
 		long drawStart = 0;
 		
-		if (keyHandler.checkDrawTime)
+		if (keyHandler.showDebugText)
 			drawStart = System.nanoTime();
 		
 		// Title screen
@@ -195,10 +195,10 @@ public class GamePanel extends JPanel implements Runnable {
 			ui.draw(g2);	
 		}
 		
-		// Debug performances
+		// Debug
 		drawCount ++;
 		
-		if (keyHandler.checkDrawTime) {
+		if (keyHandler.showDebugText) {
 			// Update the time every half second
 			if (drawCount % 30 == 0) {
 				long drawEnd = System.nanoTime();
@@ -207,7 +207,7 @@ public class GamePanel extends JPanel implements Runnable {
 				
 			}
 			
-			ui.showDrawTime(g2, drawTime);
+			ui.showDebugText(g2, drawTime, player.worldX, player.worldY, (player.worldX + player.solidArea.x) / TILE_SIZE, (player.worldY + player.solidArea.y) / TILE_SIZE);
 		}
 		
 		// Reset the drawCount when it reaches 1000 to avoid overflow

@@ -393,9 +393,21 @@ public class UI {
 	/*
 	 * Display debug message with useful information
 	 */
-	public void showDrawTime(Graphics2D g2, long drawTime) {
+	public void showDebugText(Graphics2D g2, long drawTime, int worldX, int worldY, int col, int row) {
+		int x = 10;
+		int y = 400;
+		int lineHeight = 20;
+		
 		g2.setFont(RETGANON_PLAIN_20);
 		g2.setColor(Color.white);
-		g2.drawString("Draw time:  " + drawTime + "ns", 10, 500);
+		g2.drawString("X:  " + worldX, x, y);
+		y += lineHeight;
+		g2.drawString("Y:  " + worldY, x, y);
+		y += lineHeight;
+		g2.drawString("Column:  " + col, x, y);
+		y += lineHeight;
+		g2.drawString("Row:  " + row, x, y);
+		y += lineHeight;
+		g2.drawString("Draw time:  " + drawTime + "ns", x, y);
 	}
 }

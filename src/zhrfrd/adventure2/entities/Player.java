@@ -69,7 +69,7 @@ public class Player extends Entity {
 	/*
 	 * Get defence value of the player
 	 */
-	public int getDefence() {
+	public int getDefence() { 
 		return defence = dexterity * currentShield.defenceValue;
 	}
 	
