@@ -377,22 +377,23 @@ public class UI {
 		final int slotYstart = frameY + 20;
 		int slotX = slotXstart;   // Default
 		int slotY = slotYstart;   //
+		int slotSize = gp.TILE_SIZE + 3;
 		
 		// Draw player's items
 		for (int i = 0; i < gp.player.inventory.size(); i ++) {
 			g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
 			
-			slotX += gp.TILE_SIZE;
+			slotX += slotSize;
 			
 			if (slotX == 4 || slotX == 9 || slotX == 14) {
 				slotX = slotXstart;
-				slotY += gp.TILE_SIZE;
+				slotY += slotSize;
 			}
 		}
 		
 		// Cursor
-		int cursorX = slotXstart + (gp.TILE_SIZE * slotCol);
-		int cursorY = slotYstart + (gp.TILE_SIZE * slotRow);
+		int cursorX = slotXstart + (slotSize * slotCol);
+		int cursorY = slotYstart + (slotSize * slotRow);
 		int cursorWidth = gp.TILE_SIZE;
 		int cursorHeight = gp.TILE_SIZE;
 		
@@ -400,6 +401,37 @@ public class UI {
 		g2.setColor(Color.white);
 		g2.setStroke(new BasicStroke(3));
 		g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);
+		
+		// Description frame
+		int dFrameX = frameX;
+		int dFrameY = frameY + frameHeight; 
+		int dFrameWidth = frameWidth;
+		int dFrameHeight = gp.TILE_SIZE * 3;
+		
+		drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
+		
+		// Draw description text
+		int textX = dFrameX + 20;
+		int textY = dFrameY + gp.TILE_SIZE;
+		
+		g2.setFont(RETGANON_PLAIN_30);
+		
+		int itemIndex = getItemIndexOnSlot();
+		
+		if (itemIndex < gp.player.inventory.size())
+			for (String line: gp.player.inventory.get(itemIndex).description.split("\n")) {
+				g2.drawString(line, textX, textY);
+				textY += 32;
+			}
+	}
+	
+	/*
+	 * Get the item index from its position on the inventory
+	 */
+	public int getItemIndexOnSlot() {
+		int itemIndex = slotCol + (slotRow * 5);
+		
+		return itemIndex;
 	}
 	
 	/*

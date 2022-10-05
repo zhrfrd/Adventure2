@@ -10,6 +10,7 @@ public class SwordNormal extends Entity {
 		name = "Normal sword";
 		down1 = setup("/objects/sword_normal", gp.TILE_SIZE, gp.TILE_SIZE);
 		attackValue = 1;
+		description = "[" + name + "]\nAn old sword belonged\nto Toni Patata."; 
 	}
 
 }
