@@ -6,9 +6,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import zhrfrd.adventure2.main.GamePanel;
 import zhrfrd.adventure2.main.KeyHandler;
+import zhrfrd.adventure2.objects.Key;
 import zhrfrd.adventure2.objects.ShieldWood;
 import zhrfrd.adventure2.objects.SwordNormal;
 
@@ -16,6 +18,8 @@ public class Player extends Entity {
 	KeyHandler keyHandler;
 	public final int SCREEN_X, SCREEN_Y;   // Position of the player of the screen
 	public boolean attackCancelled = false;
+	public ArrayList<Entity> inventory = new ArrayList<>();
+	public final int MAX_INVENTORY_SIZE = 20;
 	
 	public Player(GamePanel gp, KeyHandler keyHandler) {
 		super(gp);
@@ -31,6 +35,7 @@ public class Player extends Entity {
 		setDefaultValues();
 		getPlayerImage();
 		getPlayerAttackImage();
+		setItems();
 	}
 	
 	/*
@@ -57,6 +62,16 @@ public class Player extends Entity {
 		currentShield = new ShieldWood(gp);
 		attack = getAttack();
 		defence = getDefence();
+	}
+	
+	/*
+	 * Set items in the inventory
+	 */
+	public void setItems() {
+		inventory.add(currentWeapon);
+		inventory.add(currentShield);
+		inventory.add(new Key(gp));
+		inventory.add(new Key(gp));
 	}
 	
 	/*
