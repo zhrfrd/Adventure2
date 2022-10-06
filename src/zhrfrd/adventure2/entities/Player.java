@@ -119,23 +119,36 @@ public class Player extends Entity {
 	/*
 	 * Remove object from the map and add it to the player inventory
 	 */
-	public void pickUpObject(int index) {
+	public void pickUpObject(int i) {
 		// If the player collided with an existing object, pick it up
-		if (index != 999) {
+		if (i != 999) {
+			String text;
 			
+			// Pick up object and add it to the inventory only if there is space inside the inventory 
+			if (inventory.size() != MAX_INVENTORY_SIZE) {
+				inventory.add(gp.obj[i]);
+				gp.playSoundEffect(1);
+				text = "This looks like a " + gp.obj[i].name + "!";
+			}
+			
+			else
+				text = "Your inventory is full!";
+			
+			gp.ui.addMessage(text);
+			gp.obj[i] = null;
 		}
 	}
 	
 	/*
 	 * Handle interaction between player and NPC
 	 */
-	public void interactNPC(int index) {
+	public void interactNPC(int i) {
 		if (gp.keyHandler.enterPressed) {
 			// If the player collided with an existing npc, do interaction
-			if (index != 999) {
+			if (i != 999) {
 				attackCancelled = true;
 				gp.gameState = gp.dialogState;
-				gp.npc[index].speak();
+				gp.npc[i].speak();
 			}
 		}
 	}
@@ -355,6 +368,7 @@ public class Player extends Entity {
 	/*
 	 * Re-draw player each update
 	 */
+	@Override
 	public void draw(Graphics2D g2) {
 		BufferedImage image = null;
 		int tempScreenX = SCREEN_X;   // Used to reset the image position on the screen when the player attacks leftward and upward

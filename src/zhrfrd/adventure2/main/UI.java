@@ -385,7 +385,7 @@ public class UI {
 			
 			slotX += slotSize;
 			
-			if (slotX == 4 || slotX == 9 || slotX == 14) {
+			if (i == 4 || i == 9 || i == 14) {
 				slotX = slotXstart;
 				slotY += slotSize;
 			}
@@ -408,8 +408,6 @@ public class UI {
 		int dFrameWidth = frameWidth;
 		int dFrameHeight = gp.TILE_SIZE * 3;
 		
-		drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
-		
 		// Draw description text
 		int textX = dFrameX + 20;
 		int textY = dFrameY + gp.TILE_SIZE;
@@ -418,11 +416,14 @@ public class UI {
 		
 		int itemIndex = getItemIndexOnSlot();
 		
-		if (itemIndex < gp.player.inventory.size())
+		if (itemIndex < gp.player.inventory.size()) {
+			drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
+			
 			for (String line: gp.player.inventory.get(itemIndex).description.split("\n")) {
 				g2.drawString(line, textX, textY);
 				textY += 32;
 			}
+		}
 	}
 	
 	/*

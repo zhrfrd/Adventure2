@@ -2,6 +2,7 @@ package zhrfrd.adventure2.main;
 
 import zhrfrd.adventure2.entities.OldMan;
 import zhrfrd.adventure2.monsters.Slime;
+import zhrfrd.adventure2.objects.Key;
 
 public class AssetSetter {
 	GamePanel gp;
@@ -14,6 +15,22 @@ public class AssetSetter {
 	 * Create and set position of the objects on the map
 	 */
 	public void setObject() {
+		int i = 0;
+		gp.obj[i] = new Key(gp);
+		gp.obj[i].worldX = gp.TILE_SIZE * 25;
+		gp.obj[i].worldY = gp.TILE_SIZE * 23;
+		
+		i ++;
+		
+		gp.obj[i] = new Key(gp);
+		gp.obj[i].worldX = gp.TILE_SIZE * 21;
+		gp.obj[i].worldY = gp.TILE_SIZE * 19;
+		
+		i ++;
+		
+		gp.obj[i] = new Key(gp);
+		gp.obj[i].worldX = gp.TILE_SIZE * 26;
+		gp.obj[i].worldY = gp.TILE_SIZE * 21;
 	}
 	
 	/*
