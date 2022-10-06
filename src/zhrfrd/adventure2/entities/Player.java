@@ -30,8 +30,8 @@ public class Player extends Entity {
 		solidArea = new Rectangle(8, 16, 32, 32);   // Rectangle solid area of the player
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
-		attackArea.width = 36;
-		attackArea.height = 36;
+//		attackArea.width = 36;
+//		attackArea.height = 36;
 		setDefaultValues();
 		getPlayerImage();
 		getPlayerAttackImage();
@@ -75,9 +75,11 @@ public class Player extends Entity {
 	}
 	
 	/*
-	 * Get attack value of the player
+	 * Get attack value of the player based on which weapon he's holding
 	 */
 	public int getAttack() {
+		attackArea = currentWeapon.attackArea;
+		
 		return attack = strength * currentWeapon.attackValue;
 	}
 	
@@ -106,14 +108,27 @@ public class Player extends Entity {
 	 * Get the already scaled up sprites of the attacking player
 	 */
 	public void getPlayerAttackImage() {
-		attackUp1 = setup("/player/player_attack_up_1", gp.TILE_SIZE, gp.TILE_SIZE * 2);
-		attackUp2 = setup("/player/player_attack_up_2", gp.TILE_SIZE, gp.TILE_SIZE * 2);
-		attackDown1 = setup("/player/player_attack_down_1", gp.TILE_SIZE, gp.TILE_SIZE * 2);
-		attackDown2 = setup("/player/player_attack_down_2", gp.TILE_SIZE, gp.TILE_SIZE * 2);
-		attackLeft1 = setup("/player/player_attack_left_1", gp.TILE_SIZE * 2, gp.TILE_SIZE);
-		attackLeft2 = setup("/player/player_attack_left_2", gp.TILE_SIZE * 2, gp.TILE_SIZE);
-		attackRight1 = setup("/player/player_attack_right_1", gp.TILE_SIZE * 2, gp.TILE_SIZE);
-		attackRight2 = setup("/player/player_attack_right_2", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+		if (currentWeapon.type == TYPE_SWORD) {
+			attackUp1 = setup("/player/player_attack_up_1", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+			attackUp2 = setup("/player/player_attack_up_2", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+			attackDown1 = setup("/player/player_attack_down_1", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+			attackDown2 = setup("/player/player_attack_down_2", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+			attackLeft1 = setup("/player/player_attack_left_1", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+			attackLeft2 = setup("/player/player_attack_left_2", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+			attackRight1 = setup("/player/player_attack_right_1", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+			attackRight2 = setup("/player/player_attack_right_2", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+		}
+		
+		if (currentWeapon.type == TYPE_AXE) {
+			attackUp1 = setup("/player/player_axe_up_1", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+			attackUp2 = setup("/player/player_axe_up_2", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+			attackDown1 = setup("/player/player_axe_down_1", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+			attackDown2 = setup("/player/player_axe_down_2", gp.TILE_SIZE, gp.TILE_SIZE * 2);
+			attackLeft1 = setup("/player/player_axe_left_1", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+			attackLeft2 = setup("/player/player_axe_left_2", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+			attackRight1 = setup("/player/player_axe_right_1", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+			attackRight2 = setup("/player/player_axe_right_2", gp.TILE_SIZE * 2, gp.TILE_SIZE);
+		}
 	}
 	
 	/*
@@ -128,7 +143,7 @@ public class Player extends Entity {
 			if (inventory.size() != MAX_INVENTORY_SIZE) {
 				inventory.add(gp.obj[i]);
 				gp.playSoundEffect(1);
-				text = "This looks like a " + gp.obj[i].name + "!";
+				text = "Got a " + gp.obj[i].name + "!";
 			}
 			
 			else
@@ -215,6 +230,37 @@ public class Player extends Entity {
 			gp.playSoundEffect(8);
 			gp.gameState = gp.dialogState;
 			gp.ui.currentDialog = "You are level " + level + " now!\n" + "You feel stronger but nothing will stop\nyou from paying your taxes!";
+		}
+	}
+	
+	/*
+	 * Handle items selection inside the player's inventory
+	 */
+	public void selectItem() {
+		int itemIndex = gp.ui.getItemIndexOnSlot();   // Get the item where the cursor is
+		
+		// Select only existing items inside the inventory, not empty slots
+		if (itemIndex < inventory.size()) {
+			Entity selectedItem = inventory.get(itemIndex);
+			
+			// Assign weapon to player if he selects a weapon
+			if (selectedItem.type == TYPE_SWORD || selectedItem.type == TYPE_AXE) {
+				currentWeapon = selectedItem;
+				attack = getAttack();
+				getPlayerAttackImage();
+			}
+			
+			// Assign shield to player if he selects a shield
+			if (selectedItem.type == TYPE_SHIELD) {
+				currentShield = selectedItem;
+				defence = getDefence();
+			}
+			
+			// Use consumable items such as potions
+			if (selectedItem.type == TYPE_CONSUMABLE) {
+				selectedItem.use(this);
+				inventory.remove(itemIndex);
+			}
 		}
 	}
 	

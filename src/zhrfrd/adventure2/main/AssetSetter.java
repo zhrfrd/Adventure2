@@ -2,7 +2,10 @@ package zhrfrd.adventure2.main;
 
 import zhrfrd.adventure2.entities.OldMan;
 import zhrfrd.adventure2.monsters.Slime;
+import zhrfrd.adventure2.objects.Axe;
 import zhrfrd.adventure2.objects.Key;
+import zhrfrd.adventure2.objects.PotionRed;
+import zhrfrd.adventure2.objects.ShieldBlue;
 
 public class AssetSetter {
 	GamePanel gp;
@@ -31,6 +34,24 @@ public class AssetSetter {
 		gp.obj[i] = new Key(gp);
 		gp.obj[i].worldX = gp.TILE_SIZE * 26;
 		gp.obj[i].worldY = gp.TILE_SIZE * 21;
+
+		i ++;
+		
+		gp.obj[i] = new Axe(gp);
+		gp.obj[i].worldX = gp.TILE_SIZE * 33;
+		gp.obj[i].worldY = gp.TILE_SIZE * 21;
+
+		i ++;
+		
+		gp.obj[i] = new ShieldBlue(gp);
+		gp.obj[i].worldX = gp.TILE_SIZE * 35;
+		gp.obj[i].worldY = gp.TILE_SIZE * 21;
+
+		i ++;
+		
+		gp.obj[i] = new PotionRed(gp);
+		gp.obj[i].worldX = gp.TILE_SIZE * 37;
+		gp.obj[i].worldY = gp.TILE_SIZE * 22;
 	}
 	
 	/*

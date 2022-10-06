@@ -163,6 +163,10 @@ public class KeyHandler implements KeyListener {
 				gp.playSoundEffect(9);
 			}
 		}
+	
+		// Select the item in the inventory
+		if (code == KeyEvent.VK_ENTER)
+			gp.player.selectItem();
 	}
 
 	@Override

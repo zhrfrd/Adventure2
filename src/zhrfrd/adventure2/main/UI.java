@@ -381,6 +381,12 @@ public class UI {
 		
 		// Draw player's items
 		for (int i = 0; i < gp.player.inventory.size(); i ++) {
+			// Highlight equipped items
+			if (gp.player.inventory.get(i) == gp.player.currentWeapon || gp.player.inventory.get(i) == gp.player.currentShield) {
+				g2.setColor(new Color( 240, 190, 90));
+				g2.fillRoundRect(slotX, slotY, gp.TILE_SIZE, gp.TILE_SIZE, 10, 10);
+			}
+			
 			g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
 			
 			slotX += slotSize;
@@ -406,7 +412,7 @@ public class UI {
 		int dFrameX = frameX;
 		int dFrameY = frameY + frameHeight; 
 		int dFrameWidth = frameWidth;
-		int dFrameHeight = gp.TILE_SIZE * 3;
+		int dFrameHeight = gp.TILE_SIZE * 4;
 		
 		// Draw description text
 		int textX = dFrameX + 20;

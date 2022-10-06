@@ -12,7 +12,7 @@ public class Slime extends Entity {
 		super(gp);
 		this.gp = gp;
 		
-		type = 2;
+		type = TYPE_MONSTER;
 		name = "Slime";
 		speed = 1;
 		maxLife = 4;

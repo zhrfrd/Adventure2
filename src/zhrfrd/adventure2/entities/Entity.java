@@ -43,7 +43,6 @@ public class Entity {
 	int hpBarCounter = 0;
 	// Character
 	public String name;
-	public int type;   // Type of entity (eg. player, npc, monster ...)
 	public int maxLife, life;
 	public int level;
 	public int strength;   // More strength = gives more damage
@@ -59,6 +58,16 @@ public class Entity {
 	public int attackValue;
 	public int defenceValue;
 	public String description = "";
+	// Type
+	public int type;   // Type of entity (eg. player, npc, monster ...)
+	public final int TYPE_PLAYER = 0;
+	public final int TYPE_NPC = 1;
+	public final int TYPE_MONSTER = 2;
+	public final int TYPE_SWORD = 3;
+	public final int TYPE_AXE = 4;
+	public final int TYPE_SHIELD = 5;
+	public final int TYPE_CONSUMABLE = 6;
+	
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -73,6 +82,11 @@ public class Entity {
 	 * React when receiving damage
 	 */
 	public void damageReaction() {}
+	
+	/*
+	 * Use item selected such as potions
+	 */
+	public void use(Entity entity) {}
 	
 	/*
 	 * Make the entity speak
@@ -119,7 +133,7 @@ public class Entity {
 		boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
 		
 		// When the entity moving is a slime and it touches the player, the player receives damage
-		if (this.type == 2 && contactPlayer)
+		if (this.type == TYPE_MONSTER && contactPlayer)
 			if (!gp.player.invincible) {
 				int damage = attack - gp.player.defence;
 				
