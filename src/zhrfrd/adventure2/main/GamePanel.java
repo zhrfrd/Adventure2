@@ -44,6 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public Entity obj[] = new Entity[10];   // Total objects that can be displayed at the same time, not the number of objects existing
 	public Entity npc[] = new Entity[10];
 	public Entity monster[] = new Entity[20];
+	public ArrayList<Entity> projectileList = new ArrayList<>();
 	ArrayList<Entity> entityList = new ArrayList<>();
 	// Game state
 	public int gameState;
@@ -102,6 +103,17 @@ public class GamePanel extends JPanel implements Runnable {
 					// Remove monster if it's not alive
 					if (!monster[i].alive)
 						monster[i] = null;
+				}
+			
+			// Projectile
+			for (int i = 0; i < projectileList.size(); i ++)
+				if (projectileList.get(i) != null) {
+					if (projectileList.get(i).alive)
+						projectileList.get(i).update();
+					
+					// Remove projectile if it's not alive
+					if (!projectileList.get(i).alive)
+						projectileList.remove(i);
 				}
 		}
 	}
@@ -172,6 +184,11 @@ public class GamePanel extends JPanel implements Runnable {
 			for (int i = 0; i < monster.length; i ++)
 				if (monster[i] != null)
 					entityList.add(monster[i]);
+			
+			// Add projectile list to array list
+			for (int i = 0; i < projectileList.size(); i ++)
+				if (projectileList.get(i) != null)
+					entityList.add(projectileList.get(i));
 			
 			// Sort the order to display the entities inside entityList to avoid overlapping. (eg. if player comes from the top toward an npc, the npc should overlap the player so, it should be drawn after the player. otherwise the opposite)
 			Collections.sort(entityList, new Comparator<Entity>() {

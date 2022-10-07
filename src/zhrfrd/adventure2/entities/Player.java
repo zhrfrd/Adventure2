@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import zhrfrd.adventure2.main.GamePanel;
 import zhrfrd.adventure2.main.KeyHandler;
+import zhrfrd.adventure2.objects.Fireball;
 import zhrfrd.adventure2.objects.Key;
 import zhrfrd.adventure2.objects.ShieldWood;
 import zhrfrd.adventure2.objects.SwordNormal;
@@ -60,6 +61,7 @@ public class Player extends Entity {
 		coin = 0;
 		currentWeapon = new SwordNormal(gp);
 		currentShield = new ShieldWood(gp);
+		projectile = new Fireball(gp);
 		attack = getAttack();
 		defence = getDefence();
 	}
@@ -173,7 +175,7 @@ public class Player extends Entity {
 	 */
 	public void contactMonster(int i) {
 		if (i != 999)
-			if (!invincible) {
+			if (!invincible && !gp.monster[i].dying) {
 				int damage = gp.monster[i].attack - defence;
 				
 				if (damage < 0)
@@ -399,6 +401,13 @@ public class Player extends Entity {
 		
 		else
 			spriteNumber = 1;
+		
+		// Shoot projectile by pressing the specific key and only when the previous projectile is "dead"
+		if (gp.keyHandler.shotKeyPressed && !projectile.alive) {
+			projectile.set(worldX, worldY, direction, true, this);
+			gp.projectileList.add(projectile);
+			gp.playSoundEffect(10);
+		}
 		
 		// When the player hits a monster (and receive damage) he become invincible for a period of 1 seconds to avoid loosing all his life straight away
 		if (invincible) {

@@ -4,37 +4,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
-	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shotKeyPressed;
 	boolean showDebugText = false;
 	GamePanel gp;
 	
 	public KeyHandler(GamePanel gp) {
 		this.gp = gp;
-	}
-	
-	@Override
-	public void keyPressed(KeyEvent e) {
-		int code = e.getKeyCode();
-		
-		// Title state
-		if (gp.gameState == gp.titleState) 
-			titleState(code);
-		
-		// Play state
-		else if (gp.gameState == gp.playState)
-			playState(code);
-		
-		// Pause state
-		else if (gp.gameState == gp.pauseState)
-			pauseState(code);
-		
-		// Dialog state
-		else if (gp.gameState == gp.dialogState)
-			dialogState(code);
-		
-		// Character state
-		else if (gp.gameState == gp.characterState)
-			characterState(code);
 	}
 	
 	/*
@@ -97,6 +72,9 @@ public class KeyHandler implements KeyListener {
 		
 		if (code == KeyEvent.VK_ENTER)
 			enterPressed = true;
+		
+		if (code == KeyEvent.VK_F)
+			shotKeyPressed = true;
 		
 		// Debug 
 		if (code == KeyEvent.VK_T) {
@@ -170,6 +148,31 @@ public class KeyHandler implements KeyListener {
 	}
 
 	@Override
+	public void keyPressed(KeyEvent e) {
+		int code = e.getKeyCode();
+		
+		// Title state
+		if (gp.gameState == gp.titleState) 
+			titleState(code);
+		
+		// Play state
+		else if (gp.gameState == gp.playState)
+			playState(code);
+		
+		// Pause state
+		else if (gp.gameState == gp.pauseState)
+			pauseState(code);
+		
+		// Dialog state
+		else if (gp.gameState == gp.dialogState)
+			dialogState(code);
+		
+		// Character state
+		else if (gp.gameState == gp.characterState)
+			characterState(code);
+	}
+	
+	@Override
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
 		
@@ -184,6 +187,9 @@ public class KeyHandler implements KeyListener {
 		
 		if (code == KeyEvent.VK_D)
 			rightPressed = false;
+		
+		if (code == KeyEvent.VK_F)
+			shotKeyPressed = false;
 		
 	}
 

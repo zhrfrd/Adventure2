@@ -44,6 +44,7 @@ public class Entity {
 	// Character
 	public String name;
 	public int maxLife, life;
+	public int maxMana, mana;
 	public int level;
 	public int strength;   // More strength = gives more damage
 	public int dexterity;   // More dexterity = receive less damage
@@ -54,10 +55,12 @@ public class Entity {
 	public int coin;
 	public Entity currentWeapon;
 	public Entity currentShield;
+	public Projectile projectile;
 	// Item attributes
 	public int attackValue;
 	public int defenceValue;
 	public String description = "";
+	public int useCost;   // Mana cost to shoot a projectile
 	// Type
 	public int type;   // Type of entity (eg. player, npc, monster ...)
 	public final int TYPE_PLAYER = 0;
@@ -274,10 +277,8 @@ public class Entity {
 		if (dyingCounter > i * 5 && dyingCounter <= i * 6) changeAlpha(g2, 1f);
 		if (dyingCounter > i * 6 && dyingCounter <= i * 7) changeAlpha(g2, 0f);
 		if (dyingCounter > i * 7 && dyingCounter <= i * 8) changeAlpha(g2, 1f);
-		if (dyingCounter > 40) {
-			dying = false;
+		if (dyingCounter > 40)
 			alive = false;
-		}
 	}
 	
 	/*
