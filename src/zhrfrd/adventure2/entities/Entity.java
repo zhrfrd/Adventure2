@@ -39,6 +39,7 @@ public class Entity {
 	public int spriteCounter = 0;
 	public int invincibleCounter = 0;
 	public int actionLockCounter = 0;   // Interval for the npc movement
+	public int reloadProjectileCounter = 0;   // Reload for shooting another projectile
 	public int dyingCounter = 0;
 	int hpBarCounter = 0;
 	// Character

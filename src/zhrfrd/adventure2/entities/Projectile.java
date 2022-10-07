@@ -26,6 +26,20 @@ public class Projectile extends Entity {
 	 */
 	@Override
 	public void update() {
+		// Check if the projectile is shot by the player or another entity
+		if (user == gp.player) {
+			int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);   // Get the index of the entity collided with the projectile
+			
+			if (monsterIndex != 999) {
+				gp.player.damageMonster(monsterIndex, attack);
+				alive = false;    // When the projectile hits the monster, the projectile disappears
+			}
+		}
+			
+		if (user != gp.player) {
+			
+		}
+		
 		// Move in relation to the key pressed
 		switch (direction) {
 			case "up": worldY -= speed; break;

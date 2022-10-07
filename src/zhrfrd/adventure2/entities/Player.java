@@ -190,7 +190,7 @@ public class Player extends Entity {
 	/*
 	 * Handle damaging of monster after attacking
 	 */
-	public void damageMonster(int i) {
+	public void damageMonster(int i, int attack) {
 		if (i != 999)
 			if (!gp.monster[i].invincible) {
 				int damage = attack - gp.monster[i].defence;
@@ -300,7 +300,7 @@ public class Player extends Entity {
 			
 			// Check monster collision with updated worldX worldY and solid area
 			int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);   // Check which monster got hit by the player
-			damageMonster(monsterIndex);
+			damageMonster(monsterIndex, attack );
 			
 			// After checking collision, restore original player position and solid area size
 			worldX = currentWorldX;
@@ -402,10 +402,11 @@ public class Player extends Entity {
 		else
 			spriteNumber = 1;
 		
-		// Shoot projectile by pressing the specific key and only when the previous projectile is "dead"
-		if (gp.keyHandler.shotKeyPressed && !projectile.alive) {
+		// Shoot projectile by pressing the specific key and only when the previous projectile is "dead" and the new projectile is "reloaded"
+		if (gp.keyHandler.shotKeyPressed && !projectile.alive && reloadProjectileCounter == 80) {
 			projectile.set(worldX, worldY, direction, true, this);
 			gp.projectileList.add(projectile);
+			reloadProjectileCounter = 0; 
 			gp.playSoundEffect(10);
 		}
 		
@@ -413,10 +414,15 @@ public class Player extends Entity {
 		if (invincible) {
 			invincibleCounter ++;
 			
-			if (invincibleCounter > 60) {
+			if (invincibleCounter > 80) {
 				invincible = false;
 				invincibleCounter = 0;
 			}
+		}
+		
+		// Reload time for a new projectile is 30 frames (1/2 second)
+		if (reloadProjectileCounter < 80) {
+			reloadProjectileCounter ++;
 		}
 	}
 
