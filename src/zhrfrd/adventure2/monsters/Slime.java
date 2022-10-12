@@ -4,6 +4,7 @@ import java.util.Random;
 
 import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.main.GamePanel;
+import zhrfrd.adventure2.objects.Rock;
 
 public class Slime extends Entity {
 	GamePanel gp;
@@ -20,6 +21,7 @@ public class Slime extends Entity {
 		attack = 5;
 		defence = 0;
 		exp = 2;   // Experience the player gets when he kills the monster
+		projectile = new Rock(gp);
 		solidArea.x = 3;
 		solidArea.y = 18;
 		solidArea.width = 42;
@@ -30,8 +32,8 @@ public class Slime extends Entity {
 		getImage();
 	}
 	
-	/*   
-	 * Get the already scaled up sprites of the slime
+	/**
+	 * Get the already scaled up sprites of the slime.
 	 */
 	public void getImage() {
 		up1 = setup("/monsters/slime_1", gp.TILE_SIZE, gp.TILE_SIZE);
@@ -44,8 +46,8 @@ public class Slime extends Entity {
 		right2 = setup("/monsters/slime_2", gp.TILE_SIZE, gp.TILE_SIZE);
 	}
 	
-	/*
-	 * Set slime behaviour
+	/**
+	 * Set slime's behaviour.
 	 */
 	@Override
 	public void setAction() {
@@ -70,10 +72,19 @@ public class Slime extends Entity {
 			
 			actionLockCounter = 0;
 		}
+		
+		// Slime shooting AI
+		int i = new Random().nextInt(100) + 1;
+		
+		if (i > 99 && !projectile.alive && reloadProjectileCounter == 30) {
+			projectile.set(worldX, worldY, direction, true, this);
+			gp.projectileList.add(projectile);
+			reloadProjectileCounter = 0;
+		}
 	}
 	
-	/*
-	 * React when receiving damage
+	/**
+	 * React when receiving damage.
 	 */
 	@Override
 	public void damageReaction() {

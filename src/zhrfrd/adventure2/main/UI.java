@@ -12,12 +12,13 @@ import java.util.ArrayList;
 
 import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.objects.Heart;
+import zhrfrd.adventure2.objects.ManaCrystal;
 
 public class UI {
 	GamePanel gp;
 	Graphics2D g2;
 	Font retganon;
-	BufferedImage heart_full, heart_half, heart_blank;
+	BufferedImage heart_full, heart_half, heart_blank, crystal_full, crystal_blank;;
 	public final Font RETGANON_PLAIN_20;   // Debug message
 	public final Font RETGANON_PLAIN_30;   // Pop-up notification
 	public final Font RETGANON_BOLD_30;
@@ -57,6 +58,9 @@ public class UI {
 		heart_full = heart.image;
 		heart_half = heart.image2;
 		heart_blank = heart.image3;
+		Entity crystal = new ManaCrystal(gp);
+		crystal_full = crystal.image;
+		crystal_blank = crystal.image2;
 	}
 	
 	/*
@@ -83,18 +87,21 @@ public class UI {
 		// Play state
 		if (gp.gameState == gp.playState) {
 			drawPlayerLife();
+			drawPlayerMana();
 			drawMessage();
 		}
 		
 		// Pause state
 		if (gp.gameState == gp.pauseState) {
 			drawPlayerLife();
+			drawPlayerMana();
 			drawPauseScreen();
 		}
 		
 		// Dialog state
 		if (gp.gameState == gp.dialogState) {
 			drawPlayerLife();
+			drawPlayerMana();
 			drawDialogScreen();
 		}
 		
@@ -105,8 +112,8 @@ public class UI {
 		}
 	}
 	
-	/*
-	 * Draw the player life on the screen
+	/**
+	 * Draw the player's life on the screen.
 	 */
 	public void drawPlayerLife() {
 		int x = gp.TILE_SIZE / 2;
@@ -137,6 +144,33 @@ public class UI {
 			i ++;
 			
 			x += gp.TILE_SIZE;
+		}
+	}
+	
+	/**
+	 * Draw the player's mana on the screen.
+	 */
+	public void drawPlayerMana() {
+		int x = (gp.TILE_SIZE / 2) - 5;
+		int y = (int)(gp.TILE_SIZE * 1.5);
+		int i = 0;
+		
+		// Draw max mana
+		while (i < gp.player.maxMana) {
+			g2.drawImage(crystal_blank,x, y, null);
+			i ++;
+			x += 35;
+		}
+		
+		// Draw mana
+		x = (gp.TILE_SIZE / 2) - 5;
+		y = (int)(gp.TILE_SIZE * 1.5);
+		i = 0;
+		
+		while (i < gp.player.mana) {
+			g2.drawImage(crystal_full, x, y, null);
+			i ++;
+			x += 35;
 		}
 	}
 	
@@ -286,6 +320,8 @@ public class UI {
 		textY += lineHeight;
 		g2.drawString("Life", textX, textY);
 		textY += lineHeight;
+		g2.drawString("Mana", textX, textY);
+		textY += lineHeight;
 		g2.drawString("Strength", textX, textY);
 		textY += lineHeight;
 		g2.drawString("Dexterity", textX, textY);
@@ -299,7 +335,7 @@ public class UI {
 		g2.drawString("Next level", textX, textY);
 		textY += lineHeight;
 		g2.drawString("Coin", textX, textY);
-		textY += lineHeight + 20;
+		textY += lineHeight + 10;
 		g2.drawString("Weapon", textX, textY);
 		textY += lineHeight + 15;
 		g2.drawString("Shield", textX, textY);
@@ -316,6 +352,11 @@ public class UI {
 		textY += lineHeight;
 		
 		value = String.valueOf(gp.player.life + "-" + gp.player.maxLife);
+		textX = getXforAlignedToRightText(value, tailX);
+		g2.drawString(value, textX, textY);
+		textY += lineHeight;
+		
+		value = String.valueOf(gp.player.mana + "-" + gp.player.maxMana);
 		textX = getXforAlignedToRightText(value, tailX);
 		g2.drawString(value, textX, textY);
 		textY += lineHeight;
@@ -355,9 +396,9 @@ public class UI {
 		g2.drawString(value, textX, textY);
 		textY += lineHeight;
 		
-		g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.TILE_SIZE, textY - 15, null);
+		g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.TILE_SIZE, textY - 24, null);
 		textY += lineHeight;
-		g2.drawImage(gp.player.currentShield.down1, tailX - gp.TILE_SIZE, textY - 3, null);
+		g2.drawImage(gp.player.currentShield.down1, tailX - gp.TILE_SIZE, textY - 14, null);
 	}
 	
 	/*

@@ -46,6 +46,7 @@ public class Entity {
 	public String name;
 	public int maxLife, life;
 	public int maxMana, mana;
+	public int ammo;
 	public int level;
 	public int strength;   // More strength = gives more damage
 	public int dexterity;   // More dexterity = receive less damage
@@ -138,16 +139,7 @@ public class Entity {
 		
 		// When the entity moving is a slime and it touches the player, the player receives damage
 		if (this.type == TYPE_MONSTER && contactPlayer)
-			if (!gp.player.invincible) {
-				int damage = attack - gp.player.defence;
-				
-				if (damage < 0)
-					damage = 0;
-				
-				gp.playSoundEffect(6);
-				gp.player.life -= damage;
-				gp.player.invincible = true;
-			}
+			damagePlayer(attack);
 		
 		// Move the entity only in case there is no collision detected
 		if (collisionOn == false) {
@@ -186,10 +178,33 @@ public class Entity {
 				invincibleCounter = 0;
 			}
 		}
+		
+		// Reload time for a new projectile is 30 frames (1/2 second)
+		if (reloadProjectileCounter < 30) {
+			reloadProjectileCounter ++;
+		}
 	}
 	
-	/*
-	 * Draw the entity in the game panel
+	/**
+	 * Handle the damaging of the player when the entity attacks him.
+	 * @param attack Attack value of the entity used to calculate the damage to the player.
+	 */
+	public void damagePlayer(int attack) {
+		if (!gp.player.invincible) {
+			int damage = attack - gp.player.defence;
+			
+			if (damage < 0)
+				damage = 0;
+			
+			gp.playSoundEffect(6);
+			gp.player.life -= damage;
+			gp.player.invincible = true;
+		}
+	}
+	
+	/**
+	 * Draw any entity in the game panel using Graphics2D. The drawing will be done every game update
+	 * @param g2 Graphics2D responsible for drawing.
 	 */
 	public void draw(Graphics2D g2) {
 		BufferedImage image = null;

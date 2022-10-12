@@ -33,8 +33,9 @@ public class EventHandler {
 		}
 	}
 	
-	/*
-	 * Check which event happens such as player hitting a pit or teleport
+	/**
+	 * Check which event happens such as player hitting a pit or teleport.
+	 * 
 	 */
 	public void checkEvent() {
 		
@@ -53,8 +54,13 @@ public class EventHandler {
 		}
 	}
 	
-	/*
+	/**
 	 * Check event collision such as teleport, pit ...
+	 * 
+	 * @param col The columns position in the grid map of the event.
+	 * @param row The row position in the grid map of the event.
+	 * @param requiredDirection Required direction for the event to be called.
+	 * @return True if the player hits the event, false otherwise.
 	 */
 	public boolean hit(int col, int row, String requiredDirection) {
 		boolean hit = false;
@@ -80,8 +86,12 @@ public class EventHandler {
 		return hit;
 	}
 	
-	/*
-	 * Decrease player's life and display dialog message when player hits a pit 
+	/**
+	 * Decrease player's life and display dialog message when player hits a pit.
+	 * 
+	 * @param col The columns position in the grid map of the damaging pit event.
+	 * @param row The row position in the grid map of the damaging pit event.
+	 * @param gameState The game state at which the event is called.
 	 */
 	public void damagePit(int col, int row, int gameState) {
 		gp.gameState = gameState;
@@ -91,8 +101,12 @@ public class EventHandler {
 		canTouchEvent = false;
 	}
 	
-	/*
-	 * The healing pool regenerates the players life
+	/**
+	 * The healing pool regenerates the player's life and mana.
+	 * 
+	 * @param col The columns position in the grid map of the healing pool event.
+	 * @param row The row position in the grid map of the healing pool event.
+	 * @param gameState The game state at which the event is called.
 	 */
 	public void healingPool(int col, int row, int gameState) {
 		if (gp.keyHandler.enterPressed) {
@@ -101,6 +115,7 @@ public class EventHandler {
 			gp.playSoundEffect(2);
 			gp.ui.currentDialog = "This is a pond.\nDespite the amount of mosquitoes flying\naround and its nasty smell, I'm going to drink\nsome of this water and hope for my best!";
 			gp.player.life = gp.player.maxLife;
+			gp.player.mana = gp.player.maxMana;
 			gp.assetSetter.setMonster();   // Respawn monsters when drinking the water
 		}
 	}

@@ -21,12 +21,30 @@ public class Projectile extends Entity {
 		this.life = this.maxLife;
 	}
 	
-	/*
-	 * Update the info and position of the projectile
+	/**
+	 * Check if the user has enough mana to shoot a projectile.
+	 * 
+	 * @param user The entity that wants to shoot the projectile.
+	 * @return True if the users has enough mana to shoot a fireball, false otherwise. This method will return false by default.
+	 */
+	public boolean haveResource(Entity user) {
+		boolean haveResource = false;
+		return haveResource;
+	}
+	
+	/**
+	 * Subtract the mana from the user when he uses it. This method is left blank by default because it's used inside some subclasses of projectile.
+	 * @param user The entity that wants to shoot the projectile.
+	 */
+	public void subtractResource(Entity user) {
+	}
+	
+	/**
+	 * Update the info and position of the projectile each game update.
 	 */
 	@Override
 	public void update() {
-		// Check if the projectile is shot by the player or another entity
+		// Check if the projectile is shot by the player
 		if (user == gp.player) {
 			int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);   // Get the index of the entity collided with the projectile
 			
@@ -36,8 +54,14 @@ public class Projectile extends Entity {
 			}
 		}
 			
+		// Check if the projectile is shot by an entity different than the player
 		if (user != gp.player) {
+			boolean contactPlayer = gp.collisionChecker.checkPlayer(this);   // Check projectile collision with the player
 			
+			if (!gp.player.invincible && contactPlayer) {
+				damagePlayer(attack);
+				alive = false;
+			}
 		}
 		
 		// Move in relation to the key pressed

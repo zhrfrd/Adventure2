@@ -63,7 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setFocusable(true);
 	}
 	
-	/*
+	/**
 	 * Setup up game objects and more
 	 */
 	public void setupGame() {

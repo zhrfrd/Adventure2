@@ -39,8 +39,8 @@ public class Player extends Entity {
 		setItems();
 	}
 	
-	/*
-	 * Set default values of the player when a new instance of Player is created
+	/**
+	 * Set default values of the player when a new instance of Player is created.
 	 */
 	public void setDefaultValues() {
 		worldX = gp.TILE_SIZE * 23;   // Player starting position on the map
@@ -54,6 +54,9 @@ public class Player extends Entity {
 		level = 1;
 		maxLife = 6;   // 3 hearts (one life is equal to half heart)
 		life = maxLife;
+		maxMana = 4;
+		mana = maxMana;
+		ammo = 10;
 		strength = 1;
 		dexterity = 1;
 		exp = 0;
@@ -66,8 +69,8 @@ public class Player extends Entity {
 		defence = getDefence();
 	}
 	
-	/*
-	 * Set items in the inventory
+	/**
+	 * Set items in the inventory.
 	 */
 	public void setItems() {
 		inventory.add(currentWeapon);
@@ -76,8 +79,8 @@ public class Player extends Entity {
 		inventory.add(new Key(gp));
 	}
 	
-	/*
-	 * Get attack value of the player based on which weapon he's holding
+	/**
+	 * Get attack value of the player based on which weapon he's holding.
 	 */
 	public int getAttack() {
 		attackArea = currentWeapon.attackArea;
@@ -85,15 +88,15 @@ public class Player extends Entity {
 		return attack = strength * currentWeapon.attackValue;
 	}
 	
-	/*
-	 * Get defence value of the player
+	/**
+	 * Get defence value of the player.
 	 */
 	public int getDefence() { 
 		return defence = dexterity * currentShield.defenceValue;
 	}
 	
-	/*
-	 * Get the already scaled up sprites of the moving player
+	/**
+	 * Get the already scaled up sprites of the moving player.
 	 */
 	public void getPlayerImage() {
 		up1 = setup("/player/player_up_1", gp.TILE_SIZE, gp.TILE_SIZE);
@@ -106,8 +109,8 @@ public class Player extends Entity {
 		right2 = setup("/player/player_right_2", gp.TILE_SIZE, gp.TILE_SIZE);
 	}
 	
-	/*
-	 * Get the already scaled up sprites of the attacking player
+	/**
+	 * Get the already scaled up sprites of the attacking player.
 	 */
 	public void getPlayerAttackImage() {
 		if (currentWeapon.type == TYPE_SWORD) {
@@ -133,8 +136,10 @@ public class Player extends Entity {
 		}
 	}
 	
-	/*
-	 * Remove object from the map and add it to the player inventory
+	/**
+	 * Remove object from the map and add it to the player inventory.
+	 * 
+	 * @param i index of the object the player collided with.
 	 */
 	public void pickUpObject(int i) {
 		// If the player collided with an existing object, pick it up
@@ -156,8 +161,10 @@ public class Player extends Entity {
 		}
 	}
 	
-	/*
-	 * Handle interaction between player and NPC
+	/**
+	 * Handle interaction between player and NPC.
+	 * 
+	 * @param i index of the NPC the player collided with.
 	 */
 	public void interactNPC(int i) {
 		if (gp.keyHandler.enterPressed) {
@@ -170,8 +177,10 @@ public class Player extends Entity {
 		}
 	}
 	
-	/*
-	 * Handle player touching a monster
+	/**
+	 * Handle player collision with a monster.
+	 * 
+	 * @param i index of the monster the player collided with.
 	 */
 	public void contactMonster(int i) {
 		if (i != 999)
@@ -187,8 +196,11 @@ public class Player extends Entity {
 			}
 	}
 	
-	/*
-	 * Handle damaging of monster after attacking
+	/**
+	 * Handle damaging of monster after attacking.
+	 * 
+	 * @param i index of the monster the player collided with.
+	 * @param attack attack value of the player inflicted to the monster.
 	 */
 	public void damageMonster(int i, int attack) {
 		if (i != 999)
@@ -216,8 +228,8 @@ public class Player extends Entity {
 			}
 	}
 	
-	/*
-	 * Check if the player exp is high enough to level up
+	/**
+	 * Check if the player exp is high enough to level up.
 	 */
 	public void checkLevelUp() {
 		if (exp >= nextLevelExp) {
@@ -235,8 +247,8 @@ public class Player extends Entity {
 		}
 	}
 	
-	/*
-	 * Handle items selection inside the player's inventory
+	/**
+	 * Handle items selection inside the player's inventory.
 	 */
 	public void selectItem() {
 		int itemIndex = gp.ui.getItemIndexOnSlot();   // Get the item where the cursor is
@@ -266,8 +278,8 @@ public class Player extends Entity {
 		}
 	}
 	
-	/*
-	 * Handle the player attacking behaviour and animation 
+	/**
+	 * Handle the player attacking behaviour and animation.
 	 */
 	public void attacking () {
 		spriteCounter ++;
@@ -318,7 +330,7 @@ public class Player extends Entity {
 	}
 	
 	/*
-	 * Update player information such as position
+	 * Update player information such as position.
 	 */
 	@Override
 	public void update() {
@@ -402,9 +414,10 @@ public class Player extends Entity {
 		else
 			spriteNumber = 1;
 		
-		// Shoot projectile by pressing the specific key and only when the previous projectile is "dead" and the new projectile is "reloaded"
-		if (gp.keyHandler.shotKeyPressed && !projectile.alive && reloadProjectileCounter == 80) {
+		// Shoot projectile by pressing the specific key and only when the previous projectile is "dead", the new projectile is "reloaded" and the player has enough mana
+		if (gp.keyHandler.shotKeyPressed && !projectile.alive && reloadProjectileCounter == 30 && projectile.haveResource(this)) {
 			projectile.set(worldX, worldY, direction, true, this);
+			projectile.subtractResource(this);   // Subtract mana from player after shooting
 			gp.projectileList.add(projectile);
 			reloadProjectileCounter = 0; 
 			gp.playSoundEffect(10);
@@ -421,13 +434,15 @@ public class Player extends Entity {
 		}
 		
 		// Reload time for a new projectile is 30 frames (1/2 second)
-		if (reloadProjectileCounter < 80) {
+		if (reloadProjectileCounter < 30) {
 			reloadProjectileCounter ++;
 		}
 	}
 
-	/*
-	 * Re-draw player each update
+	/**
+	 * Draw the player in the game panel using Graphics2D. The drawing will be done every game update.
+	 * 
+	 * @param g2 Graphics2D responsible for drawing.
 	 */
 	@Override
 	public void draw(Graphics2D g2) {
