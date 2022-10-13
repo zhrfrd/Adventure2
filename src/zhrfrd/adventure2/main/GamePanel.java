@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public EventHandler eventHandler = new EventHandler(this);
 	// Entities and objects
 	public Player player = new Player(this, keyHandler);
-	public Entity obj[] = new Entity[10];   // Total objects that can be displayed at the same time, not the number of objects existing
+	public Entity obj[] = new Entity[20];   // Total objects that can be displayed at the same time, not the number of objects existing
 	public Entity npc[] = new Entity[10];
 	public Entity monster[] = new Entity[20];
 	public ArrayList<Entity> projectileList = new ArrayList<>();
@@ -100,9 +100,11 @@ public class GamePanel extends JPanel implements Runnable {
 					if (monster[i].alive && !monster[i].dying)
 						monster[i].update();
 					
-					// Remove monster if it's not alive
-					if (!monster[i].alive)
+					// Remove monster if it's not alive and check the item dropped by it
+					if (!monster[i].alive) {
+						monster[i].checkDrop();
 						monster[i] = null;
+					}
 				}
 			
 			// Projectile

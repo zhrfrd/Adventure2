@@ -4,6 +4,9 @@ import java.util.Random;
 
 import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.main.GamePanel;
+import zhrfrd.adventure2.objects.CoinBronze;
+import zhrfrd.adventure2.objects.Heart;
+import zhrfrd.adventure2.objects.ManaCrystal;
 import zhrfrd.adventure2.objects.Rock;
 
 public class Slime extends Entity {
@@ -90,5 +93,22 @@ public class Slime extends Entity {
 	public void damageReaction() {
 		actionLockCounter = 0;
 		direction = gp.player.direction;   // Move away from the player when receiving damage
+	}
+	
+	/**
+	 * Check which item the Slime will drop.
+	 */
+	@Override
+	public void checkDrop() {
+		int i = new Random().nextInt(100) + 1;
+		
+		if (i < 50)
+			dropItem(new CoinBronze(gp));
+		
+		if (i >= 50 && i < 75)
+			dropItem(new Heart(gp));
+		
+		if (i >= 75 && i < 100)
+			dropItem(new ManaCrystal(gp));
 	}
 }

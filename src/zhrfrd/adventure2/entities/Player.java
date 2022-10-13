@@ -144,20 +144,29 @@ public class Player extends Entity {
 	public void pickUpObject(int i) {
 		// If the player collided with an existing object, pick it up
 		if (i != 999) {
-			String text;
-			
-			// Pick up object and add it to the inventory only if there is space inside the inventory 
-			if (inventory.size() != MAX_INVENTORY_SIZE) {
-				inventory.add(gp.obj[i]);
-				gp.playSoundEffect(1);
-				text = "Got a " + gp.obj[i].name + "!";
+			// Pickup-only items (coins...)
+			if (gp.obj[i].type == TYPE_PICKUP_ONLY) {
+				gp.obj[i].use(this);
+				gp.obj[i] = null;
 			}
 			
-			else
-				text = "Your inventory is full!";
-			
-			gp.ui.addMessage(text);
-			gp.obj[i] = null;
+			// Inventory items
+			else { 
+				String text;
+				
+				// Pick up object and add it to the inventory only if there is space inside the inventory 
+				if (inventory.size() != MAX_INVENTORY_SIZE) {
+					inventory.add(gp.obj[i]);
+					gp.playSoundEffect(1);
+					text = "Got a " + gp.obj[i].name + "!";
+				}
+				
+				else
+					text = "Your inventory is full!";
+				
+				gp.ui.addMessage(text);
+				gp.obj[i] = null;
+			}
 		}
 	}
 	
@@ -434,9 +443,16 @@ public class Player extends Entity {
 		}
 		
 		// Reload time for a new projectile is 30 frames (1/2 second)
-		if (reloadProjectileCounter < 30) {
+		if (reloadProjectileCounter < 30)
 			reloadProjectileCounter ++;
-		}
+		
+		// Avoid life overflow
+		if (life > maxLife)
+			life = maxLife;
+		
+		// Avoid mana overflow		
+		if (mana > maxMana)
+			mana = maxMana;
 	}
 
 	/**

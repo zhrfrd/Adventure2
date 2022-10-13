@@ -59,6 +59,7 @@ public class Entity {
 	public Entity currentShield;
 	public Projectile projectile;
 	// Item attributes
+	public int value;
 	public int attackValue;
 	public int defenceValue;
 	public String description = "";
@@ -72,6 +73,7 @@ public class Entity {
 	public final int TYPE_AXE = 4;
 	public final int TYPE_SHIELD = 5;
 	public final int TYPE_CONSUMABLE = 6;
+	public final int TYPE_PICKUP_ONLY = 7;   // Items that can be picked up but not stored inside the inventory such as coins
 	
 	
 	public Entity(GamePanel gp) {
@@ -92,6 +94,28 @@ public class Entity {
 	 * Use item selected such as potions
 	 */
 	public void use(Entity entity) {}
+	
+	/**
+	 * Check which item will be dropped by an entity
+	 */
+	public void checkDrop() {}
+	
+	/**
+	 * Drop item on the location of the entity that dropped it.
+	 * 
+	 * @param droppedItem Item that will be dropped by the entity
+	 */
+	public void dropItem(Entity droppedItem) {
+		// Add dropped item to the obj array.
+		for (int i = 0; i < gp.obj.length; i ++) {
+			if (gp.obj[i] == null) {
+				gp.obj[i] = droppedItem;
+				gp.obj[i].worldX = worldX;
+				gp.obj[i].worldY = worldY;
+				break;   // Exit the loop, otherwise all the empty array slots will be filled by the dropped item
+			}
+		}
+	}
 	
 	/*
 	 * Make the entity speak
@@ -267,7 +291,7 @@ public class Entity {
 				dyingAnimation(g2);
 			
 			
-			g2.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
+			g2.drawImage(image, screenX, screenY, null);
 			
 			// Reset the transparency of the entity sprite
 			changeAlpha(g2, 1f); 

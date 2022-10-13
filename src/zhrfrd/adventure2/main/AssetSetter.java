@@ -3,7 +3,9 @@ package zhrfrd.adventure2.main;
 import zhrfrd.adventure2.entities.OldMan;
 import zhrfrd.adventure2.monsters.Slime;
 import zhrfrd.adventure2.objects.Axe;
-import zhrfrd.adventure2.objects.Key;
+import zhrfrd.adventure2.objects.CoinBronze;
+import zhrfrd.adventure2.objects.Heart;
+import zhrfrd.adventure2.objects.ManaCrystal;
 import zhrfrd.adventure2.objects.PotionRed;
 import zhrfrd.adventure2.objects.ShieldBlue;
 
@@ -19,19 +21,19 @@ public class AssetSetter {
 	 */
 	public void setObject() {
 		int i = 0;
-		gp.obj[i] = new Key(gp);
+		gp.obj[i] = new CoinBronze(gp);
 		gp.obj[i].worldX = gp.TILE_SIZE * 25;
 		gp.obj[i].worldY = gp.TILE_SIZE * 23;
 		
 		i ++;
 		
-		gp.obj[i] = new Key(gp);
+		gp.obj[i] = new CoinBronze(gp);
 		gp.obj[i].worldX = gp.TILE_SIZE * 21;
 		gp.obj[i].worldY = gp.TILE_SIZE * 19;
 		
 		i ++;
 		
-		gp.obj[i] = new Key(gp);
+		gp.obj[i] = new CoinBronze(gp);
 		gp.obj[i].worldX = gp.TILE_SIZE * 26;
 		gp.obj[i].worldY = gp.TILE_SIZE * 21;
 
@@ -52,6 +54,18 @@ public class AssetSetter {
 		gp.obj[i] = new PotionRed(gp);
 		gp.obj[i].worldX = gp.TILE_SIZE * 37;
 		gp.obj[i].worldY = gp.TILE_SIZE * 22;
+
+		i ++;
+		
+		gp.obj[i] = new Heart(gp);
+		gp.obj[i].worldX = gp.TILE_SIZE * 22;
+		gp.obj[i].worldY = gp.TILE_SIZE * 29;
+
+		i ++;
+		
+		gp.obj[i] = new ManaCrystal(gp);
+		gp.obj[i].worldX = gp.TILE_SIZE * 22;
+		gp.obj[i].worldY = gp.TILE_SIZE * 31;
 	}
 	
 	/*
