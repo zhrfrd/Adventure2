@@ -159,6 +159,7 @@ public class Entity {
 		gp.collisionChecker.checkObject(this, false);
 		gp.collisionChecker.checkEntity(this, gp.npc);
 		gp.collisionChecker.checkEntity(this, gp.monster);
+		gp.collisionChecker.checkEntity(this, gp.interactiveTile);
 		boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
 		
 		// When the entity moving is a slime and it touches the player, the player receives damage

@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 import zhrfrd.adventure2.main.GamePanel;
 import zhrfrd.adventure2.main.KeyHandler;
+import zhrfrd.adventure2.objects.Axe;
 import zhrfrd.adventure2.objects.Fireball;
 import zhrfrd.adventure2.objects.Key;
 import zhrfrd.adventure2.objects.ShieldWood;
-import zhrfrd.adventure2.objects.SwordNormal;
 
 public class Player extends Entity {
 	KeyHandler keyHandler;
@@ -62,7 +62,8 @@ public class Player extends Entity {
 		exp = 0;
 		nextLevelExp = 5;
 		coin = 0;
-		currentWeapon = new SwordNormal(gp);
+//		currentWeapon = new SwordNormal(gp);
+		currentWeapon = new Axe(gp);
 		currentShield = new ShieldWood(gp);
 		projectile = new Fireball(gp);
 		attack = getAttack();
@@ -243,8 +244,15 @@ public class Player extends Entity {
 	 * @param i index of the interactive tile the player collided with.
 	 */
 	public void damageInteractiveTile(int i) {
-		if (i != 999 && gp.interactiveTile[i].destructible && gp.interactiveTile[i].isCorrectItem(this))
-			gp.interactiveTile[i] = null;
+		if (i != 999 && gp.interactiveTile[i].destructible && gp.interactiveTile[i].isCorrectItem(this) && !gp.interactiveTile[i].invincible) {
+			gp.interactiveTile[i].playSoundEffect();
+			gp.interactiveTile[i].life --;
+			gp.interactiveTile[i].invincible = true;
+			
+			
+			if (gp.interactiveTile[i].life == 0)
+				gp.interactiveTile[i] = gp.interactiveTile[i].getDestroyedForm();
+		}
 	}
 	/**
 	 * Check if the player exp is high enough to level up.

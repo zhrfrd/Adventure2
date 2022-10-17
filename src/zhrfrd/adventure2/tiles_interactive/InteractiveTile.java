@@ -14,6 +14,11 @@ public class InteractiveTile extends Entity {
 		this.worldX = gp.TILE_SIZE * col;
 		this.worldY = gp.TILE_SIZE * row;
 	}
+	
+	/**
+	 * Play sound effect for the interactive tile 
+	 */
+	public void playSoundEffect() {}
 
 	/**
 	 * Check if the item the player is holding is correct.
@@ -27,6 +32,30 @@ public class InteractiveTile extends Entity {
 		return isCorrectItem;
 	}
 	
+	/**
+	 * Get the changed (destroyed) form of the interactive tile
+	 * 
+	 * @return The changed (destroyed) form of the interactive tile
+	 */
+	public InteractiveTile getDestroyedForm() {
+		InteractiveTile tile = null;
+		
+		return null;
+	}
+	
+	/**
+	 * Update the interactive tile status
+	 */
+	@Override
 	public void update() {
+		// Add temporary invincibility to the interactive tile 
+		if (invincible) {
+			invincibleCounter ++;
+			
+			if (invincibleCounter > 20) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+		}
 	}
 }

@@ -8,11 +8,29 @@ public class DryTree extends InteractiveTile {
 	
 	public DryTree(GamePanel gp, int col, int row) {
 		super(gp, col, row);
+
 		this.gp = gp;
-
 		down1 = setup("/tiles_interactive/drytree", gp.TILE_SIZE, gp.TILE_SIZE);
-
 		destructible = true;
+		life = 3;
+	}
+	
+	/**
+	 * Play sound effect for the interactive tile 
+	 */
+	public void playSoundEffect() {
+		gp.playSoundEffect(11);
+	}
+	
+	/**
+	 * Get the changed (destroyed) form of the interactive tile
+	 * 
+	 * @return The changed (destroyed) form of the interactive tile
+	 */
+	public InteractiveTile getDestroyedForm() {
+		InteractiveTile tile = new Trunk(gp, worldX / gp.TILE_SIZE, worldY / gp.TILE_SIZE);
+		
+		return tile;
 	}
 	
 	/**
