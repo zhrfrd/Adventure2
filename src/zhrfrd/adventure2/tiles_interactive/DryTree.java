@@ -1,0 +1,32 @@
+package zhrfrd.adventure2.tiles_interactive;
+
+import zhrfrd.adventure2.entities.Entity;
+import zhrfrd.adventure2.main.GamePanel;
+
+public class DryTree extends InteractiveTile {
+	GamePanel gp;
+	
+	public DryTree(GamePanel gp, int col, int row) {
+		super(gp, col, row);
+		this.gp = gp;
+
+		down1 = setup("/tiles_interactive/drytree", gp.TILE_SIZE, gp.TILE_SIZE);
+
+		destructible = true;
+	}
+	
+	/**
+	 * Check if the item the player is holding is correct in order to break the dry tree.
+	 * 
+	 * @param entity Entity that is holding the item.
+	 * @return True if the item is correct, false otherwise.
+	 */
+	public boolean isCorrectItem(Entity entity) {
+		boolean isCorrectItem = false;
+		
+		if (entity.currentWeapon.type == TYPE_AXE)
+				isCorrectItem = true;
+		
+		return isCorrectItem;
+	}
+}

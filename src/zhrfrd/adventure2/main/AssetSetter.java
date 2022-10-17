@@ -8,6 +8,7 @@ import zhrfrd.adventure2.objects.Heart;
 import zhrfrd.adventure2.objects.ManaCrystal;
 import zhrfrd.adventure2.objects.PotionRed;
 import zhrfrd.adventure2.objects.ShieldBlue;
+import zhrfrd.adventure2.tiles_interactive.DryTree;
 
 public class AssetSetter {
 	GamePanel gp;
@@ -16,8 +17,8 @@ public class AssetSetter {
 		this.gp = gp;
 	}
 	
-	/*
-	 * Create and set position of the objects on the map
+	/**
+	 * Create and set position of the objects on the map.
 	 */
 	public void setObject() {
 		int i = 0;
@@ -68,21 +69,17 @@ public class AssetSetter {
 		gp.obj[i].worldY = gp.TILE_SIZE * 31;
 	}
 	
-	/*
-	 * Set all the npcs of the game
+	/**
+	 * Set all the npcs of the game.
 	 */
 	public void setNPC() {
 		gp.npc[0] = new OldMan(gp);
 		gp.npc[0].worldX = gp.TILE_SIZE * 21;
 		gp.npc[0].worldY = gp.TILE_SIZE * 21;
-		
-//		gp.npc[0] = new OldMan(gp);
-//		gp.npc[0].worldX = gp.TILE_SIZE * 9;
-//		gp.npc[0].worldY = gp.TILE_SIZE * 10;
 	}
 	
-	/*
-	 * Set all the monsters of the game
+	/**
+	 * Set all the monsters of the game.
 	 */
 	public void setMonster() {
 		int i = 0;
@@ -113,14 +110,38 @@ public class AssetSetter {
 		gp.monster[i] = new Slime(gp);
 		gp.monster[i].worldX = gp.TILE_SIZE * 38;
 		gp.monster[i].worldY = gp.TILE_SIZE * 42;
+	}
+	
+	/**
+	 * Set interactive tiles on the map.
+	 */
+	public void setInteractiveTile() {
+		int i = 0;
 		
-//		gp.monster[0] = new Slime(gp);
-//		gp.monster[0].worldX = gp.TILE_SIZE * 11;
-//		gp.monster[0].worldY = gp.TILE_SIZE * 10;
-//		
-//		gp.monster[1] = new Slime(gp);
-//		gp.monster[1].worldX = gp.TILE_SIZE * 11;
-//		gp.monster[1].worldY = gp.TILE_SIZE * 11;
+		gp.interactiveTile[i] = new DryTree(gp, 27, 12);
 		
+		i ++;
+		
+		gp.interactiveTile[i] = new DryTree(gp, 28, 12);
+		
+		i ++;
+		
+		gp.interactiveTile[i] = new DryTree(gp, 29, 12);
+		
+		i ++;
+		
+		gp.interactiveTile[i] = new DryTree(gp, 30, 12);
+		
+		i ++;
+		
+		gp.interactiveTile[i] = new DryTree(gp, 31, 12);
+		
+		i ++;
+		
+		gp.interactiveTile[i] = new DryTree(gp, 32, 12);
+		
+		i ++;
+		
+		gp.interactiveTile[i] = new DryTree(gp, 33, 12);
 	}
 }

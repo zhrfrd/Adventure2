@@ -238,6 +238,15 @@ public class Player extends Entity {
 	}
 	
 	/**
+	 * Handle damaging of interactive tiles such as dry trees...
+	 * 
+	 * @param i index of the interactive tile the player collided with.
+	 */
+	public void damageInteractiveTile(int i) {
+		if (i != 999 && gp.interactiveTile[i].destructible && gp.interactiveTile[i].isCorrectItem(this))
+			gp.interactiveTile[i] = null;
+	}
+	/**
 	 * Check if the player exp is high enough to level up.
 	 */
 	public void checkLevelUp() {
@@ -323,6 +332,9 @@ public class Player extends Entity {
 			int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);   // Check which monster got hit by the player
 			damageMonster(monsterIndex, attack );
 			
+			int interactiveTileIndex = gp.collisionChecker.checkEntity(this, gp.interactiveTile);
+			damageInteractiveTile(interactiveTileIndex);
+			
 			// After checking collision, restore original player position and solid area size
 			worldX = currentWorldX;
 			worldY = currentWorldY;
@@ -376,6 +388,9 @@ public class Player extends Entity {
 			// Check monster collision
 			int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
 			contactMonster(monsterIndex);
+			
+			// Check interactive tiles collision
+			int interactiveTileIndex = gp.collisionChecker.checkEntity(this, gp.interactiveTile);
 			
 			// Check event
 			gp.eventHandler.checkEvent();
