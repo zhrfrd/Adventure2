@@ -9,8 +9,8 @@ public class Particle extends Entity {
 	Entity generator;   // Entity that produces this particle
 	Color color;
 	int size;
-	int xd;   // Particle direction (top-left: -1, -1; top-right: , -1; bottom-left: -1, 1; bottom-right: 1, 1)
-	int yd;   //
+	int xDirection;   // Particle direction vector (eg. top-left: -1, -1; top-right: , -1; bottom-left: -1, 1; bottom-right: 1, 1)
+	int yDirection;   //
 	
 	/**
 	 * Particle generated when hitting a specific entity.
@@ -24,7 +24,7 @@ public class Particle extends Entity {
 	 * @param xd Direction of the particle along the x axis (-1 or 1)
 	 * @param yd Direction of the particle along the y axis (-1 or 1)
 	 */
-	public Particle(GamePanel gp, Entity generator, Color color, int size, int speed, int maxLife, int xd, int yd) {
+	public Particle(GamePanel gp, Entity generator, Color color, int size, int speed, int maxLife, int xDirection, int yDirection) {
 		super(gp);
 		
 		this.generator = generator;
@@ -32,12 +32,12 @@ public class Particle extends Entity {
 		this.size = size;
 		this.speed = speed;
 		this.maxLife = maxLife;
-		this.xd = xd;
-		this.yd = yd;
+		this.xDirection = xDirection;
+		this.yDirection = yDirection;
 		life = maxLife;
-		int offset = (gp.TILE_SIZE / 2) - (size / 2);
+		int offset = (gp.TILE_SIZE / 2) - (size / 2);   // Add offset to particle worldX and worldY in order to center it to the tile from where it's originated
 		worldX = generator.worldX + offset;
-		worldY = generator.worldY + offset;
+		worldY = generator.worldY + offset; 
 	}
 	@Override
 	/**
@@ -46,8 +46,12 @@ public class Particle extends Entity {
 	public void update() {
 		life --;
 		
-		worldX += xd * speed;
-		worldY += yd * speed;
+		// Add a little bit of physics to the falling particles
+		if (life < maxLife / 3) 
+			yDirection ++;
+		
+		worldX += xDirection * speed;
+		worldY += yDirection * speed;
 		
 		if (life == 0) 
 			alive = false;

@@ -203,10 +203,10 @@ public class Entity {
 		int speed = generator.getParticleSpeed();
 		int maxLife = generator.getParticleMaxLife();
 		
-		Particle p1 = new Particle(gp, generator, color, size, speed, maxLife, -1, -1);
-		Particle p2 = new Particle(gp, generator, color, size, speed, maxLife, 1, -1);
-		Particle p3 = new Particle(gp, generator, color, size, speed, maxLife, -1, 1);
-		Particle p4 = new Particle(gp, generator, color, size, speed, maxLife, 1, 1);
+		Particle p1 = new Particle(gp, generator, color, size, speed, maxLife, -2, -1);
+		Particle p2 = new Particle(gp, generator, color, size, speed, maxLife, 2, -1);
+		Particle p3 = new Particle(gp, generator, color, size, speed, maxLife, -2, 1);
+		Particle p4 = new Particle(gp, generator, color, size, speed, maxLife, 2, 1);
 		gp.particleList.add(p1);
 		gp.particleList.add(p2);
 		gp.particleList.add(p3);
@@ -293,8 +293,9 @@ public class Entity {
 	}
 	
 	/**
-	 * Draw any entity in the game panel using Graphics2D. The drawing will be done every game update
-	 * @param g2 Graphics2D responsible for drawing.
+	 * Draw any entity in the game panel using Graphics2D. The drawing will be done every game update.
+	 * 
+	 * @param g2 The "paint-brush" responsible for drawing on the game panel.
 	 */
 	public void draw(Graphics2D g2) {
 		BufferedImage image = null;

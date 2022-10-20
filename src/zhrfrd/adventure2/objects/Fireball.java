@@ -1,5 +1,7 @@
 package zhrfrd.adventure2.objects;
 
+import java.awt.Color;
+
 import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.entities.Projectile;
 import zhrfrd.adventure2.main.GamePanel;
@@ -59,5 +61,53 @@ public class Fireball extends Projectile {
 	@Override
 	public void subtractResource(Entity user) {
 		user.mana -= useCost;
+	}
+	
+	@Override
+	/**
+	 * Get the color of the particle.
+	 * 
+	 * @return The color of the particle. 
+	 */
+	public Color getParticleColor() {
+		Color color = new Color(220, 0, 0);
+		
+		return color;
+	}
+	
+	@Override
+	/**
+	 * Get the size of the particle in pixels.
+	 * 
+	 * @return The size of the particle in pixels.
+	 */
+	public int getParticleSize() {
+		int size = 10;   // Pixels
+		
+		return size;
+	}
+	
+	@Override
+	/**
+	 * Get the speed of the moving particle.
+	 * 
+	 * @return The speed of the moving particle.
+	 */
+	public int getParticleSpeed() {
+		int speed = 1;
+		
+		return speed;
+	}
+	
+	@Override
+	/**
+	 * Get the maximum life time of a particle.
+	 * 
+	 * @return The maximum life time value of the particle.
+	 */
+	public int getParticleMaxLife() {
+		int maxLife = 20;
+		
+		return maxLife;
 	}
 }
