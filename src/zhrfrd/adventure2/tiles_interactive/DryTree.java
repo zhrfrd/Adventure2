@@ -1,5 +1,7 @@
 package zhrfrd.adventure2.tiles_interactive;
 
+import java.awt.Color;
+
 import zhrfrd.adventure2.entities.Entity;
 import zhrfrd.adventure2.main.GamePanel;
 
@@ -15,17 +17,67 @@ public class DryTree extends InteractiveTile {
 		life = 3;
 	}
 	
+	@Override
 	/**
-	 * Play sound effect for the interactive tile 
+	 * Get the color of the dry tree's particle.
+	 * 
+	 * @return The color of the particle. 
+	 */
+	public Color getParticleColor() {
+		Color color = new Color(65, 50, 30);
+		
+		return color;
+	}
+	
+	@Override
+	/**
+	 * Get the size of the particle in pixels.
+	 * 
+	 * @return The size of the particle in pixels.
+	 */
+	public int getParticleSize() {
+		int size = 6;   // Pixels
+		
+		return size;
+	}
+	
+	@Override
+	/**
+	 * Get the speed of the moving particle.
+	 * 
+	 * @return The speed of the moving particle.
+	 */
+	public int getParticleSpeed() {
+		int speed = 1;
+		
+		return speed;
+	}
+	
+	@Override
+	/**
+	 * Get the maximum life time of a particle.
+	 * 
+	 * @return The maximum life time value of the particle.
+	 */
+	public int getParticleMaxLife() {
+		int maxLife = 20;
+		
+		return maxLife;
+	}
+	
+	@Override
+	/**
+	 * Play sound effect for the interactive tile.
 	 */
 	public void playSoundEffect() {
 		gp.playSoundEffect(11);
 	}
 	
+	@Override
 	/**
-	 * Get the changed (destroyed) form of the interactive tile
+	 * Get the changed (destroyed) form of the interactive tile.
 	 * 
-	 * @return The changed (destroyed) form of the interactive tile
+	 * @return The changed (destroyed) form of the interactive tile.
 	 */
 	public InteractiveTile getDestroyedForm() {
 		InteractiveTile tile = new Trunk(gp, worldX / gp.TILE_SIZE, worldY / gp.TILE_SIZE);
@@ -33,6 +85,7 @@ public class DryTree extends InteractiveTile {
 		return tile;
 	}
 	
+	@Override
 	/**
 	 * Check if the item the player is holding is correct in order to break the dry tree.
 	 * 

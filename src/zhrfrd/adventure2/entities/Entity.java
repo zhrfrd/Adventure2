@@ -147,8 +147,73 @@ public class Entity {
 			break;
 		}
 	}
+	/**
+	 * Get the color of the particle.
+	 * 
+	 * @return The color of the particle. 
+	 */
+	public Color getParticleColor() {
+		Color color = null;
+		
+		return color;
+	}
 	
-	/*
+	/**
+	 * Get the size of the particle in pixels.
+	 * 
+	 * @return The size of the particle in pixels.
+	 */
+	public int getParticleSize() {
+		int size = 0;   // Pixels
+		
+		return size;
+	}
+	
+	/**
+	 * Get the speed of the moving particle.
+	 * 
+	 * @return The speed of the moving particle.
+	 */
+	public int getParticleSpeed() {
+		int speed = 0;
+		
+		return speed;
+	}
+	
+	/**
+	 * Get the maximum life time of a particle.
+	 * 
+	 * @return The maximum life time value of the particle.
+	 */
+	public int getParticleMaxLife() {
+		int maxLife = 0;
+		
+		return maxLife;
+	}
+	
+	/**
+	 * Generate the particle from the generator to the target. In some cases target is the same entity as the generator.
+	 * 
+	 * @param generator The entity source from where the particle is created.
+	 * @param target The entity target.
+	 */
+	public void generateParticle(Entity generator, Entity target) {
+		Color color = generator.getParticleColor();
+		int size = generator.getParticleSize();
+		int speed = generator.getParticleSpeed();
+		int maxLife = generator.getParticleMaxLife();
+		
+		Particle p1 = new Particle(gp, generator, color, size, speed, maxLife, -1, -1);
+		Particle p2 = new Particle(gp, generator, color, size, speed, maxLife, 1, -1);
+		Particle p3 = new Particle(gp, generator, color, size, speed, maxLife, -1, 1);
+		Particle p4 = new Particle(gp, generator, color, size, speed, maxLife, 1, 1);
+		gp.particleList.add(p1);
+		gp.particleList.add(p2);
+		gp.particleList.add(p3);
+		gp.particleList.add(p4);
+	}
+	
+	/**
 	 * Update entity status
 	 */
 	public void update() {
@@ -297,8 +362,8 @@ public class Entity {
 			// Reset the transparency of the entity sprite
 			changeAlpha(g2, 1f); 
 			
-			g2.setColor(Color.red);
-			g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+//			g2.setColor(Color.red);
+//			g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 		}
 		
 	}
@@ -329,8 +394,13 @@ public class Entity {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
 	}
 	
-	/*
-	 * Handle instantiation, import of images and scaling
+	/**
+	 * Handle instantiation, import of images and scaling.
+	 * 
+	 * @param imagePath The path of the image in the resource folder.
+	 * @param width The width of the image.
+	 * @param height The height of the image.
+	 * @return The scaled up image.
 	 */
 	public BufferedImage setup(String imagePath, int width, int height) {
 		UtilityTool utilityTool = new UtilityTool();

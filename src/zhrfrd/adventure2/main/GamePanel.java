@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public Entity monster[] = new Entity[20];
 	public InteractiveTile interactiveTile[] = new InteractiveTile[50];
 	public ArrayList<Entity> projectileList = new ArrayList<>();
+	public ArrayList<Entity> particleList = new ArrayList<>();
 	ArrayList<Entity> entityList = new ArrayList<>();
 	// Game state
 	public int gameState;
@@ -84,8 +85,8 @@ public class GamePanel extends JPanel implements Runnable {
 		gameThread.start();
 	}
 
-	/*
-	 * Update information such as character position
+	/**
+	 * Update information such as character, monsters, npcs, projectiles, particles, interactive tiles....
 	 */
 	public void update() {
 		if (gameState == playState) {
@@ -118,6 +119,17 @@ public class GamePanel extends JPanel implements Runnable {
 					// Remove projectile if it's not alive
 					if (!projectileList.get(i).alive)
 						projectileList.remove(i);
+				}
+
+			// Particle
+			for (int i = 0; i < particleList.size(); i++)
+				if (particleList.get(i) != null) {
+					if (particleList.get(i).alive)
+						particleList.get(i).update();
+
+					// Remove particle if it's not alive
+					if (!particleList.get(i).alive)
+						particleList.remove(i);
 				}
 
 			// Interactive tiles
@@ -205,14 +217,17 @@ public class GamePanel extends JPanel implements Runnable {
 			for (int i = 0; i < projectileList.size(); i++)
 				if (projectileList.get(i) != null)
 					entityList.add(projectileList.get(i));
+			
+			// Add particle list to array list
+			for (int i = 0; i < particleList.size(); i++)
+				if (particleList.get(i) != null)
+					entityList.add(particleList.get(i));
 
-			// Sort the order to display the entities inside entityList to avoid
-			// overlapping. (eg. if player comes from the top toward an npc, the npc should
+			// Sort the order to display the entities inside entityList to avoid overlapping. (eg. if player comes from the top toward an npc, the npc should
 			// overlap the player so, it should be drawn after the player. otherwise the
 			// opposite)
 			Collections.sort(entityList, new Comparator<Entity>() {
-				// Compare the worldY of the two entities. If e1 < e1 return -1, if e1 == e2
-				// return 0, if e1 > e2 return 1
+				// Compare the worldY of the two entities. If e1 < e1 return -1, if e1 == e2 return 0, if e1 > e2 return 1
 				@Override
 				public int compare(Entity e1, Entity e2) {
 					int result = Integer.compare(e1.worldY, e2.worldY);

@@ -9,8 +9,8 @@ public class InteractiveTile extends Entity {
 
 	public InteractiveTile(GamePanel gp, int col, int row) {
 		super(gp);
-		this.gp = gp;
 		
+		this.gp = gp;
 		this.worldX = gp.TILE_SIZE * col;
 		this.worldY = gp.TILE_SIZE * row;
 	}

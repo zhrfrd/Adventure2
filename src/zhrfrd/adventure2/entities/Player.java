@@ -249,6 +249,7 @@ public class Player extends Entity {
 			gp.interactiveTile[i].life --;
 			gp.interactiveTile[i].invincible = true;
 			
+			generateParticle(gp.interactiveTile[i], gp.interactiveTile[i]);   // Generate particles when damaging
 			
 			if (gp.interactiveTile[i].life == 0)
 				gp.interactiveTile[i] = gp.interactiveTile[i].getDestroyedForm();
@@ -548,21 +549,21 @@ public class Player extends Entity {
 		// Reset the transparency of the player sprite
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		
-		// Debug
-		g2.setColor(Color.red);
-		g2.drawRect(SCREEN_X + solidArea.x, SCREEN_Y + solidArea.y, solidArea.width, solidArea.height);
-		// Attack solid area
-		int ttempScreenX = SCREEN_X + solidArea.x;
-		int ttempScreenY = SCREEN_Y + solidArea.y;		
-		switch(direction) {
-		case "up": ttempScreenY = SCREEN_Y - attackArea.height; break;
-		case "down": ttempScreenY = SCREEN_Y + gp.TILE_SIZE; break; 
-		case "left": ttempScreenX = SCREEN_X - attackArea.width; break;
-		case "right": ttempScreenX = SCREEN_X + gp.TILE_SIZE; break;
-		}				
-		g2.setColor(Color.blue);
-        g2.setStroke(new BasicStroke(1));
-		g2.drawRect(ttempScreenX, ttempScreenY, attackArea.width, attackArea.height);
+//		// Debug
+//		g2.setColor(Color.red);
+//		g2.drawRect(SCREEN_X + solidArea.x, SCREEN_Y + solidArea.y, solidArea.width, solidArea.height);
+//		// Attack solid area
+//		int ttempScreenX = SCREEN_X + solidArea.x;
+//		int ttempScreenY = SCREEN_Y + solidArea.y;		
+//		switch(direction) {
+//		case "up": ttempScreenY = SCREEN_Y - attackArea.height; break;
+//		case "down": ttempScreenY = SCREEN_Y + gp.TILE_SIZE; break; 
+//		case "left": ttempScreenX = SCREEN_X - attackArea.width; break;
+//		case "right": ttempScreenX = SCREEN_X + gp.TILE_SIZE; break;
+//		}				
+//		g2.setColor(Color.blue);
+//        g2.setStroke(new BasicStroke(1));
+//		g2.drawRect(ttempScreenX, ttempScreenY, attackArea.width, attackArea.height);
 		
 	}
 }
