@@ -301,7 +301,7 @@ public class UI {
 	 */
 	public void drawCharacterScreen() {
 		// Frame
-		final int frameX = gp.TILE_SIZE;
+		final int frameX = gp.TILE_SIZE * 2;
 		final int frameY = gp.TILE_SIZE;
 		final int frameWidth = gp.TILE_SIZE * 5;
 		final int frameHeight = gp.TILE_SIZE * 10;
@@ -406,7 +406,7 @@ public class UI {
 	 */
 	public void drawInventory() {
 		// Frame
-		int frameX = gp.TILE_SIZE * 9;
+		int frameX = gp.TILE_SIZE * 12;
 		int frameY = gp.TILE_SIZE;
 		int frameWidth = gp.TILE_SIZE * 6;
 		int frameHeight = gp.TILE_SIZE * 5;
