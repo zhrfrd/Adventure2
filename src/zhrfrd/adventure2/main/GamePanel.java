@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,9 +20,9 @@ public class GamePanel extends JPanel implements Runnable {
 	final int ORIGINAL_TILE_SIZE = 16; // 16x16 pixels tile
 	final int SCALE = 3; // Re-scale tiles
 	public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // 48*48 pixels tile
-	public final int MAX_SCREEN_COL = 20; // Max tiles to display on the screen
+	public final int MAX_SCREEN_COL = 16; // Max tiles to display on the screen
 	public final int MAX_SCREEN_ROW = 12; //
-	public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 960 pixels
+	public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
 	public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
 	// World Settings
 	public final int MAX_WORLD_COL = 50;
@@ -33,11 +30,6 @@ public class GamePanel extends JPanel implements Runnable {
 	final int FPS = 60;
 	int drawCount = 0;
 	long drawTime = 0;
-	// Full screen
-	int screenWidth2 = SCREEN_WIDTH;
-	int screenHeight2 = SCREEN_HEIGHT;
-	BufferedImage tempScreen;
-	Graphics2D g2;
 	// System
 	Thread gameThread;
 	public KeyHandler keyHandler = new KeyHandler(this);
@@ -83,21 +75,6 @@ public class GamePanel extends JPanel implements Runnable {
 		assetSetter.setInteractiveTile();
 //		playSoundTrack(0);   // Play sound-track
 		gameState = titleState;
-		tempScreen = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);   // Blank buffered image large as the game screen (not the monitor). Draw first to tempScreen and then to JPanel
-		g2 = (Graphics2D)tempScreen.getGraphics();   // "Paint brush" for tempScreen
-		
-//		setFullScreen();
-	}
-	
-	public void setFullScreen() {
-		// Get local screen device
-		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
-		graphicsDevice.setFullScreenWindow(Main.window);
-		
-		// Get full screen width and height to be used in drawToScreen()
-		screenWidth2 = Main.window.getWidth();
-		screenHeight2 = Main.window.getHeight();
 	}
 
 	/*
@@ -187,11 +164,16 @@ public class GamePanel extends JPanel implements Runnable {
 		soundEffect.setFile(i);
 		soundEffect.play();
 	}
-	
-	/**
-	 * Draw to a temporary screen (BufferedImage) before drawing to the actual screen to allow screen resize to maximum size.
+
+	/*
+	 * To paint on a subclass of a JPanel you must override paintComponent()
 	 */
-	public void drawToTempScreen() {
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g); // Must be done for the JPanel painting takes place
+
+		Graphics2D g2 = (Graphics2D)g;
+
 		// Debug performance
 		long drawStart = 0;
 
@@ -285,15 +267,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (drawCount >= 1000)
 			drawCount = 0;
 
-	}
-	
-	/**
-	 * Draw to the actual screen by using the temporary screen BufferedImage (see drawToTempScreen()).
-	 */
-	public void drawToScreen() {
-		Graphics g = getGraphics();
-		g.drawImage(tempScreen,  0,  0, screenWidth2, screenHeight2, null);
-		g.dispose();
+		g2.dispose(); // Dispose g2 in order to save resources
 	}
 
 	@Override
@@ -312,8 +286,7 @@ public class GamePanel extends JPanel implements Runnable {
 			// Every 0.01666 seconds (60 FPS)
 			if (delta >= 1) {
 				update(); // Update information such as character position
-				drawToTempScreen(); // Draw everything to the BufferedImage tempScreen
-				drawToScreen(); // Draw the BufferedImage to the actual screen
+				repaint(); // Call paintComponent() to draw the screen with the updated information
 
 				delta--;
 			}
