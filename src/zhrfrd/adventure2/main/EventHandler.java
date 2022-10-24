@@ -51,9 +51,9 @@ public class EventHandler {
 
 		if (canTouchEvent) {
 			if (hit(27, 16, "right"))
-				damagePit(27, 16, gp.dialogState);
+				damagePit(27, 16, gp.DIALOG_STATE);
 			if (hit(23, 12, "up"))
-				healingPool(23, 12, gp.dialogState);
+				healingPool(23, 12, gp.DIALOG_STATE);
 		}
 	}
 

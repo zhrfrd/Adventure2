@@ -30,6 +30,9 @@ public class GamePanel extends JPanel implements Runnable {
 	final int FPS = 60;
 	int drawCount = 0;
 	long drawTime = 0;
+	// TODO
+	// Full screen
+	public boolean fullScreenOn = false;
 	// System
 	Thread gameThread;
 	public KeyHandler keyHandler = new KeyHandler(this);
@@ -51,11 +54,13 @@ public class GamePanel extends JPanel implements Runnable {
 	ArrayList<Entity> entityList = new ArrayList<>();
 	// Game state
 	public int gameState;
-	public final int titleState = 0;
-	public final int playState = 1;
-	public final int pauseState = 2;
-	public final int dialogState = 3;
-	public final int characterState = 4;
+	public final int TITLE_STATE = 0;
+	public final int PLAY_STATE = 1;
+	public final int PAUSE_STATE = 2;
+	public final int DIALOG_STATE = 3;
+	public final int CHARACTER_STATE = 4;
+	public final int OPTIONS_STATE = 5;
+	
 
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -74,7 +79,7 @@ public class GamePanel extends JPanel implements Runnable {
 		assetSetter.setMonster();
 		assetSetter.setInteractiveTile();
 //		playSoundTrack(0);   // Play sound-track
-		gameState = titleState;
+		gameState = TITLE_STATE;
 	}
 
 	/*
@@ -89,7 +94,7 @@ public class GamePanel extends JPanel implements Runnable {
 	 * Update information such as character, monsters, npcs, projectiles, particles, interactive tiles....
 	 */
 	public void update() {
-		if (gameState == playState) {
+		if (gameState == PLAY_STATE) {
 			// Player
 			player.update();
 			// NPC
@@ -181,7 +186,7 @@ public class GamePanel extends JPanel implements Runnable {
 			drawStart = System.nanoTime();
 
 		// Title screen
-		if (gameState == titleState) {
+		if (gameState == TITLE_STATE) {
 			ui.draw(g2);
 		}
 

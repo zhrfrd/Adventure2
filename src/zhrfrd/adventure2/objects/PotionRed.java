@@ -24,7 +24,7 @@ public class PotionRed extends Entity {
 	 */
 	@Override
 	public void use(Entity entity) {
-		gp.gameState = gp.dialogState;
+		gp.gameState = gp.DIALOG_STATE;
 		gp.ui.currentDialog = "You drunk the " + name + "!\nYour life has been recovered by " + value + ".";
 		entity.life += value;
 		 

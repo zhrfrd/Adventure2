@@ -181,7 +181,7 @@ public class Player extends Entity {
 			// If the player collided with an existing npc, do interaction
 			if (i != 999) {
 				attackCancelled = true;
-				gp.gameState = gp.dialogState;
+				gp.gameState = gp.DIALOG_STATE;
 				gp.npc[i].speak();
 			}
 		}
@@ -269,7 +269,7 @@ public class Player extends Entity {
 			defence = getDefence();   // and defence
 			
 			gp.playSoundEffect(8);
-			gp.gameState = gp.dialogState;
+			gp.gameState = gp.DIALOG_STATE;
 			gp.ui.currentDialog = "You are level " + level + " now!\n" + "You feel stronger but nothing will stop\nyou from paying your taxes!";
 		}
 	}

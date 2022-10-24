@@ -32,6 +32,7 @@ public class UI {
 	public int commandNumber = 0;
 	public int slotCol = 0;
 	public int slotRow = 0;
+	int subState = 0;
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
@@ -71,8 +72,10 @@ public class UI {
 		messageCounter.add(0); 
 	}
 	
-	/*
-	 * Draw UI elements in the panel (don't instantiate here. Since  draw(Graphics2D g2) will be called 60 times per seconds it will affect the performance of the game)
+	/**
+	 * Draw UI elements in the panel (don't instantiate here. Since  draw(Graphics2D g2) will be called 60 times per seconds it will affect the performance of the game).
+	 * 
+	 * @param g2 The "paint-brush" responsible for drawing on the game panel.
 	 */
 	public void draw(Graphics2D g2) {
 		this.g2 = g2;
@@ -81,36 +84,153 @@ public class UI {
 		g2.setColor(Color.white);
 		
 		// Title state
-		if (gp.gameState == gp.titleState)
+		if (gp.gameState == gp.TITLE_STATE)
 			drawTitleScreen();
 		
 		// Play state
-		if (gp.gameState == gp.playState) {
+		if (gp.gameState == gp.PLAY_STATE) {
 			drawPlayerLife();
 			drawPlayerMana();
 			drawMessage();
 		}
 		
 		// Pause state
-		if (gp.gameState == gp.pauseState) {
+		if (gp.gameState == gp.PAUSE_STATE) {
 			drawPlayerLife();
 			drawPlayerMana();
 			drawPauseScreen();
 		}
 		
 		// Dialog state
-		if (gp.gameState == gp.dialogState) {
+		if (gp.gameState == gp.DIALOG_STATE) {
 			drawPlayerLife();
 			drawPlayerMana();
 			drawDialogScreen();
 		}
 		
 		// Character state
-		if (gp.gameState == gp.characterState) {
+		if (gp.gameState == gp.CHARACTER_STATE) {
 			drawCharacterScreen();
 			drawInventory();
 		}
+		
+		// Options state
+		if (gp.gameState == gp.OPTIONS_STATE) {
+			drawOptionsScreen();
+		}
 	}
+	
+	/**
+	 * Draw the options screen.
+	 */
+	public void drawOptionsScreen() {
+		g2.setColor(Color.white);
+		g2.setFont(RETGANON_PLAIN_30);
+		
+		// Sub window
+		int frameX = gp.TILE_SIZE * 4;
+		int frameY = gp.TILE_SIZE;
+		int frameWidth = gp.TILE_SIZE * 8;
+		int frameHeight = gp.TILE_SIZE * 10;
+		
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+		
+		switch (subState) {
+			case 0: options_top(frameX, frameY); break;
+			case 1: break;
+			case 2: break;
+		}
+		
+		gp.keyHandler.enterPressed = false;
+	}
+	
+	/**
+	 * Top part of the options menu.
+	 * 
+	 * @param frameX X position of the options menu on the screen.
+	 * @param frameY Y position of the options menu on the screen.
+	 */
+	public void options_top(int frameX, int frameY) {
+		int textX;
+		int textY;
+		
+		// Title
+		String text = "Options";
+		textX = getXforCenteredText(text);
+		textY = frameY + gp.TILE_SIZE;
+		g2.drawString(text, textX, textY);
+		
+		//TODO
+		// Full screen ON/OFF
+		textX = frameX + gp.TILE_SIZE;
+		textY += gp.TILE_SIZE * 2;
+		g2.drawString("Full Screen", textX, textY);
+		
+		if (commandNumber == 0) {
+			g2.drawString(">", textX - 20, textY);
+			
+			// Check if it's full full screen or not in order to activate or disactivate the check box
+			if (gp.keyHandler.enterPressed) {
+				if (!gp.fullScreenOn)
+					gp.fullScreenOn = true;
+				
+				else if (gp.fullScreenOn)
+					gp.fullScreenOn = false; 
+			}
+		}
+		
+		// Music
+		textY += gp.TILE_SIZE;
+		g2.drawString("Music", textX, textY);
+		
+		if (commandNumber == 1)
+			g2.drawString(">", textX - 20, textY);
+		
+		// Sound effects
+		textY += gp.TILE_SIZE;
+		g2.drawString("Sound effects", textX, textY);
+		
+		if (commandNumber == 2)
+			g2.drawString(">", textX - 20, textY);
+		
+		// Control
+		textY += gp.TILE_SIZE;
+		g2.drawString("Control", textX, textY);
+		
+		if (commandNumber == 3)
+			g2.drawString(">", textX - 20, textY);
+		
+		// End game
+		textY += gp.TILE_SIZE;
+		g2.drawString("End game", textX, textY);
+		
+		if (commandNumber == 4)
+			g2.drawString(">", textX - 20, textY);
+		
+		// End game
+		textY += gp.TILE_SIZE * 2;
+		g2.drawString("Back", textX, textY);
+		
+		if (commandNumber == 5)
+			g2.drawString(">", textX - 20, textY);
+		
+		// Full screen check box
+		textX = frameX + (int) (gp.TILE_SIZE * 4.5);
+		textY = frameY + gp.TILE_SIZE * 2 + 24;
+		g2.setStroke(new BasicStroke(3));
+		g2.drawRect(textX, textY, 24, 24);
+		
+		if (gp.fullScreenOn) 
+			g2.fillRect(textX, textY, 24, 24);
+		
+		// Music volume
+		textY += gp.TILE_SIZE;
+		g2.drawRect(textX, textY, 120, 24);
+		
+		// Sound effect
+		textY += gp.TILE_SIZE;
+		g2.drawRect(textX, textY, 120, 24);
+	 }
 	
 	/**
 	 * Draw the player's life on the screen.
@@ -296,8 +416,8 @@ public class UI {
 		}
 	}
 	
-	/*
-	 * Handle drawing of the character screen
+	/**
+	 * Handle drawing of the character screen.
 	 */
 	public void drawCharacterScreen() {
 		// Frame
@@ -401,12 +521,12 @@ public class UI {
 		g2.drawImage(gp.player.currentShield.down1, tailX - gp.TILE_SIZE, textY - 14, null);
 	}
 	
-	/*
+	/**
 	 * Handle drawing of the inventory screen
 	 */
 	public void drawInventory() {
 		// Frame
-		int frameX = gp.TILE_SIZE * 12;
+		int frameX = gp.TILE_SIZE * 9;
 		int frameY = gp.TILE_SIZE;
 		int frameWidth = gp.TILE_SIZE * 6;
 		int frameHeight = gp.TILE_SIZE * 5;

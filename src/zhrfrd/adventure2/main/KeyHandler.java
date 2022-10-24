@@ -12,8 +12,10 @@ public class KeyHandler implements KeyListener {
 		this.gp = gp;
 	}
 	
-	/*
-	 * Handle title state
+	/**
+	 * Handle the title screen state.
+	 * 
+	 * @param code The key pressed.
 	 */
 	public void titleState(int code) {
 		// Move cursor through the menu when pressing the keys W and S
@@ -34,7 +36,7 @@ public class KeyHandler implements KeyListener {
 		// Select from menu
 		if (code == KeyEvent.VK_ENTER) {
 			if (gp.ui.commandNumber == 0) {
-				gp.gameState = gp.playState;
+				gp.gameState = gp.PLAY_STATE;
 //				gp.playSoundTrack(0);
 			}
 			
@@ -48,8 +50,10 @@ public class KeyHandler implements KeyListener {
 		}
 	}
 	
-	/*
-	 * Handle play state
+	/**
+	 * Handle the play state.
+	 * 
+	 * @param code The key pressed.
 	 */
 	public void playState(int code) {
 		if (code == KeyEvent.VK_W)
@@ -65,16 +69,19 @@ public class KeyHandler implements KeyListener {
 			rightPressed = true;
 		
 		if (code == KeyEvent.VK_P)
-			gp.gameState = gp.pauseState;
+			gp.gameState = gp.PAUSE_STATE;
 		
 		if (code == KeyEvent.VK_C)
-			gp.gameState = gp.characterState;
+			gp.gameState = gp.CHARACTER_STATE;
 		
 		if (code == KeyEvent.VK_ENTER)
 			enterPressed = true;
 		
 		if (code == KeyEvent.VK_F)
 			shotKeyPressed = true;
+		
+		if (code == KeyEvent.VK_ESCAPE)
+			gp.gameState = gp.OPTIONS_STATE;
 		
 		// Debug 
 		if (code == KeyEvent.VK_T) {
@@ -90,28 +97,34 @@ public class KeyHandler implements KeyListener {
 			gp.tileManager.loadMap("/maps/worldV2.txt");
 	}
 
-	/*
-	 * Handle pause state
+	/**
+	 * Handle the pause state.
+	 * 
+	 * @param code The key pressed.
 	 */
 	public void pauseState(int code) {
 		if (code == KeyEvent.VK_P)
-			gp.gameState = gp.playState;
+			gp.gameState = gp.PLAY_STATE;
 	}
 
-	/*
-	 * Handle dialogState
+	/**
+	 * Handle the dialog state.
+	 * 
+	 * @param code The key pressed.
 	 */
 	public void dialogState(int code) {
 		if (code == KeyEvent.VK_ENTER)
-			gp.gameState = gp.playState;
+			gp.gameState = gp.PLAY_STATE;
 	}
 	
-	/*
-	 * Handle character state
+	/**
+	 * Handle the character menu state.
+	 * 
+	 * @param code The key pressed.
 	 */
 	public void characterState(int code) {
 		if (code == KeyEvent.VK_C)
-			gp.gameState = gp.playState;
+			gp.gameState = gp.PLAY_STATE;
 		
 		// Move the cursor around the inventory page without going out from its frame
 		if (code == KeyEvent.VK_W) {
@@ -147,29 +160,69 @@ public class KeyHandler implements KeyListener {
 			gp.player.selectItem();
 	}
 
+	/**
+	 * Handle the option menu state.
+	 * 
+	 * @param code The key pressed.
+	 */
+	public void optionsState(int code) {
+		if (code == KeyEvent.VK_ESCAPE)
+			gp.gameState = gp.PLAY_STATE;
+		
+		if (code == KeyEvent.VK_ENTER)
+			enterPressed = true;
+		
+		int maxCommandNumber = 0;
+		
+		switch (gp.ui.subState) {
+			case 0: maxCommandNumber = 5;
+		}
+		
+		// Move the cursor around the option menu
+		if (code == KeyEvent.VK_W) {
+			gp.ui.commandNumber --;
+			gp.playSoundEffect(9);
+			
+			if (gp.ui.commandNumber < 0)
+				gp.ui.commandNumber = maxCommandNumber;
+		} 
+		
+		if (code == KeyEvent.VK_S) {
+			gp.ui.commandNumber ++;
+			gp.playSoundEffect(9);
+			
+			if (gp.ui.commandNumber > maxCommandNumber)
+				gp.ui.commandNumber = 0;	
+		} 
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		
 		// Title state
-		if (gp.gameState == gp.titleState) 
+		if (gp.gameState == gp.TITLE_STATE) 
 			titleState(code);
 		
 		// Play state
-		else if (gp.gameState == gp.playState)
+		else if (gp.gameState == gp.PLAY_STATE)
 			playState(code);
 		
 		// Pause state
-		else if (gp.gameState == gp.pauseState)
+		else if (gp.gameState == gp.PAUSE_STATE)
 			pauseState(code);
 		
 		// Dialog state
-		else if (gp.gameState == gp.dialogState)
+		else if (gp.gameState == gp.DIALOG_STATE)
 			dialogState(code);
 		
 		// Character state
-		else if (gp.gameState == gp.characterState)
+		else if (gp.gameState == gp.CHARACTER_STATE)
 			characterState(code);
+		
+		// Options state
+		else if (gp.gameState == gp.OPTIONS_STATE)
+			optionsState(code);
 	}
 	
 	@Override
