@@ -345,6 +345,7 @@ public class UI {
 			g2.drawString(">",  textX - 25, textY);
 			
 			if (gp.keyHandler.enterPressed) {
+				gp.stopSoundTrack();
 				subState = 0;
 				gp.gameState = gp.TITLE_STATE;
 			}
