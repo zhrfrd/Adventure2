@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public boolean fullScreenOn = false;
 	// System
 	Thread gameThread;
+	Config config = new Config(this);
 	public KeyHandler keyHandler = new KeyHandler(this);
 	TileManager tileManager = new TileManager(this);
 	public CollisionChecker collisionChecker = new CollisionChecker(this);

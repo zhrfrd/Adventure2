@@ -1,8 +1,6 @@
 package zhrfrd.adventure2.entities;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -10,10 +8,10 @@ import java.util.ArrayList;
 
 import zhrfrd.adventure2.main.GamePanel;
 import zhrfrd.adventure2.main.KeyHandler;
-import zhrfrd.adventure2.objects.Axe;
 import zhrfrd.adventure2.objects.Fireball;
 import zhrfrd.adventure2.objects.Key;
 import zhrfrd.adventure2.objects.ShieldWood;
+import zhrfrd.adventure2.objects.SwordNormal;
 
 public class Player extends Entity {
 	KeyHandler keyHandler;
@@ -62,8 +60,8 @@ public class Player extends Entity {
 		exp = 0;
 		nextLevelExp = 5;
 		coin = 0;
-//		currentWeapon = new SwordNormal(gp);
-		currentWeapon = new Axe(gp);
+		currentWeapon = new SwordNormal(gp);
+//		currentWeapon = new Axe(gp);
 		currentShield = new ShieldWood(gp);
 		projectile = new Fireball(gp);
 		attack = getAttack();

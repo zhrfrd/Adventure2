@@ -37,7 +37,7 @@ public class KeyHandler implements KeyListener {
 		if (code == KeyEvent.VK_ENTER) {
 			if (gp.ui.commandNumber == 0) {
 				gp.gameState = gp.PLAY_STATE;
-//				gp.playSoundTrack(0);
+				gp.playSoundTrack(0);
 			}
 			
 			if (gp.ui.commandNumber == 1) {
@@ -175,7 +175,8 @@ public class KeyHandler implements KeyListener {
 		int maxCommandNumber = 0;
 		
 		switch (gp.ui.subState) {
-			case 0: maxCommandNumber = 5;
+			case 0: maxCommandNumber = 5; break;
+			case 3: maxCommandNumber = 1; break;
 		}
 		
 		// Move the cursor around the option menu
@@ -193,7 +194,40 @@ public class KeyHandler implements KeyListener {
 			
 			if (gp.ui.commandNumber > maxCommandNumber)
 				gp.ui.commandNumber = 0;	
-		} 
+		}
+		
+		// Change volume scale
+		if (code == KeyEvent.VK_A) {
+			if (gp.ui.subState == 0) {
+				// Sound track
+				if (gp.ui.commandNumber == 1 && gp.soundTrack.volumeScale > 0) {
+					gp.soundTrack.volumeScale --;
+					gp.soundTrack.checkVolume();
+					gp.playSoundEffect(9);
+				}
+				
+				// Sound effects
+				if (gp.ui.commandNumber == 2 && gp.soundEffect.volumeScale > 0) {
+					gp.soundEffect.volumeScale --;
+					gp.playSoundEffect(9);
+				}
+			}
+		}
+		
+		if (code == KeyEvent.VK_D) {
+			if (gp.ui.subState == 0) {
+				if (gp.ui.commandNumber == 1 && gp.soundTrack.volumeScale < 5) {
+					gp.soundTrack.volumeScale ++;
+					gp.soundTrack.checkVolume();
+					gp.playSoundEffect(9);
+				}
+				
+				if (gp.ui.commandNumber == 2 && gp.soundEffect.volumeScale < 5) {
+					gp.soundEffect.volumeScale ++;
+					gp.playSoundEffect(9);
+				}
+			}
+		}
 	}
 	
 	@Override

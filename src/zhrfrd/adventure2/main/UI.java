@@ -137,8 +137,9 @@ public class UI {
 		
 		switch (subState) {
 			case 0: options_top(frameX, frameY); break;
-			case 1: break;
-			case 2: break;
+			case 1: break;  //TODO Full screen
+			case 2: options_control(frameX, frameY); break;
+			case 3: options_endGameConfirmation(frameX, frameY); break;
 		}
 		
 		gp.keyHandler.enterPressed = false;
@@ -197,22 +198,40 @@ public class UI {
 		textY += gp.TILE_SIZE;
 		g2.drawString("Control", textX, textY);
 		
-		if (commandNumber == 3)
+		if (commandNumber == 3) {
 			g2.drawString(">", textX - 20, textY);
+			
+			if (gp.keyHandler.enterPressed) {
+				subState = 2;
+				commandNumber = 0;
+			}
+		}
 		
 		// End game
 		textY += gp.TILE_SIZE;
 		g2.drawString("End game", textX, textY);
 		
-		if (commandNumber == 4)
+		if (commandNumber == 4) {
 			g2.drawString(">", textX - 20, textY);
+			
+			if (gp.keyHandler.enterPressed) {
+				subState = 3;
+				commandNumber = 0;
+			}
+		}
 		
-		// End game
+		// Back
 		textY += gp.TILE_SIZE * 2;
 		g2.drawString("Back", textX, textY);
 		
-		if (commandNumber == 5)
+		if (commandNumber == 5) {
 			g2.drawString(">", textX - 20, textY);
+			
+			if (gp.keyHandler.enterPressed) {
+				gp.gameState = gp.PLAY_STATE;
+				commandNumber = 0;
+			}
+		}
 		
 		// Full screen check box
 		textX = frameX + (int) (gp.TILE_SIZE * 4.5);
@@ -225,12 +244,127 @@ public class UI {
 		
 		// Music volume
 		textY += gp.TILE_SIZE;
-		g2.drawRect(textX, textY, 120, 24);
+		g2.drawRect(textX, textY, 120, 24);  // 120 / 5 = 24 pixels for one scale unit
+		int volumeWidth = 24 * gp.soundTrack.volumeScale;
+		g2.fillRect(textX, textY, volumeWidth, 24);
 		
 		// Sound effect
 		textY += gp.TILE_SIZE;
 		g2.drawRect(textX, textY, 120, 24);
+		volumeWidth = 24 * gp.soundEffect.volumeScale;
+		g2.fillRect(textX, textY, volumeWidth, 24);
+		
+		gp.config.saveConfig();   // Save the game sattings to the configuration file
 	 }
+
+	/**
+	 * Control page showing the controls keys.
+	 * 
+	 * @param frameX X position of the control menu on the screen.
+	 * @param frameY X position of the control menu on the screen.
+	 */
+	public void options_control(int frameX, int frameY) {
+		int textX;
+		int textY;
+		
+		// Title
+		String text = "Control";
+		textX = getXforCenteredText(text);
+		textY = frameY + gp.TILE_SIZE;
+		g2.drawString(text, textX, textY);
+		
+		textX = frameX += gp.TILE_SIZE;
+		textY += gp.TILE_SIZE;
+		g2.drawString("Move", textX, textY);
+		textY += gp.TILE_SIZE;
+		g2.drawString("Confirm, Attack", textX, textY);
+		textY += gp.TILE_SIZE;
+		g2.drawString("Shoot, Cast", textX, textY);
+		textY += gp.TILE_SIZE;
+		g2.drawString("Character Screen", textX, textY);
+		textY += gp.TILE_SIZE;
+		g2.drawString("Pause", textX, textY);
+		textY += gp.TILE_SIZE;
+		g2.drawString("Options", textX, textY);
+		textY += gp.TILE_SIZE;
+		
+		textX = frameX + gp.TILE_SIZE * 5;
+		textY = frameY + gp.TILE_SIZE * 2;
+		g2.drawString("WASD", textX, textY);
+		textY += gp.TILE_SIZE;
+		g2.drawString("ENTER", textX, textY);
+		textY += gp.TILE_SIZE;
+		g2.drawString("F", textX, textY);
+		textY += gp.TILE_SIZE;
+		g2.drawString("C", textX, textY);
+		textY += gp.TILE_SIZE;
+		g2.drawString("P", textX, textY);
+		textY += gp.TILE_SIZE;
+		g2.drawString("ESC", textX, textY);
+		textY += gp.TILE_SIZE;
+		
+		// Back
+		textX = frameX + gp.TILE_SIZE;
+		textY = frameY + gp.TILE_SIZE * 9;
+		g2.drawString("Back", textX, textY);
+		if (commandNumber == 0) {
+			g2.drawString(">", textX - 25, textY);
+			
+			if (gp.keyHandler.enterPressed) {
+				subState = 0;
+				commandNumber = 3;
+			}
+		}
+		
+	}
+	
+	/**
+	 * Control page showing asking the user if he wants to wuit the game.
+	 * 
+	 * @param frameX X position of the end game menu on the screen.
+	 * @param frameY X position of the end game menu on the screen.
+	 */
+	public void options_endGameConfirmation(int frameX, int frameY) {
+		int textX = frameX + gp.TILE_SIZE;
+		int textY = frameY + gp.TILE_SIZE * 3;
+		
+		currentDialog = "Quit the game and return\n to the title screen?";
+		
+		for (String line: currentDialog.split("\n")) {
+			g2.drawString(line, textX, textY);
+			textY += 40;
+		}
+		
+		// Yes
+		String text = "Yes";
+		textX = getXforCenteredText(text);
+		textY += gp.TILE_SIZE * 3;
+		g2.drawString(text, textX, textY);
+		
+		if (commandNumber == 0) {
+			g2.drawString(">",  textX - 25, textY);
+			
+			if (gp.keyHandler.enterPressed) {
+				subState = 0;
+				gp.gameState = gp.TITLE_STATE;
+			}
+		}
+		
+		// No
+		text = "No";
+		textX = getXforCenteredText(text);
+		textY += gp.TILE_SIZE;
+		g2.drawString(text, textX, textY);
+		
+		if (commandNumber == 1) {
+			g2.drawString(">",  textX - 25, textY);
+			
+			if (gp.keyHandler.enterPressed) {
+				subState = 0;
+				commandNumber = 4;
+			}
+		}
+	}
 	
 	/**
 	 * Draw the player's life on the screen.

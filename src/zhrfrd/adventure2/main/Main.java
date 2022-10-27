@@ -16,6 +16,7 @@ public class Main {
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 		
+		gp.config.loadConfig();
 		gp.setupGame();
 		gp.startGameThread();
 	}
