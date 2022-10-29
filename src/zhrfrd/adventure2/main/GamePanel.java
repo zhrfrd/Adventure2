@@ -61,6 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int DIALOG_STATE = 3;
 	public final int CHARACTER_STATE = 4;
 	public final int OPTIONS_STATE = 5;
+	public final int GAMEOVER_STATE = 6;
 	
 
 	public GamePanel() {
@@ -83,12 +84,36 @@ public class GamePanel extends JPanel implements Runnable {
 		gameState = TITLE_STATE;
 	}
 
-	/*
-	 * Start the game thread
+	/**
+	 * Start the game thread.
 	 */
 	public void startGameThread() {
 		gameThread = new Thread(this);
 		gameThread.start();
+	}
+	
+	/**
+	 * If the player press the "Retry" button when he dies, reset his and other world's default values but keep his inventory.
+	 */
+	public void retry() {
+		player.setDefaultPosition();
+		player.restoreLifeAndMana();
+		assetSetter.setNPC();
+		assetSetter.setMonster();
+	}
+	
+	/**
+	 * Reset ALL the default values when the player want to restart a new game.
+	 */
+	public void restart() {
+		player.setDefaultValues();
+		player.setDefaultPosition();
+		player.restoreLifeAndMana();
+		player.setItems();
+		assetSetter.setObject();
+		assetSetter.setNPC();
+		assetSetter.setMonster();
+		assetSetter.setInteractiveTile();
 	}
 
 	/**

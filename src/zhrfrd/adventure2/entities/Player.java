@@ -41,12 +41,10 @@ public class Player extends Entity {
 	 * Set default values of the player when a new instance of Player is created.
 	 */
 	public void setDefaultValues() {
-		worldX = gp.TILE_SIZE * 23;   // Player starting position on the map
-		worldY = gp.TILE_SIZE * 21;   //
+		setDefaultPosition();
 //		worldX = gp.TILE_SIZE * 10;   // Player starting position on the map
 //		worldY = gp.TILE_SIZE * 13;   //
 		speed = 4;
-		direction = "down";   // Default direction
 		
 		// Stats
 		level = 1;
@@ -69,9 +67,28 @@ public class Player extends Entity {
 	}
 	
 	/**
+	 * Set the default position in the world for the player and his direction.
+	 */
+	public void setDefaultPosition() {
+		worldX = gp.TILE_SIZE * 23;
+		worldY = gp.TILE_SIZE * 21;
+		direction = "down";
+	}
+	
+	/**
+	 * Restore the original life, mana and invincibility state of the player.
+	 */
+	public void restoreLifeAndMana() {
+		life = maxLife;
+		mana = maxMana;
+		invincible = false;
+	}
+	
+	/**
 	 * Set items in the inventory.
 	 */
 	public void setItems() {
+		inventory.clear();   // If the player Restart the game, reset his inventory
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
 		inventory.add(new Key(gp));
@@ -475,6 +492,12 @@ public class Player extends Entity {
 		// Avoid mana overflow		
 		if (mana > maxMana)
 			mana = maxMana;
+		
+		// Game over if live <= 0
+		if (life <= 0) {
+			gp.gameState = gp.GAMEOVER_STATE;
+			gp.playSoundEffect(12);
+		}
 	}
 
 	/**

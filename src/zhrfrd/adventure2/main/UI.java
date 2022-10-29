@@ -115,9 +115,54 @@ public class UI {
 		}
 		
 		// Options state
-		if (gp.gameState == gp.OPTIONS_STATE) {
+		if (gp.gameState == gp.OPTIONS_STATE)
 			drawOptionsScreen();
-		}
+		
+		// Gameover state
+		if (gp.gameState == gp.GAMEOVER_STATE)
+			drawGameOverScreen();
+	}
+	
+	/**
+	 * Draw the game over screen when the player dies
+	 */
+	public void drawGameOverScreen() {
+		 g2.setColor(new Color(0, 0, 0, 150));
+		 g2.fillRect(0, 0, gp.SCREEN_WIDTH, gp.SCREEN_HEIGHT);
+		 
+		 int x;
+		 int y;
+		 String text;
+		 
+		 g2.setFont(RETGANON_BOLD_80);
+		 text = "Game Over!";
+		 // Text shadow
+		 g2.setColor(Color.black);
+		 x = getXforCenteredText(text);
+		 y = gp.TILE_SIZE * 4;
+		 g2.drawString(text, x, y);
+		 // Text
+		 g2.setColor(Color.white);
+		 g2.drawString(text, x - 4, y - 4);
+		 
+		 // Retry
+		 g2.setFont(RETGANON_PLAIN_40);
+		 text = "Retry";
+		 x = getXforCenteredText(text);
+		 y += gp.TILE_SIZE * 4;
+		 g2.drawString(text, x, y);
+		 
+		 if (commandNumber == 0)
+			 g2.drawString(">", x - 40, y);
+		 
+		 // Go back to the title screen
+		 text = "Quit";
+		 x = getXforCenteredText(text);
+		 y += 55;
+		 g2.drawString(text, x, y);
+		 
+		 if (commandNumber == 1)
+			 g2.drawString(">", x - 40, y);
 	}
 	
 	/**

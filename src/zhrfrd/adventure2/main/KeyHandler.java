@@ -230,6 +230,46 @@ public class KeyHandler implements KeyListener {
 		}
 	}
 	
+	/**
+	 * Handle the game over state.
+	 * 
+	 * @param code The key pressed.
+	 */
+	public void gameOverState(int code) {
+		if (code == KeyEvent.VK_W) {
+			gp.ui.commandNumber --;
+			
+			if (gp.ui.commandNumber < 0)
+				gp.ui.commandNumber = 1;
+			
+			gp.playSoundEffect(9);
+		}
+		
+		if (code == KeyEvent.VK_S) {
+			gp.ui.commandNumber ++;
+			
+			if (gp.ui.commandNumber > 1)
+				gp.ui.commandNumber = 0;
+			
+			gp.playSoundEffect(9);
+		}
+		
+		if (code == KeyEvent.VK_ENTER) {
+			// If you press Retry, restart the game
+			if (gp.ui.commandNumber == 0) {
+				gp.gameState = gp.PLAY_STATE;
+				gp.retry();
+			}
+			
+			// If you press Quit, go back to the title screen
+			else if (gp.ui.commandNumber == 1) {
+				gp.gameState = gp.TITLE_STATE;
+				gp.restart();
+				gp.stopSoundTrack();
+			}
+		}
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
@@ -257,6 +297,10 @@ public class KeyHandler implements KeyListener {
 		// Options state
 		else if (gp.gameState == gp.OPTIONS_STATE)
 			optionsState(code);
+		
+		// Game over state
+		else if (gp.gameState == gp.GAMEOVER_STATE)
+			gameOverState(code);
 	}
 	
 	@Override
