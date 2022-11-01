@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int MAX_WORLD_COL = 50;
 	public final int MAX_WORLD_ROW = 50;
 	public final int MAX_MAP = 10;   // Maximum number of possible maps
-	public int currentMap = 1;   // Index of the current map
+	public int currentMap = 0;   // Index of the current map
  	final int FPS = 60;
 	int drawCount = 0;
 	long drawTime = 0;
@@ -48,10 +48,10 @@ public class GamePanel extends JPanel implements Runnable {
 	public EventHandler eventHandler = new EventHandler(this);
 	// Entities and objects
 	public Player player = new Player(this, keyHandler);
-	public Entity obj[][] = new Entity[20]; // Total objects that can be displayed at the same time, not the number of objects existing
-	public Entity npc[][] = new Entity[20];
-	public Entity monster[][] = new Entity[20];
-	public InteractiveTile interactiveTile[] = new InteractiveTile[50];
+	public Entity obj[][] = new Entity[MAX_MAP][20]; // Total objects that can be displayed at the same time, not the number of objects existing
+	public Entity npc[][] = new Entity[MAX_MAP][20];
+	public Entity monster[][] = new Entity[MAX_MAP][20];
+	public InteractiveTile interactiveTile[][] = new InteractiveTile[MAX_MAP][50];
 	public ArrayList<Entity> projectileList = new ArrayList<>();
 	public ArrayList<Entity> particleList = new ArrayList<>();
 	ArrayList<Entity> entityList = new ArrayList<>();
@@ -126,19 +126,19 @@ public class GamePanel extends JPanel implements Runnable {
 			// Player
 			player.update();
 			// NPC
-			for (int i = 0; i < npc.length; i++)
-				if (npc[i] != null)
-					npc[i].update();
+			for (int i = 0; i < npc[1].length; i++)
+				if (npc[currentMap][i] != null)
+					npc[currentMap][i].update();
 
 			// Monsters
-			for (int i = 0; i < monster.length; i++)
-				if (monster[i] != null) {
-					if (monster[i].alive && !monster[i].dying)
-						monster[i].update();
+			for (int i = 0; i < monster[1].length; i++)
+				if (monster[currentMap][i] != null) {
+					if (monster[currentMap][i].alive && !monster[currentMap][i].dying)
+						monster[currentMap][i].update();
 
 					// Remove monster if it's not alive and check the item dropped by it
-					if (!monster[i].alive) {
-						monster[i].checkDrop();
+					if (!monster[currentMap][i].alive) {
+						monster[currentMap][i].checkDrop();
 						monster[i] = null;
 					}
 				}
@@ -166,9 +166,9 @@ public class GamePanel extends JPanel implements Runnable {
 				}
 
 			// Interactive tiles
-			for (int i = 0; i < interactiveTile.length; i ++) {
-				if (interactiveTile[i] != null) {
-					interactiveTile[i].update();
+			for (int i = 0; i < interactiveTile[1].length; i ++) {
+				if (interactiveTile[currentMap][i] != null) {
+					interactiveTile[currentMap][i].update();
 				}
 			}
 		}
@@ -224,27 +224,27 @@ public class GamePanel extends JPanel implements Runnable {
 			tileManager.draw(g2);
 			
 			// Draw interactive tiles
-			for (int i = 0; i < interactiveTile.length; i ++)
-				if (interactiveTile[i] != null)
-					interactiveTile[i].draw(g2);
+			for (int i = 0; i < interactiveTile[1].length; i ++)
+				if (interactiveTile[currentMap][i] != null)
+					interactiveTile[currentMap][i].draw(g2);
 
 			// Add player to array list
 			entityList.add(player);
 
 			// Add npcs to array list
-			for (int i = 0; i < npc.length; i++)
-				if (npc[i] != null)
-					entityList.add(npc[i]);
+			for (int i = 0; i < npc[1].length; i++)
+				if (npc[currentMap][i] != null)
+					entityList.add(npc[currentMap][i]);
 
 			// Add objects to array list
-			for (int i = 0; i < obj.length; i++)
-				if (obj[i] != null)
-					entityList.add(obj[i]);
+			for (int i = 0; i < obj[1].length; i++)
+				if (obj[currentMap][i] != null)
+					entityList.add(obj[currentMap][i]);
 
 			// Add monsters to array list
-			for (int i = 0; i < monster.length; i++)
-				if (monster[i] != null)
-					entityList.add(monster[i]);
+			for (int i = 0; i < monster[1].length; i++)
+				if (monster[currentMap][i] != null)
+					entityList.add(monster[currentMap][i]);
 
 			// Add projectile list to array list
 			for (int i = 0; i < projectileList.size(); i++)
