@@ -27,7 +27,9 @@ public class GamePanel extends JPanel implements Runnable {
 	// World Settings
 	public final int MAX_WORLD_COL = 50;
 	public final int MAX_WORLD_ROW = 50;
-	final int FPS = 60;
+	public final int MAX_MAP = 10;   // Maximum number of possible maps
+	public int currentMap = 1;   // Index of the current map
+ 	final int FPS = 60;
 	int drawCount = 0;
 	long drawTime = 0;
 	// TODO
@@ -46,9 +48,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public EventHandler eventHandler = new EventHandler(this);
 	// Entities and objects
 	public Player player = new Player(this, keyHandler);
-	public Entity obj[] = new Entity[20]; // Total objects that can be displayed at the same time, not the number of objects existing
-	public Entity npc[] = new Entity[20];
-	public Entity monster[] = new Entity[20];
+	public Entity obj[][] = new Entity[20]; // Total objects that can be displayed at the same time, not the number of objects existing
+	public Entity npc[][] = new Entity[20];
+	public Entity monster[][] = new Entity[20];
 	public InteractiveTile interactiveTile[] = new InteractiveTile[50];
 	public ArrayList<Entity> projectileList = new ArrayList<>();
 	public ArrayList<Entity> particleList = new ArrayList<>();

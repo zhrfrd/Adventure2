@@ -28,8 +28,8 @@ public class CollisionChecker {
 		
 		if (entity.direction == "up") {
 			entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;   // Predict the next tile the entity will move to
-			tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityTopRow];    // Get the position of the two tiles in front of the entity direction
-			tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityTopRow];   //
+			tileNum1 = gp.tileManager.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];    // Get the position of the two tiles in front of the entity direction
+			tileNum2 = gp.tileManager.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];   //
 			
 			//Check if the two tiles in front of the entity direction are solid and in case they are detect the collision
 			if (gp.tileManager.tile[tileNum1].solid || gp.tileManager.tile[tileNum2].solid)
@@ -38,8 +38,8 @@ public class CollisionChecker {
 		
 		if (entity.direction == "down") {
 			entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;   // Predict the next tile the entity will move to
-			tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityBottomRow];    // Get the position of the two tiles in front of the entity direction
-			tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];   //
+			tileNum1 = gp.tileManager.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];    // Get the position of the two tiles in front of the entity direction
+			tileNum2 = gp.tileManager.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];   //
 			
 			//Check if the two tiles in front of the entity direction are solid and in case they are detect the collision
 			if (gp.tileManager.tile[tileNum1].solid || gp.tileManager.tile[tileNum2].solid)
@@ -48,8 +48,8 @@ public class CollisionChecker {
 		
 		if (entity.direction == "left") {
 			entityLeftCol = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;   // Predict the next tile the entity will move to
-			tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityTopRow];    // Get the position of the two tiles in front of the entity direction
-			tileNum2 = gp.tileManager.mapTileNum[entityLeftCol][entityBottomRow];   //
+			tileNum1 = gp.tileManager.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];    // Get the position of the two tiles in front of the entity direction
+			tileNum2 = gp.tileManager.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];   //
 			
 			//Check if the two tiles in front of the entity direction are solid and in case they are detect the collision
 			if (gp.tileManager.tile[tileNum1].solid || gp.tileManager.tile[tileNum2].solid)
@@ -58,8 +58,8 @@ public class CollisionChecker {
 		
 		if (entity.direction == "right") {
 			entityRightCol = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;   // Predict the next tile the entity will move to
-			tileNum1 = gp.tileManager.mapTileNum[entityRightCol][entityTopRow];    // Get the position of the two tiles in front of the entity direction
-			tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];   //
+			tileNum1 = gp.tileManager.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];    // Get the position of the two tiles in front of the entity direction
+			tileNum2 = gp.tileManager.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];   //
 			
 			//Check if the two tiles in front of the entity direction are solid and in case they are detect the collision
 			if (gp.tileManager.tile[tileNum1].solid || gp.tileManager.tile[tileNum2].solid)

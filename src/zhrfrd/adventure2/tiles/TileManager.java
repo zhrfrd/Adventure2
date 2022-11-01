@@ -14,15 +14,16 @@ import zhrfrd.adventure2.main.UtilityTool;
 public class TileManager {
 	GamePanel gp;
 	public Tile[] tile;
-	public int mapTileNum[][];
+	public int mapTileNum[][][];
 	
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
 		tile = new Tile[50];
-		mapTileNum = new int[gp.MAX_WORLD_COL][gp.MAX_WORLD_ROW];
+		mapTileNum = new int[gp.MAX_MAP][gp.MAX_WORLD_COL][gp.MAX_WORLD_ROW];
 		
 		getTileImage();
-		loadMap("/maps/worldV2.txt");
+		loadMap("/maps/worldV3.txt", 0);
+		loadMap("/maps/interior01.txt", 1);
 	}
 	
 	/*
@@ -74,6 +75,9 @@ public class TileManager {
 		setup(39, "earth", false);
 		setup(40, "wall", true);
 		setup(41, "tree", true);
+		setup(42, "hut", false);
+		setup(43, "floor01", false);
+		setup(44, "table01", true);
 
 	}
 	
@@ -93,10 +97,13 @@ public class TileManager {
 		}
 	}
 	
-	/*
-	 * Read text file and load the map from 
+	/**
+	 * Read text file and load the map from the file path specified.
+	 * 
+	 * @param filePath The path inside the resources folder of the map.
+	 * @param map The index of the map.
 	 */
-	public void loadMap(String filePath) {
+	public void loadMap(String filePath, int map) {
 		try {
 			InputStream inputStream = getClass().getResourceAsStream(filePath);   // Get text file containing map data
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));   // Read from inpputStream
@@ -110,7 +117,7 @@ public class TileManager {
 				while (col < gp.MAX_WORLD_COL) {
 					String number[] = line.split(" ");   // Read each number in a line excluding spaces and save it inside the array
 					int num = Integer.parseInt(number[col]);
-					mapTileNum[col][row] = num;
+					mapTileNum[map][col][row] = num;
 					
 					col ++;
 				}
@@ -127,15 +134,17 @@ public class TileManager {
 		}
 	}
 	
-	/*
-	 * Render the tiles of the map on the gamePanel from the map data retrieved from the text file
+	/**
+	 * Render the tiles of the map on the gamePanel from the map data retrieved from the text file.
+	 * 
+	 * @param g2 The "paint-brush" responsible for drawing on the game panel
 	 */
 	public void draw(Graphics2D g2) {
 		int worldCol = 0;
 		int worldRow = 0;
 		
 		while (worldCol < gp.MAX_WORLD_COL && worldRow < gp.MAX_WORLD_ROW) {
-			int tileNum = mapTileNum[worldCol][worldRow];
+			int tileNum = mapTileNum[gp.currentMap][worldCol][worldRow];
 			int worldX = worldCol * gp.TILE_SIZE;   // Tiles position of the world
 			int worldY = worldRow * gp.TILE_SIZE;   //
 			int screenX = worldX - gp.player.worldX + gp.player.SCREEN_X;   // Tiles position on the screen

@@ -94,7 +94,10 @@ public class KeyHandler implements KeyListener {
 		
 		// Refresh map 
 		if (code == KeyEvent.VK_R)
-			gp.tileManager.loadMap("/maps/worldV2.txt");
+			switch (gp.currentMap) {
+				case 0: gp.tileManager.loadMap("/maps/worldV2.txt", 0); break;
+				case 1: gp.tileManager.loadMap("/maps/interior01.txt", 1); break;
+			}
 	}
 
 	/**
@@ -259,13 +262,13 @@ public class KeyHandler implements KeyListener {
 			if (gp.ui.commandNumber == 0) {
 				gp.gameState = gp.PLAY_STATE;
 				gp.retry();
+				gp.playSoundTrack(0);
 			}
 			
 			// If you press Quit, go back to the title screen
 			else if (gp.ui.commandNumber == 1) {
 				gp.gameState = gp.TITLE_STATE;
 				gp.restart();
-				gp.stopSoundTrack();
 			}
 		}
 	}

@@ -70,8 +70,10 @@ public class Player extends Entity {
 	 * Set the default position in the world for the player and his direction.
 	 */
 	public void setDefaultPosition() {
-		worldX = gp.TILE_SIZE * 23;
-		worldY = gp.TILE_SIZE * 21;
+//		worldX = gp.TILE_SIZE * 23;
+//		worldY = gp.TILE_SIZE * 21;
+		worldX = gp.TILE_SIZE * 12;
+		worldY = gp.TILE_SIZE * 13;
 		direction = "down";
 	}
 	
@@ -496,6 +498,8 @@ public class Player extends Entity {
 		// Game over if live <= 0
 		if (life <= 0) {
 			gp.gameState = gp.GAMEOVER_STATE;
+			gp.ui.commandNumber = -1;   // Don't show the cursor straight after the game over screen appears
+			gp.stopSoundTrack();
 			gp.playSoundEffect(12);
 		}
 	}
